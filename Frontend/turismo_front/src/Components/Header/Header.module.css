@@ -2,7 +2,7 @@
 
 .header {
   background-color: #023047;
-  color: #ffb703;
+  color: #FFF1CD;
   position: fixed;
   top: 0;
   left: 0;
@@ -29,6 +29,8 @@
 .authButtons {
   display: flex;
   gap: 20px;
+  margin-left: auto; 
+  padding-right: 50px;
 }
 
 .authLink {
@@ -36,8 +38,85 @@
   text-decoration: none;
   font-size: 18px;
   font-weight: bold;
+  white-space: nowrap;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.authLink::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: #8ecae6;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease;
 }
 
 .authLink:hover {
-  text-decoration: underline;
+  color: #8ecae6;
+}
+
+.authLink:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+
+.menuIcon {
+  display: none;
+  font-size: 30px;
+  color: #fff;
+  cursor: pointer;
+  padding-right: 45px;
+}
+
+.mobileMenu {
+  display: none;
+  position: absolute;
+  top: 80px;
+  right: 0;
+  background-color: #023047;
+  width: 200px;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+}
+
+.mobileMenu a {
+  color: #ffb703;
+  padding: 10px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+}
+
+.mobileMenu a:hover {
+  background-color: #8ecae6;
+  color: #023047;
+}
+
+@media (max-width: 1024px) {
+  .authButtons {
+    padding-right: 20px; 
+  }
+}
+
+@media (max-width: 768px) {
+  .authButtons {
+    display: none; 
+  }
+
+  .menuIcon {
+    display: block; 
+  }
+
+  .mobileMenu {
+    display: flex;
+  }
 }
