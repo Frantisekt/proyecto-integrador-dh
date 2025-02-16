@@ -1,13 +1,21 @@
-import Header from "./Components/Header/Header";
+import Package from "./Components/pages/package/Package";
+import Layout from "./Components/layout/Layout";
+import Home from "./Components/pages/home/Home";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 
 function App() {
   return (
-    <div className="pt-16"> 
-      <Header />
-      <main>
-      
-      </main>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="*" element={<h1>Not Found 404</h1>} />
+          <Route index element={<Home />} />
+          {/* <Route path="travelPackage/:id" element={<Package />} /> */} 
+          <Route path="travelPackage" element={<Package />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
