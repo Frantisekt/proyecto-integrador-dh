@@ -36,7 +36,7 @@
 
 .heroText {
     color: white;
-    font-family: 'Roboto', sans-serif;
+    
     font-size: 28px;
     font-weight: 400;
     max-width: 800px;
@@ -67,7 +67,7 @@
     font-size: 36px;
     font-weight: bold;
     margin-bottom: 2rem;
-    font-family: 'Playfair Display', serif;
+    
     text-align: center;
 }
 
