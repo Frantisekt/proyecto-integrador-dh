@@ -72,11 +72,11 @@ const Package = () => {
                 {/* Galería de imágenes */}
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>
-                        <img src={images[0]} alt="Main" />
+                        <img src={images[0]} alt="Main" onClick={() => setIsModalOpen(true)} />
                     </div>
                     <div className={styles.sideImages}>
                         {images.slice(1, 5).map((img, index) => (
-                            <img key={index} src={img} alt={`Gallery ${index + 1}`} />
+                            <img key={index} src={img} alt={`Gallery ${index + 1}`} onClick={() => setIsModalOpen(true)}  />
                         ))}
                         <button className={styles.viewMoreBtn} onClick={() => setIsModalOpen(true)}>
                             Ver más fotos
