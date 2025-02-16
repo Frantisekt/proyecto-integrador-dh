@@ -26,7 +26,7 @@
 }
 
 .mainImage img {
-    width: 35rem;
+    width: 30vw;
     height: 60vh;
     object-fit: cover;
     border-radius: 10px;
@@ -223,3 +223,81 @@
     object-fit: contain; 
     border-radius: 10px;
 }
+
+@media screen and (max-width: 1450px) {
+    .mainImage img {
+        width: 40vw;
+        height: 50vh;
+    }
+
+    .sideImages {
+        width: 50%;
+    }
+
+    .sideImages img {
+        height: 24vh;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .mainImage img {
+        width: 40vw;
+        height: 50vh;
+    }
+
+    .sideImages {
+        width: 50%;
+    }
+
+    .sideImages img {
+        height: 24vh;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .mainImage img {
+        width: 35vw;
+        height: 45vh;
+    }
+
+    .sideImages {
+        width: 45%;
+    }
+
+    .sideImages img {
+        height: 22vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mainImage img {
+        width: 45vw;
+        height: 35vh;
+    }
+
+    .sideImages {
+        width: 50%;
+    }
+
+    .sideImages img {
+        height: 17vh;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .mainImage img {
+        width: 80vw;
+        height: 35vh;
+    }
+
+    .sideImages {
+        width: 90%;
+        gap: 5px;
+    }
+
+    .sideImages img {
+        width: 48%;
+        height: 18vh;
+    }
+}
+
