@@ -61,21 +61,6 @@
     }
   }
   
-  @media (max-width: 768px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .card1, .card2, .card3, .card4, .card5 {
-      grid-column: span 2;
-      height: 250px;
-    }
-    
-    .container {
-      padding: 2rem 1rem;
-    }
-  }
-  
   @media (max-width: 480px) {
     .grid {
       grid-template-columns: 1fr;
@@ -83,5 +68,9 @@
     
     .card1, .card2, .card3, .card4, .card5 {
       grid-column: span 1;
+    }
+  
+    .container {
+      background-color: rgba(255, 255, 255, 1); /* Fondo blanco en versión móvil */
     }
   }
