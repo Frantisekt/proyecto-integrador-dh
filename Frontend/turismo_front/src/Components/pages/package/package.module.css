@@ -112,6 +112,8 @@
     padding: 20px;
     border-radius: 10px;
     width: 80%;
+    height: 80vh;
+    margin-top: 8vh;
     text-align: center;
 }
 
@@ -123,8 +125,8 @@
 }
 
 .modalGallery img {
-    width: 200px;
-    height: 150px;
+    width: auto;
+    max-height: 30vh;
     object-fit: cover;
     border-radius: 5px;
 }
