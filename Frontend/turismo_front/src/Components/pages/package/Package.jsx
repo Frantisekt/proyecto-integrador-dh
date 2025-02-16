@@ -115,8 +115,8 @@ const Package = () => {
 
                 {/* Segundo modal para ver la imagen en grande */}
                 {isSecondModalOpen && (
-                    <div className={styles.modal}>
-                        <div className={styles.modalContent}>
+                    <div className={styles.secondModal}>
+                        <div className={styles.secondModalContent}>
                             <button className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}>✖</button>
                             <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
                             <div className={styles.imageControls}>
