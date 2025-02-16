@@ -141,6 +141,12 @@
     object-fit: cover;
     border-radius: 5px;
     transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+    transition: filter 0.2s ease-in-out;
+}
+
+.modalGallery img:hover {
+    filter: brightness(0.9);
 }
 
 .closeBtn {
@@ -162,3 +168,32 @@
     background: darkred;
     transform: scale(1.1);
 }
+
+.imageControls {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.imageControls button {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+.imageControls button:hover {
+    background: #555;
+}
+
+.largeImage {
+    max-width: 90%;
+    max-height: 70vh;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
