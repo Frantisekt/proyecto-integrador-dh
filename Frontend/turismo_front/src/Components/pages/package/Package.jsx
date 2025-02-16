@@ -62,6 +62,21 @@ const Package = () => {
     const [{ mediaTitle, mediaDescription, media }] = mediaCategories || [];
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+    const openSecondModal = (index) => {
+        setSelectedImageIndex(index);
+        setIsSecondModalOpen(true);
+    };
+
+    const changeImage = (direction) => {
+        if (direction === "next") {
+            setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+        } else {
+            setSelectedImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+        }
+    };
 
     return (
         <div className={styles.mainContainer}>
@@ -91,8 +106,22 @@ const Package = () => {
                             <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>✖</button>
                             <div className={styles.modalGallery}>
                                 {images.map((img, index) => (
-                                    <img key={index} src={img} alt={`Modal ${index + 1}`} />
+                                    <img key={index} src={img} alt={`Modal ${index + 1}`} onClick={() => openSecondModal(index)}/>
                                 ))}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Segundo modal para ver la imagen en grande */}
+                {isSecondModalOpen && (
+                    <div className={styles.modal}>
+                        <div className={styles.modalContent}>
+                            <button className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}>✖</button>
+                            <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
+                            <div className={styles.imageControls}>
+                                <button onClick={() => changeImage("prev")}>⬅</button>
+                                <button onClick={() => changeImage("next")}>➡</button>
                             </div>
                         </div>
                     </div>
