@@ -3,6 +3,7 @@ import { getOnepackage } from '../../services/getOnePackage';
 import { data } from 'react-router-dom';
 import styles from "./Package.module.css";
 import { Link } from 'react-router-dom';
+import ControlledCarousel from "../../carousel/Carousel";
 
 const Package = () => {
     /*const { id } = useParams();
@@ -56,7 +57,15 @@ const Package = () => {
             },
         ],
     };
+    /////////////////
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 730);
 
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth <= 730);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    //////////////////
     const { title, description, categories } = travelPackage;
     const [{ title: categoryTitle, description: categoryDescription, price, currency, restrictions, mediaCategories }] = categories || [];
     const [{ mediaTitle, mediaDescription, media }] = mediaCategories || [];
@@ -83,52 +92,53 @@ const Package = () => {
             <Link to="/"><i className={`bi bi-arrow-left ${styles.arrowIcon}`}></i></Link>
             <h1>{title}</h1>
             <div className={styles.packageContainer}>
-
-                {/* Galería de imágenes */}
-                <div className={styles.gallery}>
-                    <div className={styles.mainImage}>
-                        <img src={images[0]} alt="Main" onClick={() => setIsModalOpen(true)} />
+                {isMobile ? (
+                    <ControlledCarousel images={images.map(src => ({ src }))} />
+                ) : (
+                    <div className={styles.gallery}>
+                        <div className={styles.mainImage}>
+                            <img src={images[0]} alt="Main" onClick={() => setIsModalOpen(true)} />
+                        </div>
+                        <div className={styles.sideImages}>
+                            {images.slice(1, 5).map((img, index) => (
+                                <img key={index} src={img} alt={`Gallery ${index + 1}`} onClick={() => setIsModalOpen(true)} />
+                            ))}
+                            <button className={styles.viewMoreBtn} onClick={() => setIsModalOpen(true)}>
+                                Ver más fotos
+                            </button>
+                        </div>
                     </div>
-                    <div className={styles.sideImages}>
-                        {images.slice(1, 5).map((img, index) => (
-                            <img key={index} src={img} alt={`Gallery ${index + 1}`} onClick={() => setIsModalOpen(true)}  />
-                        ))}
-                        <button className={styles.viewMoreBtn} onClick={() => setIsModalOpen(true)}>
-                            Ver más fotos
-                        </button>
+                )}
+
+            {/* Modal de imágenes */}
+            {isModalOpen && (
+                <div className={styles.modal}>
+                    <div className={styles.modalContent}>
+                        <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}><i class="bi bi-x"></i></button>
+                        <div className={styles.modalGallery}>
+                            {images.map((img, index) => (
+                                <img key={index} src={img} alt={`Modal ${index + 1}`} onClick={() => openSecondModal(index)} />
+                            ))}
+                        </div>
                     </div>
                 </div>
+            )}
 
-                {/* Modal de imágenes */}
-                {isModalOpen && (
-                    <div className={styles.modal}>
-                        <div className={styles.modalContent}>
-                            <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>✖</button>
-                            <div className={styles.modalGallery}>
-                                {images.map((img, index) => (
-                                    <img key={index} src={img} alt={`Modal ${index + 1}`} onClick={() => openSecondModal(index)}/>
-                                ))}
-                            </div>
+            {/* Segundo modal para ver la imagen en grande */}
+            {isSecondModalOpen && (
+                <div className={styles.secondModal}>
+                    <div className={styles.secondModalContent}>
+                        <button className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}><i class="bi bi-x"></i></button>
+                        <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
+                        <div className={styles.imageControls}>
+                            <button onClick={() => changeImage("prev")}><i class="bi bi-arrow-left-short"></i></button>
+                            <button onClick={() => changeImage("next")}><i class="bi bi-arrow-right-short"></i></button>
                         </div>
                     </div>
-                )}
-
-                {/* Segundo modal para ver la imagen en grande */}
-                {isSecondModalOpen && (
-                    <div className={styles.secondModal}>
-                        <div className={styles.secondModalContent}>
-                            <button className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}>✖</button>
-                            <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
-                            <div className={styles.imageControls}>
-                                <button onClick={() => changeImage("prev")}>⬅</button>
-                                <button onClick={() => changeImage("next")}>➡</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
-
+        </div >
     );
 }
 

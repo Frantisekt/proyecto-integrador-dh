@@ -284,20 +284,13 @@
     }
 }
 
-@media screen and (max-width: 576px) {
-    .mainImage img {
-        width: 80vw;
-        height: 35vh;
-    }
 
-    .sideImages {
-        width: 90%;
-        gap: 5px;
-    }
 
-    .sideImages img {
-        width: 48%;
-        height: 18vh;
+
+
+@media screen and (max-width: 730px) {
+    .gallery {
+        display: none;
     }
 }
 
