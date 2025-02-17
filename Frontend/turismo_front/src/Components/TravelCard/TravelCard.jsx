@@ -1,7 +1,6 @@
-// components/TravelCard.jsx
 import styles from "./TravelCard.module.css";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom"; // Usar React Router en Vite
+import { Link } from "react-router-dom"; 
 
 const TravelCard = ({ title, price, imageUrl, href, className }) => {
   return (
