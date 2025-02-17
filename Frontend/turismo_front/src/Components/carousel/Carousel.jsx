@@ -11,7 +11,7 @@ const ControlledCarousel = ({ images }) => {
     };
 
     return (
-        <Carousel activeIndex={index} onSelect={handleSelect}>
+        <Carousel activeIndex={index} onSelect={handleSelect} className="w-100">
             {images.map((image, idx) => (
                 <Carousel.Item key={idx}>
                     <img
