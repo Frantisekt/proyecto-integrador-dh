@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from "./Carousel.module.css";
 
-const ControlledCarousel = ({ images, openModal }) => {
+const ControlledCarousel = ({ images, openModal, isModalOpen }) => {
     const [index, setIndex] = useState(0);
 
     const handleSelect = (selectedIndex) => {
@@ -11,7 +11,7 @@ const ControlledCarousel = ({ images, openModal }) => {
     };
 
     return (
-        <Carousel activeIndex={index} onSelect={handleSelect} className="w-100">
+        <Carousel activeIndex={index} onSelect={handleSelect} className={`w-100 ${isModalOpen ? styles.hidden : ""}`}>
             {images.map((image, idx) => (
                 <Carousel.Item key={idx}>
                     <img
