@@ -1,4 +1,3 @@
-/* components/TravelCard.module.css */
 .card {
     position: relative;
     border-radius: 15px;
@@ -49,6 +48,9 @@
     margin-bottom: 0.5rem;
     color: #FFB703;
   }
+  .priceText{
+    color: #FFB703;
+  }
   
   .priceContainer {
     display: flex;
@@ -70,4 +72,13 @@
   .priceText {
     font-size: 0.875rem;
     opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .title {
+      color: rgba(23, 195, 178, 1); 
+    }
+    .priceText{
+      color: rgba(23, 195, 178, 1); 
+    }
   }
