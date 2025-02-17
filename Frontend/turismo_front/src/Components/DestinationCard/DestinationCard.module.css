@@ -1,0 +1,72 @@
+.card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    min-width: 292px;
+  }
+  
+  .image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+  
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  }
+  
+  .content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 24px;
+    color: white;
+  }
+  
+  .city {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .countryContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .flag,
+  .country {
+    font-size: 14px;
+  }
+  
+  .country {
+    text-transform: uppercase;
+  }
+  
+  .price {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  
+  .priceAmount {
+    color: rgba(33, 158, 188, 1);
+  }
+  
+  .rating {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .starFilled {
+    color: #ffb703;
+  }
+  
+  .starEmpty {
+    color: #808080;
+  }
+  
+  
