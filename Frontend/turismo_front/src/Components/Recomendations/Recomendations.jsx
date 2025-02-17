@@ -127,23 +127,27 @@ const destinations = [
   },
 ]
 
-const CARDS_PER_VIEW = 4;
-
-
-const padDestinations = () => {
-  const remainder = destinations.length % CARDS_PER_VIEW;
-  if (remainder === 0) return destinations;
-  return [...destinations, ...Array(CARDS_PER_VIEW - remainder).fill(null)];
-};
-
 export function Recommendations() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [viewCount, setViewCount] = useState(1);
-  const paddedDestinations = padDestinations();
-
+  const [cardsPerView, setCardsPerView] = useState(window.innerWidth < 768 ? 1 : 4);
+  
   useEffect(() => {
-    setViewCount(Math.ceil(paddedDestinations.length / CARDS_PER_VIEW));
+    const updateCardsPerView = () => {
+      setCardsPerView(window.innerWidth < 768 ? 1 : 4);
+    };
+
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
   }, []);
+
+  const padDestinations = () => {
+    const remainder = destinations.length % cardsPerView;
+    if (remainder === 0) return destinations;
+    return [...destinations, ...Array(cardsPerView - remainder).fill(null)];
+  };
+
+  const paddedDestinations = padDestinations();
+  const viewCount = Math.ceil(paddedDestinations.length / cardsPerView);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev === viewCount - 1 ? 0 : prev + 1));
@@ -160,8 +164,7 @@ export function Recommendations() {
           <span className={styles.label}>RECOMMENDATIONS</span>
           <h2 className={styles.title}>Recomendaciones</h2>
           <p className={styles.description}>
-            Explore our curated selection of the world's most sought-after travel spots in this diverse list of
-            must-visit places.
+            Explore our curated selection of the world's most sought-after travel spots in this diverse list of must-visit places.
           </p>
         </div>
 
@@ -179,8 +182,8 @@ export function Recommendations() {
                 style={{ transform: `translateX(-${currentIndex * (100 / viewCount)}%)`, width: `${viewCount * 100}%` }}
               >
                 {paddedDestinations.map((destination, index) => (
-                  <div key={index} className={styles.carouselItem} style={{ width: `${100 / CARDS_PER_VIEW}%` }}>
-                    {destination ? <DestinationCard {...destination} /> : <div className={styles.emptyCard} />}  
+                  <div key={index} className={styles.carouselItem} style={{ width: `${100 / cardsPerView}%` }}>
+                    {destination ? <DestinationCard {...destination} /> : <div className={styles.emptyCard} />}
                   </div>
                 ))}
               </div>
