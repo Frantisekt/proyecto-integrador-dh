@@ -103,6 +103,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: fadeInModal 0.3s ease-out forwards;
 }
 
 .modalContent {
@@ -130,6 +131,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: fadeInModal 0.3s ease-out forwards;
 }
 
 .secondModalContent {
@@ -164,7 +166,6 @@
     height: auto;
     max-height: 25vh;
     object-fit: cover;
-    border-radius: 5px;
     transition: transform 0.3s ease-in-out;
     cursor: pointer;
     transition: filter 0.2s ease-in-out;
@@ -219,7 +220,6 @@
     max-width: 100%;
     max-height: 70vh;
     object-fit: contain; 
-    border-radius: 10px;
 }
 
 @media screen and (max-width: 1450px) {
@@ -282,13 +282,20 @@
     }
 }
 
-
-
-
-
 @media screen and (max-width: 730px) {
     .gallery {
         display: none;
+    }
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
