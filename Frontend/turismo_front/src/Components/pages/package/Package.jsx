@@ -95,7 +95,7 @@ const Package = () => {
             </div>
             <div className={styles.packageContainer}>
                 {isMobile ? (
-                    <ControlledCarousel images={images.map(src => ({ src }))} />
+                    <ControlledCarousel images={images.map(src => ({ src }))} openModal={() => setIsModalOpen(true)} />
                 ) : (
                     <div className={styles.gallery}>
                         <div className={styles.mainImage}>
