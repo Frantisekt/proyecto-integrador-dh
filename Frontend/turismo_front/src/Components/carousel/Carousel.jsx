@@ -3,7 +3,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from "./Carousel.module.css";
 
-const ControlledCarousel = ({ images }) => {
+const ControlledCarousel = ({ images, openModal }) => {
     const [index, setIndex] = useState(0);
 
     const handleSelect = (selectedIndex) => {
@@ -11,13 +11,15 @@ const ControlledCarousel = ({ images }) => {
     };
 
     return (
-        <Carousel activeIndex={index} onSelect={handleSelect}>
+        <Carousel activeIndex={index} onSelect={handleSelect} className="w-100">
             {images.map((image, idx) => (
                 <Carousel.Item key={idx}>
                     <img
                         className={`d-block w-100 ${styles.carouselImage}`} 
                         src={image.src}
                         alt={image.alt || `Slide ${idx + 1}`}
+                        onClick={openModal} 
+                        style={{ cursor: "pointer" }}
                     />
                 </Carousel.Item>
             ))}

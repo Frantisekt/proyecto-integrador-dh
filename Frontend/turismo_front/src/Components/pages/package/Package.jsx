@@ -90,10 +90,12 @@ const Package = () => {
     return (
         <div className={styles.mainContainer}>
             <Link to="/"><i className={`bi bi-arrow-left ${styles.arrowIcon}`}></i></Link>
-            <h1>{title}</h1>
+            <div className={styles.titleContainer}>
+                <h1>{title}</h1>
+            </div>
             <div className={styles.packageContainer}>
                 {isMobile ? (
-                    <ControlledCarousel images={images.map(src => ({ src }))} />
+                    <ControlledCarousel images={images.map(src => ({ src }))} openModal={() => setIsModalOpen(true)} />
                 ) : (
                     <div className={styles.gallery}>
                         <div className={styles.mainImage}>
