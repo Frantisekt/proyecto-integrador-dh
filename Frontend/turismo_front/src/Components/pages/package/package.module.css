@@ -1,5 +1,8 @@
 .mainContainer {
-    margin-top: 100px;
+    margin-top: 80px;
+    height: 92vh;
+    background-color: #FFF1CD;
+    padding-top: 20px;
 }
 
 .titleContainer{
@@ -9,6 +12,10 @@
     padding-bottom: 15px;
 }
 
+.title{
+    font-weight: bold;
+}
+
 .arrowIcon {
     font-size: 1.8rem; 
     color: #333; 
@@ -16,3 +23,47 @@
     top: 80px; 
     right: 15px;
 }
+
+@media screen and (min-width: 1800px) and (max-width: 2100px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 270px;
+    }
+}
+
+@media screen and (min-width: 1450px) and (max-width: 1799px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 230px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1449px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 60px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 70px;
+    }
+}
+
+@media screen and (min-width: 731px) and (max-width: 767px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 730px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 20px;
+    }
+}
+
+
