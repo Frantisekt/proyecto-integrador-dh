@@ -4,6 +4,7 @@ import { data } from 'react-router-dom';
 import styles from "./Package.module.css";
 import { Link } from 'react-router-dom';
 import Gallery from '../../gallery/Gallery';
+import flecha_atras from '../../../assets/flecha_atras.png'
 
 const Package = () => {
     /*const { id } = useParams();
@@ -63,7 +64,8 @@ const Package = () => {
 
     return (
         <div className={styles.mainContainer}>
-            <Link to="/"><i className={`bi bi-arrow-left ${styles.arrowIcon}`}></i></Link>
+            <Link to="/"><img src={flecha_atras} alt="flecha" className={styles.arrowIcon} /></Link>
+            <h3 className={styles.subtitle}>Detalles</h3>
             <div className={styles.titleContainer}>
                 <h1 className={styles.title}>{title}</h1>
             </div>
