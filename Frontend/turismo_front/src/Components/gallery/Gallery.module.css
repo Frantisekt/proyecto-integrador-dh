@@ -9,8 +9,6 @@
     height: 60vh;
     object-fit: cover;
     border-radius: 10px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
     cursor: pointer;
     transition: filter 0.3s ease-in-out;
 }
@@ -41,25 +39,7 @@
     filter: brightness(0.8);
 }
 
-.sideImages img:first-child {
-    border-radius: 0;
-}
 
-.sideImages img:nth-child(3){
-    border-radius: 0;
-}
-
-.sideImages img:nth-child(2) {
-    border-bottom-left-radius: 0; 
-    border-top-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.sideImages img:nth-child(4) {
-    border-bottom-left-radius: 0; 
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
 
 .viewMoreBtn {
     position: absolute;

@@ -65,9 +65,9 @@ const Package = () => {
         <div className={styles.mainContainer}>
             <Link to="/"><i className={`bi bi-arrow-left ${styles.arrowIcon}`}></i></Link>
             <div className={styles.titleContainer}>
-                <h1>{title}</h1>
+                <h1 className={styles.title}>{title}</h1>
             </div>
-            <Gallery images={images} />
+            <Gallery images={images} className={styles.gallery}/>
         </div >
     );
 }
