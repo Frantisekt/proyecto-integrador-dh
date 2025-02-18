@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { DestinationCard } from "../DestinationCard/DestinationCard"
 import styles from "./Recommendations.module.css"
 
-const destinations = [
+const destinationsData = [
   {
     city: "Cairo",
     country: "EGYPT",
@@ -128,9 +128,20 @@ const destinations = [
 ]
 
 export function Recommendations() {
+  const [destinations, setDestinations] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(window.innerWidth < 768 ? 1 : 4);
-  
+
+  // Función para mezclar aleatoriamente los destinos
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  useEffect(() => {
+    const shuffledDestinations = shuffleArray([...destinationsData]);
+    setDestinations(shuffledDestinations);
+  }, []);
+
   useEffect(() => {
     const updateCardsPerView = () => {
       setCardsPerView(window.innerWidth < 768 ? 1 : 4);
@@ -170,17 +181,10 @@ export function Recommendations() {
 
         <div className={styles.carouselWrapper}>
           <div className={styles.carouselContainer}>
-            {viewCount > 1 && (
-              <button onClick={prevSlide} className={`${styles.navButton} ${styles.prevButton}`}>
-                ‹
-              </button>
-            )}
+            {viewCount > 1 && <button onClick={prevSlide} className={`${styles.navButton} ${styles.prevButton}`}>‹</button>}
 
             <div className={styles.carousel}>
-              <div
-                className={styles.carouselInner}
-                style={{ transform: `translateX(-${currentIndex * (100 / viewCount)}%)`, width: `${viewCount * 100}%` }}
-              >
+              <div className={styles.carouselInner} style={{ transform: `translateX(-${currentIndex * (100 / viewCount)}%)`, width: `${viewCount * 100}%` }}>
                 {paddedDestinations.map((destination, index) => (
                   <div key={index} className={styles.carouselItem} style={{ width: `${100 / cardsPerView}%` }}>
                     {destination ? <DestinationCard {...destination} /> : <div className={styles.emptyCard} />}
@@ -189,15 +193,12 @@ export function Recommendations() {
               </div>
             </div>
 
-            {viewCount > 1 && (
-              <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`}>
-                ›
-              </button>
-            )}
+            {viewCount > 1 && <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`}>›</button>}
           </div>
         </div>
       </div>
     </section>
   );
 }
+
 

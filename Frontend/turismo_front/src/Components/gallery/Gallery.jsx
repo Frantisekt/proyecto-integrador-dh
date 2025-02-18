@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ControlledCarousel from '../carousel/Carousel';
 import styles from "./Gallery.module.css";
+import flecha_atras from '../../assets/flecha_atras.png';
 
 const Gallery = ({ images }) => {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 730);
@@ -51,7 +52,7 @@ const Gallery = ({ images }) => {
             {isModalOpen && (
                 <div className={styles.modal}>
                     <div className={styles.modalContent}>
-                        <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}><i className="bi bi-x"></i></button>
+                        <img src={flecha_atras} alt="flecha" className={styles.closeBtn} onClick={() => setIsModalOpen(false)}/>
                         <div className={styles.modalGallery}>
                             {images.map((img, index) => (
                                 <img key={index} src={img} alt={`Modal ${index + 1}`} onClick={() => openSecondModal(index)} />
@@ -65,7 +66,7 @@ const Gallery = ({ images }) => {
             {isSecondModalOpen && (
                 <div className={styles.secondModal}>
                     <div className={styles.secondModalContent}>
-                        <button className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}><i className="bi bi-x"></i></button>
+                        <img src={flecha_atras} alt="flecha" className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}/>
                         <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
                         <div className={styles.imageControls}>
                             <button onClick={() => changeImage("prev")}><i className="bi bi-arrow-left-short"></i></button>
