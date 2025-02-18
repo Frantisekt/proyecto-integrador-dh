@@ -46,10 +46,10 @@
     font-size: 1.5rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
-    color: #FFB703;
+    color: rgba(226, 200, 102, 1);
   }
   .priceText{
-    color: #FFB703;
+    color: rgba(226, 200, 102, 1);
   }
   
   .priceContainer {
