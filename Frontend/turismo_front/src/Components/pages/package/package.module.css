@@ -1,0 +1,78 @@
+.mainContainer {
+    margin-top: 80px;
+    height: 92vh;
+    background-color: #FFF1CD;
+    padding-top: 20px;
+}
+
+.titleContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 15px;
+}
+
+.title{
+    font-weight: bold;
+}
+
+.subtitle{
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+    color: rgba(33, 158, 188, 1);
+}
+
+.arrowIcon {
+    margin-top: 30px;
+    position: absolute; 
+    top: 80px; 
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 1800px) and (max-width: 2100px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 270px;
+    }
+}
+
+@media screen and (min-width: 1450px) and (max-width: 1799px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 230px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1449px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 60px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 70px;
+    }
+}
+
+@media screen and (min-width: 731px) and (max-width: 767px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 730px) {
+    .titleContainer {
+        justify-content: flex-start;
+        margin-left: 20px;
+    }
+}
+
+
