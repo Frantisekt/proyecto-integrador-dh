@@ -1,0 +1,18 @@
+.packageDetailsContainer{
+    padding: 2rem 10vw 5rem 10vw;
+    gap: 30px;
+}
+
+.reserveButton{
+    background-color: #17B1BD;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.reserveButton:hover{
+    background-color: #023047;
+}
