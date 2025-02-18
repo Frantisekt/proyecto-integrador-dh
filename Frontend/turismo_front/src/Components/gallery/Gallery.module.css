@@ -139,19 +139,14 @@
     position: absolute;
     top: 10px;
     right: 15px;
-    background: red;
-    color: white;
-    border: none;
     padding: 5px 10px;
-    font-size: .8rem;
     cursor: pointer;
-    border-radius: 10%;
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    width: 60px;
 }
 
 
 .closeBtn:hover {
-    background: darkred;
     transform: scale(1.1);
 }
 

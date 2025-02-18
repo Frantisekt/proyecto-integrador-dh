@@ -16,12 +16,21 @@
     font-weight: bold;
 }
 
+.subtitle{
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: underline;
+    color: rgba(33, 158, 188, 1);
+}
+
 .arrowIcon {
-    font-size: 1.8rem; 
-    color: #333; 
+    margin-top: 30px;
     position: absolute; 
     top: 80px; 
     right: 15px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
 }
 
 @media screen and (min-width: 1800px) and (max-width: 2100px) {
