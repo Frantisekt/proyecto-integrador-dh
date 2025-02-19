@@ -126,4 +126,50 @@
 .arrowButton:disabled {
     background-color: #ddd;
     cursor: not-allowed;
+}
+
+/* Mensaje para dispositivos móviles */
+.mobileMessage {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #003145;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    z-index: 1000;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobileMessage h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ffe69c;
+}
+
+.mobileMessage p {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Media query para dispositivos móviles */
+@media screen and (max-width: 768px) {
+    .adminContainer {
+        display: none;
+    }
+    
+    .mobileMessage {
+        display: flex;
+    }
+
+    body {
+        overflow: hidden;
+    }
 } 

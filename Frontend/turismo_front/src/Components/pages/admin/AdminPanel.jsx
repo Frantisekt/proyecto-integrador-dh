@@ -20,7 +20,7 @@ const AdminPanel = () => {
         // ... más paquetes
     ];
 
-    // Calcular el total de páginas (mínimo 1 página)
+    // Calcular el total de páginas
     const totalPages = Math.max(1, Math.ceil(packages.length / itemsPerPage));
 
     // Obtener los items de la página actual
@@ -36,83 +36,92 @@ const AdminPanel = () => {
     };
 
     return (
-        <div className={styles.adminContainer}>
-            <div className={styles.headerSection}>
-                <h1>Productos</h1>
-                <button 
-                    className={styles.addButton}
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Agregar Producto
-                </button>
+        <>
+            {/* Mensaje para dispositivos móviles */}
+            <div className={styles.mobileMessage}>
+                <h2>Acceso no disponible</h2>
+                <p>El panel de administración solo está disponible para dispositivos de escritorio. Por favor, accede desde una computadora.</p>
             </div>
 
-            <div className={styles.tableContainer}>
-                <table className={styles.packagesTable}>
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Nro. de viajeros</th>
-                            <th>Fecha prevista</th>
-                            <th>Fecha de retorno</th>
-                            <th>Descripción</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {getCurrentItems().map(pkg => (
-                            <tr key={pkg.id}>
-                                <td>{pkg.nombre}</td>
-                                <td>{pkg.viajeros}</td>
-                                <td>{pkg.fechaPrevista}</td>
-                                <td>{pkg.fechaRetorno}</td>
-                                <td>{pkg.descripcion}</td>
-                                <td>
-                                    <button className={styles.editButton}>Editar</button>
-                                    <button className={styles.deleteButton}>Eliminar</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-
-            <div className={styles.pagination}>
-                <button 
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className={`${styles.pageButton} ${styles.arrowButton}`}
-                >
-                    ←
-                </button>
-                
-                <div className={styles.pageIndicators}>
-                    {[...Array(totalPages)].map((_, index) => (
-                        <div
-                            key={index + 1}
-                            onClick={() => handlePageChange(index + 1)}
-                            className={`${styles.pageIndicator} ${
-                                currentPage === index + 1 ? styles.activeIndicator : ''
-                            }`}
-                        />
-                    ))}
+            {/* Panel de administración */}
+            <div className={styles.adminContainer}>
+                <div className={styles.headerSection}>
+                    <h1>Productos</h1>
+                    <button 
+                        className={styles.addButton}
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Agregar Producto
+                    </button>
                 </div>
-                
-                <button 
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className={`${styles.pageButton} ${styles.arrowButton}`}
-                >
-                    →
-                </button>
-            </div>
 
-            {isModalOpen && (
-                <RegisterProductModal 
-                    onClose={() => setIsModalOpen(false)}
-                />
-            )}
-        </div>
+                <div className={styles.tableContainer}>
+                    <table className={styles.packagesTable}>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Nro. de viajeros</th>
+                                <th>Fecha prevista</th>
+                                <th>Fecha de retorno</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {getCurrentItems().map(pkg => (
+                                <tr key={pkg.id}>
+                                    <td>{pkg.nombre}</td>
+                                    <td>{pkg.viajeros}</td>
+                                    <td>{pkg.fechaPrevista}</td>
+                                    <td>{pkg.fechaRetorno}</td>
+                                    <td>{pkg.descripcion}</td>
+                                    <td>
+                                        <button className={styles.editButton}>Editar</button>
+                                        <button className={styles.deleteButton}>Eliminar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className={styles.pagination}>
+                    <button 
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className={`${styles.pageButton} ${styles.arrowButton}`}
+                    >
+                        ←
+                    </button>
+                    
+                    <div className={styles.pageIndicators}>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <div
+                                key={index + 1}
+                                onClick={() => handlePageChange(index + 1)}
+                                className={`${styles.pageIndicator} ${
+                                    currentPage === index + 1 ? styles.activeIndicator : ''
+                                }`}
+                            />
+                        ))}
+                    </div>
+                    
+                    <button 
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className={`${styles.pageButton} ${styles.arrowButton}`}
+                    >
+                        →
+                    </button>
+                </div>
+
+                {isModalOpen && (
+                    <RegisterProductModal 
+                        onClose={() => setIsModalOpen(false)}
+                    />
+                )}
+            </div>
+        </>
     );
 };
 

@@ -130,4 +130,11 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+/* Asegurar que el modal no sea accesible en móviles */
+@media screen and (max-width: 768px) {
+    .modalOverlay {
+        display: none;
+    }
 } 

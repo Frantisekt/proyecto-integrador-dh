@@ -1,0 +1,318 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+
+// Variables
+$borderRadius: 1px;
+$offset: 150%;
+$inputHeight: 63px;
+$transitionEasing: cubic-bezier(.36,1,.62,.98);
+$background1: #2969a19f;
+$background2: #2c497fac;
+$yellow: #219ebc;
+
+// Mixins
+@mixin box-shadow($props...) {
+    -webkit-box-shadow: $props;
+    -moz-box-shadow: $props;
+    box-shadow: $props;
+}
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin transition($transition...) {
+    -moz-transition: $transition;
+    -webkit-transition: $transition;
+    transition: $transition;
+}
+
+// Envuelve todos los estilos en un namespace específico para evitar conflictos
+.app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    background-image: url("/img/bk.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+
+    // Asegúrate de que estos estilos base estén definidos
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+
+    .form-block-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: all .85s ease-in-out;
+        
+        &--is-login {
+            opacity: .92;
+            background-color: $background2;
+        }
+        
+        &--is-signup {
+            opacity: .94;
+            background-color: $background1;
+        }
+    }
+
+    // ... resto de tus estilos existentes ...
+    // Asegúrate de que todos los estilos estén dentro del selector .app
+}
+
+// Estilos globales necesarios
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.form-group__input {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 14px 10px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,.25);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: $borderRadius;
+    color: #fff;
+    font-size: 16px;
+    
+    &::placeholder {
+        color: rgba(255,255,255,.5);
+    }
+    
+    &:focus {
+        outline: none;
+        border-color: #fff;
+        background: rgba(255,255,255,.15);
+    }
+    
+    &:disabled {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+.form-block {
+    position: relative;
+    margin: 100px auto;
+    width: 285px;
+    padding: 25px;
+    background: rgba(255, 255, 255, .13);
+    border-radius: 2 * $borderRadius;
+    color: #fff;
+    @include box-shadow(0px 0px 16px 9px rgba(0,0,0,0.07));
+}
+
+.form-block__input-wrapper {
+    position: relative;
+    height: auto;
+    margin-bottom: 2px;
+    overflow: hidden;
+}
+
+.form-group--login, .form-group--signup {
+    position: relative;
+    width: 100%;
+    transition: all .35s $transitionEasing;
+}
+
+.form-group--signup {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+}
+
+.form-block--is-signup {
+    .form-group--login {
+        transform: translateX(-100%);
+    }
+    .form-group--signup {
+        transform: translateX(-100%);
+    }
+}
+
+.container {
+    text-align: center;
+    margin-bottom: 20px;
+
+    .logo {
+        width: 150px; // Ajusta este valor según el tamaño que necesites
+        height: auto;
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+        color: #fff;
+        margin: 10px 0;
+    }
+}
+
+.form-block__header {
+    margin-bottom: 30px;
+}
+
+// ... resto de tus estilos ... 
+
+// Estilo para el switch
+input[type="checkbox"] {
+    display: none;
+    + label {
+        &:before {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 10px;
+            right: 0;
+            width: 43px;
+            height: 8px;
+            background: rgba(255, 255, 255, .4);
+            cursor: pointer;
+            border-radius: 50px;
+        }
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 1px;
+            right: 18px;
+            width: 25px;
+            height: 25px;
+            background: #219ebc; // Color turquesa
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.15);
+            transition: all .3s ease-in-out;
+        }
+    }
+    &:checked + label:after {
+        right: 0;
+        background: #219ebc; // Color turquesa
+    }
+}
+
+// Estilo para el botón
+.button {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    background: #219ebc; // Color turquesa
+    color: #fff;
+    transition: all .2s ease-in-out;
+    
+    &:hover {
+        background: #1a7d94; // Un tono más oscuro para hover
+        box-shadow: 0px 0px 18px 15px rgba(0,0,0,0.15);
+    }
+}
+
+// Estilo para el texto "Click Aquí"
+.form-block__toggle-block {
+    position: relative;
+    margin-top: 20px;
+    
+    span {
+        font-size: 14px;
+        color: rgba(255,255,255,.8);
+        font-weight: 300;
+    }
+}
+
+// Estilo para los inputs
+.form-group__input {
+    background: rgba(255, 255, 255, .15);
+    border: none;
+    border-radius: 4px;
+    padding: 15px;
+    color: #fff;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all .3s ease;
+    
+    &::placeholder {
+        color: rgba(255, 255, 255, .6);
+    }
+    
+    &:focus {
+        background: rgba(255, 255, 255, .2);
+        outline: none;
+    }
+}
+
+// Estilo para el título
+h1 {
+    color: #fff1cd;
+    font-size: 32px;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+// Ajuste del contenedor del formulario
+.form-block {
+    background: rgba(255, 255, 255, .13);
+    backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+// Estilo para mensajes de error
+.error-message {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+// Ajustar la visibilidad de los grupos de formulario
+.form-group {
+    &.hidden {
+        display: none;
+    }
+}
+
+// Ajustar la altura del contenedor de inputs para el modo signup
+.form-block__input-wrapper {
+    min-height: 150px; // Ajusta este valor según necesites
+    
+    .form-block--is-signup & {
+        min-height: 300px; // Altura para el formulario de registro
+    }
+}
+
+// ... resto de tus estilos existentes ... 

@@ -3,6 +3,7 @@ import Layout from "./Components/layout/Layout";
 import Home from "./Components/pages/home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminPanel from "./Components/pages/admin/AdminPanel";
+import LoginComponent from "./Components/auth/LoginComponent";
 
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
           {/* <Route path="travelPackage/:id" element={<Package />} /> */} 
           <Route path="travelPackage" element={<Package />} />
           <Route path="admin" element={<AdminPanel />} />
+          <Route path="login" element={<LoginComponent />} />
+          <Route path="signup" element={<LoginComponent />} />
         </Route>
       </Routes>
     </BrowserRouter>
