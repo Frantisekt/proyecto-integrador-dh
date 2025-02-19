@@ -5,6 +5,7 @@ import styles from "./Package.module.css";
 import { Link } from 'react-router-dom';
 import Gallery from '../../gallery/Gallery';
 import flecha_atras from '../../../assets/flecha_atras.png'
+import PackageDetails from '../../packageDetails/PackageDetails';
 
 const Package = () => {
     /*const { id } = useParams();
@@ -43,7 +44,7 @@ const Package = () => {
             {
                 categoryId: 1,
                 title: "París",
-                description: "Tour por París",
+                description: "Un tour por París es una experiencia inolvidable que te permitirá descubrir la belleza y el encanto de la capital francesa, una de las ciudades más icónicas y románticas del mundo. Durante el recorrido, explorarás sus monumentos más emblemáticos, sus calles llenas de historia, y sus hermosos parques y jardines. Además de estos puntos icónicos, el tour podría incluir un paseo por el Sena, donde se puede disfrutar de un romántico crucero por el río, y una parada en los Jardines de Luxemburgo, ideales para relajarse y disfrutar de la naturaleza.",
                 price: "1000",
                 currency: "EUR",
                 restrictions: "Ninguna",
@@ -52,7 +53,7 @@ const Package = () => {
                     {
                         mediaCategoryId: 1,
                         mediaTitle: "Torre Eiffel",
-                        mediaDescription: "Vista nocturna",
+                        mediaDescription: "Un tour nocturno en la Torre Eiffel es una experiencia mágica que ofrece una vista impresionante de París iluminado. Al subir a la cima de la torre, podrás disfrutar de una panorámica única de la ciudad bajo el manto estrellado, mientras las luces de la ciudad brillan a lo lejos, creando un ambiente romántico y lleno de encanto.",
                     },
                 ],
             },
@@ -70,6 +71,16 @@ const Package = () => {
                 <h1 className={styles.title}>{title}</h1>
             </div>
             <Gallery images={images} className={styles.gallery}/>
+            <PackageDetails 
+                description={description} 
+                categoryTitle = {categoryTitle}
+                categoryDescription={categoryDescription} 
+                price={price} 
+                currency={currency} 
+                restrictions={restrictions} 
+                mediaTitle={mediaTitle} 
+                mediaDescription={mediaDescription} 
+            />
         </div >
     );
 }

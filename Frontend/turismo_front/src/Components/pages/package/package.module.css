@@ -21,6 +21,8 @@
     font-size: 20px;
     text-decoration: underline;
     color: rgba(33, 158, 188, 1);
+    padding-left: 50px;
+    padding-top: 30px;
 }
 
 .arrowIcon {
@@ -72,6 +74,11 @@
     .titleContainer {
         justify-content: flex-start;
         margin-left: 20px;
+    }
+
+    .subtitle{
+        padding-left: 10px;
+        font-size: 20px;
     }
 }
 
