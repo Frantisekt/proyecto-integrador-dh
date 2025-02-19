@@ -1,0 +1,129 @@
+.adminContainer {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.headerSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.headerSection h1 {
+    color: #003145;
+}
+
+.addButton {
+    background-color: #17a2b8;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+    background-color: #138496;
+}
+
+.tableContainer {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-x: auto;
+}
+
+.packagesTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.packagesTable th,
+.packagesTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ffe69c;
+}
+
+.packagesTable th {
+    background-color: #ffe69c;
+    font-weight: 600;
+}
+
+.editButton,
+.deleteButton {
+    margin: 0 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.editButton {
+    background-color: #007bff;
+    color: white;
+}
+
+.deleteButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.pageIndicators {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.pageIndicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activeIndicator {
+    background-color: #17a2b8;
+    width: 10px;
+    height: 10px;
+}
+
+.arrowButton {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.arrowButton:hover:not(:disabled) {
+    background-color: #138496;
+    transform: scale(1.1);
+}
+
+.arrowButton:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+} 

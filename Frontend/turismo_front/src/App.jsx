@@ -2,6 +2,7 @@ import Package from "./Components/pages/package/Package";
 import Layout from "./Components/layout/Layout";
 import Home from "./Components/pages/home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminPanel from "./Components/pages/admin/AdminPanel";
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home />} />
           {/* <Route path="travelPackage/:id" element={<Package />} /> */} 
           <Route path="travelPackage" element={<Package />} />
+          <Route path="admin" element={<AdminPanel />} />
         </Route>
       </Routes>
     </BrowserRouter>
