@@ -19,8 +19,8 @@ const Header = () => {
 
      
       <div className={styles.authButtons}>
-        <Link to="/login" className={styles.authLink}>Inicia Sesión</Link>
-        <Link to="/signup" className={styles.authLink}>Regístrate</Link>
+        <Link to="/auth" className={styles.authLink}>Inicia Sesión</Link>
+        <Link to="/auth" className={styles.authLink}>Regístrate</Link>
       </div>
 
       
@@ -30,8 +30,8 @@ const Header = () => {
 
       {menuOpen && (
         <div className={styles.mobileMenu}>
-          <Link to="/login" onClick={toggleMenu}>Inicia Sesión</Link>
-          <Link to="/signup" onClick={toggleMenu}>Regístrate</Link>
+          <Link to="/auth"  onClick={toggleMenu}>Inicia Sesión</Link>
+          <Link to="/auth"  onClick={toggleMenu}>Regístrate</Link>
         </div>
       )}
     </header>

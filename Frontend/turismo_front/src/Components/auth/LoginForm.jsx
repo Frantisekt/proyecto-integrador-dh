@@ -1,118 +1,182 @@
 import React, { useState } from "react";
-import Input from "./Input";
+import { useNavigate } from "react-router-dom";
+import { authService } from "../../services/authService";
 
 const LoginForm = ({ mode }) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    fullname: '',
-    email: '',
-    createpassword: '',
-    repeatpassword: ''
+    email: "",
+    password: "",
+    name: "",
+    paternalSurname: "",
+    maternalSurname: "",
+    username: "",
+    dni: "",
+    newsletter: "NO",
+    role: "USER",
+    state: true
   });
 
-  const [error, setError] = useState('');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    
-    if (mode === 'signup') {
-      // Validar que las contraseñas coincidan
-      if (formData.createpassword !== formData.repeatpassword) {
-        setError('Las contraseñas no coinciden');
-        return;
-      }
-      // Validar que el nombre completo no esté vacío
-      if (!formData.fullname.trim()) {
-        setError('Por favor ingrese su nombre completo');
-        return;
-      }
-    }
-
-    setError('');
-    console.log('Form submitted:', formData);
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === "checkbox" ? (checked ? "YES" : "NO") : value
+    }));
   };
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-    // Limpiar error cuando el usuario empiece a escribir
-    setError('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    
+    try {
+      if (mode === "login") {
+        const loginData = {
+          email: formData.email,
+          password: formData.password
+        };
+        const response = await authService.login(loginData);
+        if (response.token) {
+          navigate("/dashboard");
+        }
+      } else {
+        const response = await authService.register(formData);
+        if (response.token) {
+          navigate("/dashboard");
+        }
+      }
+    } catch (err) {
+      setError(mode === "login" ? 
+        "Credenciales inválidas" : 
+        "Error en el registro. Por favor, intente nuevamente."
+      );
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-block__input-wrapper">
-        {/* Formulario de Login */}
-        <div className={`form-group form-group--login ${mode === 'signup' ? 'hidden' : ''}`}>
-          <Input 
-            type="text" 
-            id="username" 
-            label="Nombre de usuario" 
-            disabled={mode === "signup"}
-            onChange={handleChange}
-            value={formData.username}
-          />
-          <Input 
-            type="password" 
-            id="password" 
-            label="Contraseña" 
-            disabled={mode === "signup"}
-            onChange={handleChange}
-            value={formData.password}
-          />
+    <div className="form-block__input-wrapper">
+      <form onSubmit={handleSubmit}>
+        {error && <div className="error-message">{error}</div>}
+        <div className={`form-group form-group--${mode}`}>
+          {mode === "login" ? (
+            // Formulario de Login
+            <>
+              <input 
+                className="form-group__input" 
+                type="email" 
+                placeholder="Email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="password" 
+                placeholder="Contraseña" 
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required 
+              />
+            </>
+          ) : (
+            // Formulario de Registro (según RegisterRequestDTO)
+            <>
+              <input 
+                className="form-group__input" 
+                type="text" 
+                placeholder="Nombre" 
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="text" 
+                placeholder="Apellido Paterno" 
+                name="paternalSurname"
+                value={formData.paternalSurname}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="text" 
+                placeholder="Apellido Materno" 
+                name="maternalSurname"
+                value={formData.maternalSurname}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="text" 
+                placeholder="Nombre de usuario" 
+                name="username"
+                value={formData.username}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="email" 
+                placeholder="Email" 
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="password" 
+                placeholder="Contraseña" 
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required 
+              />
+              <input 
+                className="form-group__input" 
+                type="text" 
+                placeholder="DNI" 
+                name="dni"
+                value={formData.dni}
+                onChange={handleChange}
+                required 
+              />
+              <div className="form-group__checkbox">
+                <input
+                  type="checkbox"
+                  id="newsletter"
+                  name="newsletter"
+                  checked={formData.newsletter === "YES"}
+                  onChange={handleChange}
+                />
+                <label htmlFor="newsletter">Suscribirse al newsletter</label>
+              </div>
+              {/* Campos ocultos */}
+              <input 
+                type="hidden" 
+                name="role" 
+                value={formData.role} 
+              />
+              <input 
+                type="hidden" 
+                name="state" 
+                value={formData.state} 
+              />
+            </>
+          )}
+          <button className="button" type="submit">
+            {mode === "login" ? "INICIAR SESIÓN" : "REGISTRARSE"}
+          </button>
         </div>
-
-        {/* Formulario de Registro */}
-        <div className={`form-group form-group--signup ${mode === 'login' ? 'hidden' : ''}`}>
-          <Input 
-            type="text" 
-            id="fullname" 
-            label="Nombre completo" 
-            disabled={mode === "login"}
-            onChange={handleChange}
-            value={formData.fullname}
-            required={mode === "signup"}
-          />
-          <Input 
-            type="email" 
-            id="email" 
-            label="Email" 
-            disabled={mode === "login"}
-            onChange={handleChange}
-            value={formData.email}
-            required={mode === "signup"}
-          />
-          <Input 
-            type="password" 
-            id="createpassword" 
-            label="Contraseña" 
-            disabled={mode === "login"}
-            onChange={handleChange}
-            value={formData.createpassword}
-            required={mode === "signup"}
-          />
-          <Input 
-            type="password" 
-            id="repeatpassword" 
-            label="Repetir contraseña" 
-            disabled={mode === "login"}
-            onChange={handleChange}
-            value={formData.repeatpassword}
-            required={mode === "signup"}
-          />
-        </div>
-      </div>
-
-      {error && <div className="error-message">{error}</div>}
-      
-      <button className="button button--primary full-width" type="submit">
-        {mode === "login" ? "Iniciar sesión" : "Crear cuenta"}
-      </button>
-    </form>
+      </form>
+    </div>
   );
 };
 
-export default LoginForm; 
+export default LoginForm;

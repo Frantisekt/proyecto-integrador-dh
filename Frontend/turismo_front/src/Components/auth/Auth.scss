@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
 
-// Variables
 $borderRadius: 1px;
 $offset: 150%;
 $inputHeight: 63px;
 $transitionEasing: cubic-bezier(.36,1,.62,.98);
-$background1: #2969a19f;
-$background2: #2c497fac;
-$yellow: #219ebc;
 
-// Mixins
+$background1: rgba(41, 105, 161, 0.62);
+$background2: rgba(44, 73, 127, 0.67);
+$yellow: #219ebc;
+$white: #fff;
+
 @mixin box-shadow($props...) {
     -webkit-box-shadow: $props;
     -moz-box-shadow: $props;
@@ -28,291 +28,182 @@ $yellow: #219ebc;
     transition: $transition;
 }
 
-// Envuelve todos los estilos en un namespace específico para evitar conflictos
-.app {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    background-image: url("/img/bk.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
+html, body, .container, #app {
+    width: 100%;
+    height: 100%;
+}
 
-    // Asegúrate de que estos estilos base estén definidos
+body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     color: #ffffff;
-
-    .form-block-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        transition: all .85s ease-in-out;
-        
-        &--is-login {
-            opacity: .92;
-            background-color: $background2;
-        }
-        
-        &--is-signup {
-            opacity: .94;
-            background-color: $background1;
-        }
-    }
-
-    // ... resto de tus estilos existentes ...
-    // Asegúrate de que todos los estilos estén dentro del selector .app
+    margin: 0 !important;
 }
 
-// Estilos globales necesarios
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
+h1 {
+    color: #fff1cd;
 }
 
-.form-group__input {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    padding: 14px 10px;
-    margin-bottom: 15px;
-    background: rgba(255,255,255,.25);
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: $borderRadius;
-    color: #fff;
-    font-size: 16px;
-    
-    &::placeholder {
-        color: rgba(255,255,255,.5);
-    }
-    
-    &:focus {
-        outline: none;
-        border-color: #fff;
-        background: rgba(255,255,255,.15);
-    }
-    
-    &:disabled {
-        opacity: 0;
-        pointer-events: none;
-    }
+.app {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/img/bk.png");
+    background-size: cover;
+    background-position: center;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .form-block {
-    position: relative;
-    margin: 100px auto;
-    width: 285px;
-    padding: 25px;
-    background: rgba(255, 255, 255, .13);
-    border-radius: 2 * $borderRadius;
+    width: 100%;
+    max-width: 320px;
+    background: rgba(44, 73, 127, 0.67);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+
+    .container {
+        margin-bottom: 20px;
+        
+        .logo {
+            width: 120px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #FFD700;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    }
+
+    &__toggle-block {
+        margin: 15px 0;
+        text-align: center;
+        
+        span {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        a {
+            color: #219ebc;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 5px;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.form-group__input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+
+    &::placeholder {
+        color: rgba(255,255,255,0.6);
+    }
+
+    &:focus {
+        outline: none;
+        background: rgba(255,255,255,0.15);
+    }
+}
+
+.button {
+    width: 100%;
+    padding: 12px;
+    background: #219ebc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    &:hover {
+        background: #1a7d96;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-weight: 300;
+    color: rgba(255, 2505, 255, .5);
+}
+::-moz-placeholder { /* Firefox 19+ */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+:-ms-input-placeholder { /* IE 10+ */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+:-moz-placeholder { /* Firefox 18- */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+
+.tooltip {
+    padding: 7px;
+    @include border-radius(1px);
+    background: rgba(0,0,0,.5);
     color: #fff;
-    @include box-shadow(0px 0px 16px 9px rgba(0,0,0,0.07));
-}
-
-.form-block__input-wrapper {
-    position: relative;
-    height: auto;
-    margin-bottom: 2px;
-    overflow: hidden;
-}
-
-.form-group--login, .form-group--signup {
-    position: relative;
-    width: 100%;
-    transition: all .35s $transitionEasing;
-}
-
-.form-group--signup {
+    font-size: 12px;
     position: absolute;
-    top: 0;
-    left: 100%;
-    width: 100%;
-}
-
-.form-block--is-signup {
-    .form-group--login {
-        transform: translateX(-100%);
-    }
-    .form-group--signup {
-        transform: translateX(-100%);
-    }
+    top: -10px;
+    right: 0
 }
 
 .container {
     text-align: center;
-    margin-bottom: 20px;
+  }
 
-    .logo {
-        width: 150px; // Ajusta este valor según el tamaño que necesites
-        height: auto;
-        margin-bottom: 15px;
-    }
+  .logo {
+    width: 100%; /* o cualquier tamaño */
+  }
 
-    h1 {
-        font-size: 24px;
-        color: #fff;
-        margin: 10px 0;
-    }
-}
-
-.form-block__header {
-    margin-bottom: 30px;
-}
-
-// ... resto de tus estilos ... 
-
-// Estilo para el switch
-input[type="checkbox"] {
-    display: none;
-    + label {
-        &:before {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 10px;
-            right: 0;
-            width: 43px;
-            height: 8px;
-            background: rgba(255, 255, 255, .4);
-            cursor: pointer;
-            border-radius: 50px;
-        }
-        &:after {
-            content: '';
-            display: block;
-            position: absolute;
-            top: 1px;
-            right: 18px;
-            width: 25px;
-            height: 25px;
-            background: #219ebc; // Color turquesa
-            cursor: pointer;
-            border-radius: 50%;
-            box-shadow: 1px 1px 0px 0px rgba(0,0,0,0.15);
-            transition: all .3s ease-in-out;
-        }
-    }
-    &:checked + label:after {
-        right: 0;
-        background: #219ebc; // Color turquesa
-    }
-}
-
-// Estilo para el botón
-.button {
-    display: inline-block;
-    width: 100%;
-    padding: 15px 12px;
-    margin-bottom: 0;
-    font-size: 16px;
-    font-weight: 400;
-    text-transform: uppercase;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    border: none;
-    border-radius: 2px;
-    background: #219ebc; // Color turquesa
-    color: #fff;
-    transition: all .2s ease-in-out;
-    
-    &:hover {
-        background: #1a7d94; // Un tono más oscuro para hover
-        box-shadow: 0px 0px 18px 15px rgba(0,0,0,0.15);
-    }
-}
-
-// Estilo para el texto "Click Aquí"
-.form-block__toggle-block {
-    position: relative;
-    margin-top: 20px;
-    
-    span {
-        font-size: 14px;
-        color: rgba(255,255,255,.8);
-        font-weight: 300;
-    }
-}
-
-// Estilo para los inputs
-.form-group__input {
-    background: rgba(255, 255, 255, .15);
-    border: none;
-    border-radius: 4px;
-    padding: 15px;
-    color: #fff;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 15px;
-    transition: all .3s ease;
-    
-    &::placeholder {
-        color: rgba(255, 255, 255, .6);
-    }
-    
-    &:focus {
-        background: rgba(255, 255, 255, .2);
-        outline: none;
-    }
-}
-
-// Estilo para el título
-h1 {
-    color: #fff1cd;
-    font-size: 32px;
-    margin-bottom: 30px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-// Ajuste del contenedor del formulario
-.form-block {
-    background: rgba(255, 255, 255, .13);
-    backdrop-filter: blur(10px);
-    border-radius: 8px;
-    padding: 30px;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-}
-
-// Estilo para mensajes de error
-.error-message {
-    color: #ff6b6b;
+.form-group__checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  label {
+    color: white;
     font-size: 14px;
-    margin-bottom: 15px;
-    text-align: center;
-    background: rgba(255, 107, 107, 0.1);
-    padding: 10px;
-    border-radius: 4px;
+  }
 }
 
-// Ajustar la visibilidad de los grupos de formulario
-.form-group {
-    &.hidden {
-        display: none;
-    }
+.error-message {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: center;
 }
-
-// Ajustar la altura del contenedor de inputs para el modo signup
-.form-block__input-wrapper {
-    min-height: 150px; // Ajusta este valor según necesites
-    
-    .form-block--is-signup & {
-        min-height: 300px; // Altura para el formulario de registro
-    }
-}
-
-// ... resto de tus estilos existentes ... 
