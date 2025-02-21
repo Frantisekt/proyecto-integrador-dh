@@ -1,6 +1,7 @@
 import Package from "./Components/pages/package/Package";
 import Layout from "./Components/layout/Layout";
 import Home from "./Components/pages/home/Home";
+import Footer from "./Components/Footer/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="travelPackage" element={<Package />} />
         </Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
