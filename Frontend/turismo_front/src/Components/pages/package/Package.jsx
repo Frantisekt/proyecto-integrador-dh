@@ -27,12 +27,12 @@ const Package = () => {
 
     //parte del front harcodeado
     const images = [
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/10/74/8b/bungalows-facing-mont.jpg?w=700&h=-1&s=1",
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/60/b0/bd/bora-bora.jpg?w=1400&h=1400&s=1",
-        "https://images.trvl-media.com/lodging/1000000/560000/558800/558749/37620ff7.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-        "https://images.prismic.io/airmoana/Zhch6zjCgu4jzvRD_DestinationBoraBora-HERO-BoraBora.jpg?auto=format,compress",
-        "https://thalasso.intercontinental.com/wp-content/uploads/2020/11/17-12-ICB-0082_Tim-Mckenna-1024x768.jpg",
-        "https://images.contentstack.io/v3/assets/blt00454ccee8f8fe6b/blt7d6d1039edc8fad1/60ab286f909370737ae497ee/UK_Bora-Bora_French_Polynesia_Header.jpg"
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/d6/c6/f8/caption.jpg?w=1400&h=1400&s=1&cx=989&cy=446&chk=v1_05762c604da56e26277e",
+        "https://static.hosteltur.com/app/public/uploads/img/articles/2023/06/07/L_134919_londres-unsplash.jpg",
+        "https://viajes.nationalgeographic.com.es/medio/2021/11/29/ljubljana-eslovenia_4a5588a6_1254x836.jpg",
+        "https://turismo.encolombia.com/wp-content/uploads/2022/08/Italia-8-Lugares-Fascinantes-que-No-te-Puedes-Perder.webp",
+        "https://concepto.de/wp-content/uploads/2020/03/coliseo-romano-scaled-e1731632602779.jpg",
+        "https://www.deutschland.de/sites/default/files/styles/image_carousel_mobile/public/media/image/Glaspyramide-vor-dem-Louvre-in-Paris.jpg?itok=F_ukFGXv"
     ];
 
     const travelPackage = {

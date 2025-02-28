@@ -1,6 +1,7 @@
 import Package from "./Components/pages/package/Package";
 import Layout from "./Components/layout/Layout";
 import Home from "./Components/pages/home/Home";
+import Footer from "./Components/Footer/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminPanel from "./Components/pages/admin/AdminPanel";
 import LoginComponent from "./Components/auth/LoginComponent.jsx";
@@ -17,6 +18,7 @@ function App() {
           <Route path="auth" element={<LoginComponent />} />
         </Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
