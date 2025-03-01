@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Gallery from '../../gallery/Gallery';
 import flecha_atras from '../../../assets/flecha_atras.png'
 import PackageDetails from '../../packageDetails/PackageDetails';
+import PackageFeatures from '../../packageFeatures/PackageFeatures';
+
 
 const Package = () => {
     /*const { id } = useParams();
@@ -62,6 +64,20 @@ const Package = () => {
     const { title, description, categories } = travelPackage;
     const [{ title: categoryTitle, description: categoryDescription, price, currency, restrictions, mediaCategories }] = categories || [];
     const [{ mediaTitle, mediaDescription, media }] = mediaCategories || [];
+    const characteristics = [
+        "Transporte",
+        "Cata de vinos",
+        "Almuerzo",
+        "Bebidas",
+        "Alojamiento con estrellas (doradas o plateadas)",
+        "N# días",
+        "Tour",
+        "Spa",
+        "Gliding",
+        "Rapel",
+        "Aire acondicionado"
+    ];
+    
 
     return (
         <div className={styles.mainContainer}>
@@ -81,6 +97,7 @@ const Package = () => {
                 mediaTitle={mediaTitle} 
                 mediaDescription={mediaDescription} 
             />
+            <PackageFeatures features={characteristics} />
         </div >
     );
 }
