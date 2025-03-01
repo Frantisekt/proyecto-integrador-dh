@@ -38,13 +38,13 @@ const Package = () => {
     const travelPackage = {
         packageId: 1,
         title: "Tour Europa",
-        description: "Recorrido por las principales ciudades europeas",
+        description: "Recorrido por las principales islas del Caribe",
         state: true,
         categories: [
             {
                 categoryId: 1,
                 title: "París",
-                description: "Un tour por París es una experiencia inolvidable que te permitirá descubrir la belleza y el encanto de la capital francesa, una de las ciudades más icónicas y románticas del mundo. Durante el recorrido, explorarás sus monumentos más emblemáticos, sus calles llenas de historia, y sus hermosos parques y jardines. Además de estos puntos icónicos, el tour podría incluir un paseo por el Sena, donde se puede disfrutar de un romántico crucero por el río, y una parada en los Jardines de Luxemburgo, ideales para relajarse y disfrutar de la naturaleza.",
+                description: "Imagínate un tour nocturno que te lleve a descubrir la magia de Los Roques, Tortuga y Margarita. Durante la noche, estas islas se transforman en un escenario de ensueño, donde el reflejo de la luna se funde con las aguas cristalinas del mar Caribe. ",
                 price: "1000",
                 currency: "EUR",
                 restrictions: "Ninguna",
@@ -52,8 +52,8 @@ const Package = () => {
                 mediaCategories: [
                     {
                         mediaCategoryId: 1,
-                        mediaTitle: "Torre Eiffel",
-                        mediaDescription: "Un tour nocturno en la Torre Eiffel es una experiencia mágica que ofrece una vista impresionante de París iluminado. Al subir a la cima de la torre, podrás disfrutar de una panorámica única de la ciudad bajo el manto estrellado, mientras las luces de la ciudad brillan a lo lejos, creando un ambiente romántico y lleno de encanto.",
+                        mediaTitle: "Los Roques, Tortuga y Margarita",
+                        mediaDescription: "En Los Roques, la tranquilidad se acentúa, permitiéndote contemplar un cielo estrellado sin igual, en un ambiente íntimo y sereno. En Tortuga, la brisa marina y el sonido de las olas crean un telón de fondo perfecto para disfrutar de una velada relajada, mientras pequeñas fogatas iluminan la costa y reavivan historias de antaño. Finalmente, en Margarita, la vida nocturna se mezcla con la naturaleza, ofreciendo vistas panorámicas donde el resplandor de la ciudad se fusiona con la inmensidad del océano. Este recorrido te invita a sumergirte en una experiencia única, donde cada isla revela su propio encanto bajo el manto estrellado, haciendo de la noche un espectáculo inolvidable.",
                     },
                 ],
             },
