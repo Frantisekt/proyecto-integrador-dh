@@ -132,7 +132,7 @@ export function Recommendations() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(window.innerWidth < 768 ? 1 : 4);
 
-  // Función para mezclar aleatoriamente los destinos
+
   const shuffleArray = (array) => {
     return array.sort(() => Math.random() - 0.5);
   };
