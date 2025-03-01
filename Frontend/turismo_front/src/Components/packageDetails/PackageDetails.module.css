@@ -4,7 +4,7 @@
     background-color: #FFF1CD;
 }
 
-.packageDetailsContainer p, h2, h3, h4, h5, h6{
+.packageDescription, .categoryTitle, .categoryDescription, .packagePrice, .packageRestrictions, .mediaTitle, .mediaDescription{
     color: black;
 }
 
