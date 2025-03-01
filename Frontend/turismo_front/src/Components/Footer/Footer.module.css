@@ -1,6 +1,8 @@
 .footerWrapper {
     position: relative;
     width: 100%;
+    margin-top: auto;
+    background-color: #002E47;
     bottom: 0;
     left: 0;
     right: 0;
@@ -42,6 +44,13 @@
   
 /* Responsividad */
 @media (max-width: 768px) {
+    .footerWrapper {
+        margin-top: 0;
+        position: relative;
+        bottom: 0;
+        background-color: #002E47;
+    }
+  
     .logo {
         width: 100px;
         height: 100px;
@@ -51,6 +60,11 @@
     .footer {
         padding: 15px;
         min-height: 70px;
+        background-color: #002E47;
+    }
+  
+    body {
+        background-color: #002E47;
     }
 }
   
