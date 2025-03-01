@@ -1,8 +1,12 @@
 .mainContainer {
     margin-top: 80px;
-    height: 92vh;
+    min-height: calc(100vh - 80px);
     background-color: #FFF1CD;
     padding-top: 20px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .titleContainer{
