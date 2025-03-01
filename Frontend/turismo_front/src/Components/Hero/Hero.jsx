@@ -8,8 +8,8 @@ const Hero = () => {
       <div className={styles.content}>
         <div className={styles.heroTextContainer}>
           <h2 className={styles.heroText}>
-            If you're in search of exciting adventures, unforgettable experiences, 
-            and breathtaking places to explore, you've come to the right place!
+          Si estás en busca de aventuras emocionantes, experiencias inolvidables 
+          y lugares impresionantes para explorar, ¡has llegado al lugar indicado!
           </h2>
         </div>
 

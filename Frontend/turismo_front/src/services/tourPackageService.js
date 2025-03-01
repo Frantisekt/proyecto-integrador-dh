@@ -100,5 +100,18 @@ export const tourPackageService = {
             console.error('Error al eliminar paquete:', error);
             throw error;
         }
+    },
+
+    deletePackage: async (id) => {
+        try {
+            const response = await axios.delete(`${BASE_URL}/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error al eliminar paquete:', error);
+            if (error.code === 'ERR_NETWORK') {
+                throw new Error('No se pudo conectar con el servidor');
+            }
+            throw error;
+        }
     }
 }; 

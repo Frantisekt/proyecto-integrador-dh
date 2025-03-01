@@ -32,10 +32,16 @@ const AdminPanel = () => {
     const handleDeletePackage = async (id) => {
         if (window.confirm('¿Estás seguro de que deseas eliminar este paquete?')) {
             try {
+                setLoading(true);
                 await tourPackageService.deletePackage(id);
-                await fetchPackages(); // Recargar la lista
-            } catch (err) {
-                setError('Error al eliminar el paquete');
+                // Recargar la lista después de eliminar
+                await fetchPackages();
+                // Mostrar mensaje de éxito
+                alert('Paquete eliminado exitosamente');
+            } catch (error) {
+                setError('Error al eliminar el paquete: ' + error.message);
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -108,8 +114,9 @@ const AdminPanel = () => {
                                             <button 
                                                 className={styles.deleteButton}
                                                 onClick={() => handleDeletePackage(pkg.packageId)}
+                                                disabled={loading}
                                             >
-                                                Eliminar
+                                                {loading ? 'Eliminando...' : 'Eliminar'}
                                             </button>
                                         </td>
                                     </tr>
