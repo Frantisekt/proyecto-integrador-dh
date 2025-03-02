@@ -9,6 +9,7 @@ import AdminPage from "./Components/pages/adminPanel/AdminPage.jsx";
 import UserManagement from "./Components/pages/userManagement/UserManagement.jsx";
 import CategoryManagement from "./Components/pages/categoryManagement/CategoryManagement.jsx";
 import UserRegistry from "./Components/pages/userRegistry/UserRegistry.jsx";
+import UserList from "./Components/pages/userList/UserList.jsx";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function MainContent() {
   const location = useLocation();
   
   // Rutas en las que NO queremos mostrar el footer
-  const noFooterRoutes = ["/admin/packages", "/admin", "/admin/users", "/admin/categories", "/admin/users/register"];
+  const noFooterRoutes = ["/admin/packages", "/admin", "/admin/users", "/admin/categories", "/admin/users/register", "/admin/users/list"];
 
   return (
     <>
@@ -36,6 +37,7 @@ function MainContent() {
           <Route path="admin/users" element={<UserManagement />} />
           <Route path="admin/categories" element={<CategoryManagement />} />
           <Route path="admin/users/register" element={<UserRegistry />} />
+          <Route path="admin/users/list" element={<UserList />} />
           <Route path="auth" element={<LoginComponent />} />
         </Route>
       </Routes>
