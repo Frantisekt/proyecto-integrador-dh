@@ -5,6 +5,7 @@ import Footer from "./Components/Footer/Footer";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminPanel from "./Components/pages/admin/AdminPanel";
 import LoginComponent from "./Components/auth/LoginComponent.jsx";
+import AdminPage from "./Components/pages/adminPanel/AdminPage.jsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="travelPackage" element={<Package />} />
           <Route path="admin" element={<AdminPanel />} />
+          <Route path="admin2" element={<AdminPage />} />
           <Route path="auth" element={<LoginComponent />} />
         </Route>
       </Routes>
