@@ -10,9 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 @Tag(name = "User Controller", description = "Endpoints para gestión de usuarios")
 public class UserController {
     
@@ -21,8 +24,28 @@ public class UserController {
     @Operation(summary = "Crear nuevo usuario")
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.createUser(userDTO));
+        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userDTO) {
+        return ResponseEntity.ok(userService.updateUser(id, userDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     // Otros endpoints...

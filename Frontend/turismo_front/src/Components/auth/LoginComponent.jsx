@@ -10,6 +10,8 @@ const LoginComponent = () => {
     setMode(mode === "login" ? "signup" : "login");
   };
 
+  
+
   return (
     <div className="app">
       <div className="form-block">
