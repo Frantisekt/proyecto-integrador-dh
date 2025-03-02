@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registerUser } from "../../services/registerUser";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2";  // ✅ Importar SweetAlert
+import Swal from "sweetalert2"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./UserRegistry.module.css";
 import { FaUserCog } from "react-icons/fa";
