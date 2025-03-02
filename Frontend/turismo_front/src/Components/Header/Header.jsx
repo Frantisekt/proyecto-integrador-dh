@@ -61,7 +61,7 @@ const Header = () => {
       {isLoggedIn ? (
         <div className={styles.userSection}>
           <div className={styles.welcomeMessage}>
-            Bienvenido/a, {user?.name}
+            Bienvenido/a, {user?.username}
             <button
               className={styles.chevronButton}
               onClick={toggleUserMenu}

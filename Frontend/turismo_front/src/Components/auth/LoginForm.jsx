@@ -38,12 +38,12 @@ const LoginForm = ({ mode }) => {
         };
         const response = await authService.login(loginData);
         if (response.token) {
-          navigate("/dashboard");
+          navigate("/");
         }
       } else {
         const response = await authService.register(formData);
         if (response.token) {
-          navigate("/dashboard");
+          navigate("/");
         }
       }
     } catch (err) {
@@ -53,6 +53,8 @@ const LoginForm = ({ mode }) => {
       );
     }
   };
+
+  
 
   return (
     <div className="form-block__input-wrapper">
