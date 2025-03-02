@@ -15,8 +15,8 @@ function App() {
           <Route path="*" element={<h1>Not Found 404</h1>} />
           <Route index element={<Home />} />
           <Route path="travelPackage" element={<Package />} />
-          <Route path="admin" element={<AdminPanel />} />
-          <Route path="admin2" element={<AdminPage />} />
+          <Route path="admin/packages" element={<AdminPanel />} />
+          <Route path="admin" element={<AdminPage />} />
           <Route path="auth" element={<LoginComponent />} />
         </Route>
       </Routes>
