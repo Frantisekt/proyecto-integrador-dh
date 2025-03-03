@@ -1,56 +1,32 @@
-"use client"
-
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import styles from "./Header.module.css"
-import logo from "../../assets/Logo_Final.png"
-import { FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa"
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext"; // Importa el contexto
+import styles from "./Header.module.css";
+import logo from "../../assets/Logo_Final.png";
+import { FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
-  // Simulate logged in state - replace with actual auth logic later
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
-  const [user, setUser] = useState(null)
-
-  // Simulate login/logout for testing
-  const toggleLoginState = () => {
-    if (isLoggedIn) {
-      setIsLoggedIn(false)
-      setUser(null)
-    } else {
-      setIsLoggedIn(true)
-      setUser({
-        name: "Usuario",
-        avatar: null, // Will use initial if no avatar
-      })
-    }
-    // Close menus when toggling login state
-    setMenuOpen(false)
-    setUserMenuOpen(false)
-  }
+  const { user, isLoggedIn, logout } = useAuth(); // Obtiene datos del contexto
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-    // Close user menu if open
-    if (userMenuOpen) setUserMenuOpen(false)
-  }
+    setMenuOpen(!menuOpen);
+    if (userMenuOpen) setUserMenuOpen(false);
+  };
 
   const toggleUserMenu = () => {
-    setUserMenuOpen(!userMenuOpen)
-  }
+    setUserMenuOpen(!userMenuOpen);
+  };
 
   const handleLogout = () => {
-    setIsLoggedIn(false)
-    setUser(null)
-    setUserMenuOpen(false)
-  }
+    logout();
+    setUserMenuOpen(false);
+  };
 
-  
   const getUserInitial = () => {
-    if (!user || !user.name) return "U"
-    return user.name.charAt(0).toUpperCase()
-  }
+    return user?.username ? user.username.charAt(0).toUpperCase() : "U";
+  };
 
   return (
     <header className={styles.header}>
@@ -61,22 +37,14 @@ const Header = () => {
       {isLoggedIn ? (
         <div className={styles.userSection}>
           <div className={styles.welcomeMessage}>
-            Bienvenido/a, {user?.username}
-            <button
-              className={styles.chevronButton}
-              onClick={toggleUserMenu}
-              aria-label={userMenuOpen ? "Cerrar menú de usuario" : "Abrir menú de usuario"}
-            >
+            Bienvenido/a, {user?.username} {/* Ahora usa el contexto */}
+            <button className={styles.chevronButton} onClick={toggleUserMenu}>
               {userMenuOpen ? <FaChevronUp /> : <FaChevronDown />}
             </button>
           </div>
 
           <div className={styles.avatarContainer} onClick={toggleUserMenu}>
-            {user?.avatar ? (
-              <img src={user.avatar || "/placeholder.svg"} alt="Avatar de usuario" className={styles.avatar} />
-            ) : (
-              <div className={styles.initialAvatar}>{getUserInitial()}</div>
-            )}
+            <div className={styles.initialAvatar}>{getUserInitial()}</div>
           </div>
 
           {userMenuOpen && (
@@ -110,49 +78,8 @@ const Header = () => {
       <div className={styles.menuIcon} onClick={toggleMenu}>
         {menuOpen ? <FaTimes /> : <FaBars />}
       </div>
-
-      {menuOpen && (
-        <div className={styles.mobileMenu}>
-          {isLoggedIn ? (
-            <>
-              <div className={styles.mobileUserInfo}>
-                <div className={styles.mobileInitialAvatar}>{getUserInitial()}</div>
-                <span>{user?.name}</span>
-              </div>
-              <Link to="/profile" onClick={toggleMenu}>
-                Mi Perfil
-              </Link>
-              <Link to="/settings" onClick={toggleMenu}>
-                Configuración
-              </Link>
-              <button className={styles.logoutButton} onClick={handleLogout}>
-                Cerrar Sesión
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/auth" onClick={toggleMenu}>
-                Inicia Sesión
-              </Link>
-              <Link to="/auth" onClick={toggleMenu}>
-                Regístrate
-              </Link>
-            </>
-          )}
-          {/* Toggle button for demo purposes - remove in production */}
-          <button className={styles.demoToggle} onClick={toggleLoginState}>
-            {isLoggedIn ? "Simular Logout" : "Simular Login"}
-          </button>
-        </div>
-      )}
-
-      {/* Toggle button for demo purposes - remove in production */}
-      <button className={styles.demoToggleDesktop} onClick={toggleLoginState}>
-        {isLoggedIn ? "Simular Logout" : "Simular Login"}
-      </button>
     </header>
-  )
-}
+  );
+};
 
 export default Header;
-
