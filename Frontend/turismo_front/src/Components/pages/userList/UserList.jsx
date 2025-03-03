@@ -38,7 +38,6 @@ const UserList = () => {
                 </ul>
             </div>
 
-            {/* Contenido principal */}
             <div className={styles.content}>
                 <div className="mb-3">
                     <h2 className="text-dark fw-bold text-center">Lista de Usuarios</h2>
@@ -58,7 +57,7 @@ const UserList = () => {
                         </thead>
                         <tbody>
                             {users.length > 0 ? (
-                                users.map((user, index) => (
+                                users.map((user) => (
                                     <tr key={user.userId}>
                                         <td>{`${user.name} ${user.paternalSurname} ${user.maternalSurname}`}</td>
                                         <td>{user.username}</td>
