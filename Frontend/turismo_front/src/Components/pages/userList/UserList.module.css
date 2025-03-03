@@ -57,6 +57,7 @@
     padding: 20px;
     overflow-y: auto; 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -69,6 +70,41 @@
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
+
+.tableContainer {
+    width: 70vw;
+    max-height: 60vh; 
+    overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.tableContainer::-webkit-scrollbar {
+    display: none; 
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    background-color: #343a40;
+    color: white;
+    z-index: 10;
+}
+
+
+@media (max-width: 1369px) {
+    .container {
+        padding-top: 200px;
+    }
+    
+    .tableContainer {
+        max-height: 50vh; 
+    }
+}
+
+
+
+
 
 
 
