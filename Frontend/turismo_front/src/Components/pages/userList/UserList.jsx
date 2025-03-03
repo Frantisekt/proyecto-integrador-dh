@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // <-- Importamos useNavigate
 import styles from "./UserList.module.css";
 import { FaUserCog, FaEdit, FaTrash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getUsers } from "../../services/getUsers";
-import { deleteUser } from "../../services/deleteUser"; 
-import Swal from "sweetalert2"; 
+import { deleteUser } from "../../services/deleteUser";
+import Swal from "sweetalert2";
 
 const adminOptions = [
     { name: "Registrar usuario", path: "/admin/users/register", icon: FaUserCog },
@@ -14,7 +14,8 @@ const adminOptions = [
 
 const UserList = () => {
     const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true); 
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate(); // <-- Hook para redirigir
 
     useEffect(() => {
         fetchUsers();
@@ -48,11 +49,15 @@ const UserList = () => {
             const result = await deleteUser(userId);
             if (result.success) {
                 Swal.fire("Eliminado", "El usuario ha sido eliminado.", "success");
-                setUsers(users.filter(user => user.userId !== userId)); 
+                setUsers(users.filter(user => user.userId !== userId));
             } else {
                 Swal.fire("Error", "No se pudo eliminar el usuario.", "error");
             }
         }
+    };
+
+    const handleEditUser = (userId) => {
+        navigate(`/admin/users/edit/${userId}`); 
     };
 
     return (
@@ -113,7 +118,7 @@ const UserList = () => {
                                                 </span>
                                             </td>
                                             <td>
-                                                <button className="btn btn-primary btn-sm me-2">
+                                                <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditUser(user.userId)}>
                                                     <FaEdit /> Editar
                                                 </button>
                                                 <button className="btn btn-danger btn-sm" onClick={() => handleDeleteUser(user.userId)}>
