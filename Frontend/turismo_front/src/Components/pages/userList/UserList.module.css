@@ -73,7 +73,14 @@
 
 .tableContainer {
     width: 70vw;
-    overflow: auto;
+    max-height: 60vh; 
+    overflow-y: auto;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+}
+
+.tableContainer::-webkit-scrollbar {
+    display: none; 
 }
 
 .table thead {
@@ -83,6 +90,7 @@
     color: white;
     z-index: 10;
 }
+
 
 @media (max-width: 1369px) {
     .container {
