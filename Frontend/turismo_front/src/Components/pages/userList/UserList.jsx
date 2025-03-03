@@ -4,6 +4,8 @@ import styles from "./UserList.module.css";
 import { FaUserCog, FaEdit, FaTrash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { getUsers } from "../../services/getUsers";
+import { deleteUser } from "../../services/deleteUser"; 
+import Swal from "sweetalert2"; 
 
 const adminOptions = [
     { name: "Registrar usuario", path: "/admin/users/register", icon: FaUserCog },
@@ -15,19 +17,43 @@ const UserList = () => {
     const [loading, setLoading] = useState(true); 
 
     useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const data = await getUsers();
-                setUsers(data);
-            } catch (error) {
-                console.error("Error al obtener usuarios:", error);
-            } finally {
-                setLoading(false); 
-            }
-        };
-
         fetchUsers();
     }, []);
+
+    const fetchUsers = async () => {
+        setLoading(true);
+        try {
+            const data = await getUsers();
+            setUsers(data);
+        } catch (error) {
+            console.error("Error al obtener usuarios:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDeleteUser = async (userId) => {
+        const confirmDelete = await Swal.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esta acción.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        });
+
+        if (confirmDelete.isConfirmed) {
+            const result = await deleteUser(userId);
+            if (result.success) {
+                Swal.fire("Eliminado", "El usuario ha sido eliminado.", "success");
+                setUsers(users.filter(user => user.userId !== userId)); 
+            } else {
+                Swal.fire("Error", "No se pudo eliminar el usuario.", "error");
+            }
+        }
+    };
 
     return (
         <div className={styles.adminContainer}>
@@ -55,7 +81,6 @@ const UserList = () => {
 
                 <div className={styles.tableContainer}>
                     {loading ? (
-                        // 🔄 Spinner de carga
                         <div className="text-center">
                             <div className="spinner-border text-primary" role="status">
                                 <span className="visually-hidden">Cargando...</span>
@@ -91,7 +116,7 @@ const UserList = () => {
                                                 <button className="btn btn-primary btn-sm me-2">
                                                     <FaEdit /> Editar
                                                 </button>
-                                                <button className="btn btn-danger btn-sm">
+                                                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteUser(user.userId)}>
                                                     <FaTrash /> Eliminar
                                                 </button>
                                             </td>
