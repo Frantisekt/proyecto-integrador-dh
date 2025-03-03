@@ -7,7 +7,8 @@ $transitionEasing: cubic-bezier(.36,1,.62,.98);
 
 $background1: rgba(41, 105, 161, 0.62);
 $background2: rgba(44, 73, 127, 0.67);
-$yellow: #219ebc;
+$adminBlue: #023047;
+$adminAccent: #219ebc;
 $white: #fff;
 
 @mixin box-shadow($props...) {
@@ -55,15 +56,15 @@ h1 {
     font-family: 'Open Sans', sans-serif;
 }
 
-.form-block {
+.admin-form-block {
     width: 100%;
     max-width: 320px;
-    background: rgba(44, 73, 127, 0.67);
+    background: rgba(2, 48, 71, 0.85);
     backdrop-filter: blur(10px);
     border-radius: 10px;
     padding: 30px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
 
     .container {
         margin-bottom: 20px;
@@ -106,13 +107,13 @@ h1 {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
-    background: rgba(241, 239, 239, 0.808);
-    border: none;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 4px;
     color: white;
     font-size: 14px;
     box-sizing: border-box;
-    
+
     &::placeholder {
         color: rgba(255,255,255,0.6);
     }
@@ -120,25 +121,31 @@ h1 {
     &:focus {
         outline: none;
         background: rgba(255,255,255,0.15);
+        border-color: $adminAccent;
     }
 }
-
 
 .button {
     width: 100%;
     padding: 12px;
-    background: #219ebc;
+    background: $adminAccent;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
     text-transform: uppercase;
     font-weight: 500;
+    margin-top: 10px;
 
     &:hover {
-        background: #1a7d96;
+        background: darken($adminAccent, 10%);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(1px);
     }
 }
 
@@ -200,11 +207,45 @@ h1 {
 }
 
 .error-message {
+  background-color: rgba(255, 68, 68, 0.2);
   color: #ff4444;
-  background: rgba(255, 68, 68, 0.1);
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 15px;
   font-size: 14px;
   text-align: center;
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .admin-form-block {
+    margin: 20px;
+    max-width: 90%;
+    
+    .container {
+      h1 {
+        font-size: 20px;
+      }
+      
+      .logo {
+        width: 100px;
+      }
+    }
+  }
+}
+
+// Animaciones
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-form-block {
+  animation: fadeIn 0.5s ease-out;
 }

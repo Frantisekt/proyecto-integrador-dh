@@ -5,11 +5,14 @@ import Home from "./Components/pages/home/Home";
 import Footer from "./Components/Footer/Footer";
 import AdminPanel from "./Components/pages/admin/AdminPanel";
 import LoginComponent from "./Components/auth/LoginComponent.jsx";
+
+import AdminLoginComponent from "./Components/auth/AdminLoginComponent.jsx";
 import AdminPage from "./Components/pages/adminPanel/AdminPage.jsx";
 import UserManagement from "./Components/pages/userManagement/UserManagement.jsx";
 import CategoryManagement from "./Components/pages/categoryManagement/CategoryManagement.jsx";
 import UserRegistry from "./Components/pages/userRegistry/UserRegistry.jsx";
 import UserList from "./Components/pages/userList/UserList.jsx";
+
 
 function App() {
   return (
@@ -39,6 +42,7 @@ function MainContent() {
           <Route path="admin/users/register" element={<UserRegistry />} />
           <Route path="admin/users/list" element={<UserList />} />
           <Route path="auth" element={<LoginComponent />} />
+          <Route path="administrador" element={<AdminLoginComponent />} />
         </Route>
       </Routes>
       {!noFooterRoutes.includes(location.pathname) && <Footer />}

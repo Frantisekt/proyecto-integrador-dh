@@ -76,5 +76,29 @@ export const authService = {
             console.error('Error al obtener usuario:', error);
             return null;
         }
+    },
+
+    adminLogin: async (credentials) => {
+        try {
+            const response = await api.post('/auth/admin/login', {
+                email: credentials.email,
+                password: credentials.password
+            });
+            
+            if (response.data) {
+                localStorage.setItem('user', JSON.stringify(response.data));
+                
+                if (response.data.token) {
+                    localStorage.setItem('token', response.data.token);
+                    api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+                }
+            }
+            return response.data;
+        } catch (error) {
+            console.error('Error en login de admin:', error);
+            throw error.response?.data || { 
+                message: 'Error al iniciar sesión como administrador' 
+            };
+        }
     }
 }; 
