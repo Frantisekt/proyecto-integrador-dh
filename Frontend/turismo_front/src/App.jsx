@@ -12,6 +12,7 @@ import CategoryManagement from "./Components/pages/categoryManagement/CategoryMa
 import UserRegistry from "./Components/pages/userRegistry/UserRegistry.jsx";
 import UserList from "./Components/pages/userList/UserList.jsx";
 import EditUser from "./Components/pages/editUser/EditUser.jsx"; 
+import CategoryRegistry from "./Components/pages/CategoryRegistry/CategoryRegistry.jsx";
 
 function App() {
   return (
@@ -32,7 +33,9 @@ function MainContent() {
     "/admin/categories",
     "/admin/users/register",
     "/admin/users/list",
-    "/admin/users/edit/:id" 
+    "/admin/users/edit/:id",
+    "/admin/categories/add",
+    "/admin/categories/list"
   ];
 
   return (
@@ -49,6 +52,7 @@ function MainContent() {
           <Route path="admin/users/register" element={<UserRegistry />} />
           <Route path="admin/users/list" element={<UserList />} />
           <Route path="admin/users/edit/:id" element={<EditUser />} /> 
+          <Route path="admin/categories/add" element={<CategoryRegistry />} />
           <Route path="auth" element={<LoginComponent />} />
           <Route path="administrador" element={<AdminLoginComponent />} />
         </Route>
