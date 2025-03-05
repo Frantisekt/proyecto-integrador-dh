@@ -69,10 +69,8 @@ const CategoryRegistry = () => {
             let updatedTourPackageIds = [...prevData.tourPackageIds];
 
             if (isChecked) {
-                // Agregar paquete si está seleccionado
                 updatedTourPackageIds.push(packageId);
             } else {
-                // Eliminar paquete si se desmarca
                 updatedTourPackageIds = updatedTourPackageIds.filter((id) => id !== packageId);
             }
 
@@ -93,7 +91,6 @@ const CategoryRegistry = () => {
 
             await addCategory(formattedData);
 
-            // ✅ Mostrar mensaje con SweetAlert
             Swal.fire({
                 title: "¡Categoría Registrada!",
                 text: "La categoría ha sido agregada correctamente.",
@@ -149,15 +146,14 @@ const CategoryRegistry = () => {
                     <h2 className={styles.formTitle}>Registro de Categoría</h2>
                     <form onSubmit={handleSubmit} className={styles.formContainer}>
                         {/* Campos del formulario */}
-                        {[ 
+                        {[
                             { label: "Título", name: "title", type: "text" },
                             { label: "Descripción", name: "description", type: "text" },
                             { label: "Precio", name: "price", type: "number" },
-                            { label: "Moneda", name: "currency", type: "text", disabled: true },
                             { label: "Restricciones", name: "restrictions", type: "text" },
                             { label: "Descuento (%)", name: "discount", type: "number" },
                             { label: "IDs de Categorías de Medios (separados por comas)", name: "mediaCategoryIds", type: "text" }
-                        ].map(({ label, name, type, disabled }) => (
+                        ].map(({ label, name, type }) => (
                             <div key={name} className="mb-3 text-start">
                                 <label className={`form-label ${styles.label}`}>{label}</label>
                                 <input
@@ -167,15 +163,32 @@ const CategoryRegistry = () => {
                                     value={formData[name]}
                                     onChange={handleChange}
                                     required
-                                    disabled={disabled}
                                 />
                             </div>
                         ))}
 
+                        {/* Select para la moneda */}
+                        <div className="mb-3 text-start">
+                            <label className={`form-label ${styles.label}`}>Moneda</label>
+                            <select
+                                className="form-select"
+                                name="currency"
+                                value={formData.currency}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="USD">Dólar estadounidense (USD)</option>
+                                <option value="EUR">Euro (EUR)</option>
+                                <option value="COP">Peso colombiano (COP)</option>
+                                <option value="MXN">Peso mexicano (MXN)</option>
+                                <option value="ARS">Peso argentino (ARS)</option>
+                            </select>
+                        </div>
+
                         {/* Checkboxes para los paquetes turísticos */}
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}>Seleccionar Paquetes Turísticos</label>
-                            <div className={styles.checkboxContainer}>
+                            <div className={`${styles.checkboxContainer} ${styles.scrollableContainer}`}>
                                 {packages.map((pkg) => (
                                     <div key={pkg.packageId} className="form-check">
                                         <input
@@ -196,6 +209,7 @@ const CategoryRegistry = () => {
                                 ))}
                             </div>
                         </div>
+
 
                         {/* Select para el estado */}
                         <div className="mb-3 text-start">
