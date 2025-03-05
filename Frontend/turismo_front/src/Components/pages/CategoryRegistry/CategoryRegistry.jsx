@@ -54,10 +54,10 @@ const CategoryRegistry = () => {
     const handlePackageSelection = (e) => {
         const packageId = parseInt(e.target.value, 10);
         const isChecked = e.target.checked;
-    
+
         setFormData((prevData) => {
             let updatedTourPackageIds = [...prevData.tourPackageIds];
-    
+
             if (isChecked) {
                 if (!updatedTourPackageIds.includes(packageId)) {
                     updatedTourPackageIds.push(packageId);
@@ -65,11 +65,10 @@ const CategoryRegistry = () => {
             } else {
                 updatedTourPackageIds = updatedTourPackageIds.filter((id) => id !== packageId);
             }
-    
+
             return { ...prevData, tourPackageIds: updatedTourPackageIds };
         });
     };
-    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -80,21 +79,21 @@ const CategoryRegistry = () => {
                 price: parseFloat(formData.price),
                 currency: formData.currency,
                 restrictions: formData.restrictions,
-                state: formData.state === "true" || formData.state === true, // Asegurar que es booleano
+                state: formData.state === "true" || formData.state === true,
                 discount: parseFloat(formData.discount),
-                tourPackageIds: formData.tourPackageIds.map(Number), // Asegurar que son enteros
-                mediaCategoryIds: [] // Se envía como array vacío
+                tourPackageIds: formData.tourPackageIds.map(Number),
+                mediaCategoryIds: []
             };
-    
+
             await addCategory(formattedData);
-    
+
             Swal.fire({
                 title: "¡Categoría Registrada!",
                 text: "La categoría ha sido agregada correctamente.",
                 icon: "success",
                 confirmButtonText: "Aceptar"
             });
-    
+
             // Reiniciar formulario
             setFormData({
                 title: "",
@@ -116,7 +115,6 @@ const CategoryRegistry = () => {
             });
         }
     };
-    
 
     return (
         <div className={styles.adminContainer}>
@@ -140,9 +138,15 @@ const CategoryRegistry = () => {
                 <div className={styles.cardsContainer}>
                     <h2 className={styles.formTitle}>Registro de Categoría</h2>
                     <form onSubmit={handleSubmit} className={styles.formContainer}>
-                        {["title", "description", "price", "restrictions", "discount"].map((name) => (
+                        {[
+                            { name: "title", label: "Título" },
+                            { name: "description", label: "Descripción" },
+                            { name: "price", label: "Precio" },
+                            { name: "restrictions", label: "Restricciones" },
+                            { name: "discount", label: "Descuento" }
+                        ].map(({ name, label }) => (
                             <div key={name} className="mb-3 text-start">
-                                <label className={`form-label ${styles.label}`}>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
+                                <label className={`form-label ${styles.label}`}>{label}</label>
                                 <input
                                     type={name === "price" || name === "discount" ? "number" : "text"}
                                     className="form-control"
