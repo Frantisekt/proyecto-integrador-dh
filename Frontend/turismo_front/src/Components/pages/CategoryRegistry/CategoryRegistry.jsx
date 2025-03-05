@@ -7,21 +7,16 @@ import { FaPlusCircle, FaList } from "react-icons/fa";
 import addCategory from "../../services/AddCategory";
 import getAllPackages from "../../services/getAllPackages";
 
-// Opciones del Sidebar
 const adminOptions = [
     {
         name: "Agregar nueva categoría",
         path: "/admin/categories/add",
-        icon: FaPlusCircle,
-        title: "Nueva Categoría",
-        description: "Agrega una nueva categoría de paquetes turísticos."
+        icon: FaPlusCircle
     },
     {
         name: "Ver categorías registradas",
         path: "/admin/categories/list",
-        icon: FaList,
-        title: "Categorías Registradas",
-        description: "Consulta la lista de categorías existentes."
+        icon: FaList
     }
 ];
 
@@ -34,13 +29,11 @@ const CategoryRegistry = () => {
         restrictions: "",
         state: true,
         discount: "",
-        tourPackageIds: [],
-        mediaCategoryIds: ""
+        tourPackageIds: []
     });
 
     const [packages, setPackages] = useState([]);
 
-    // Cargar los paquetes turísticos al montar el componente
     useEffect(() => {
         const fetchPackages = async () => {
             try {
@@ -50,55 +43,59 @@ const CategoryRegistry = () => {
                 console.error("Error al obtener los paquetes turísticos:", error);
             }
         };
-
         fetchPackages();
     }, []);
 
-    // Manejar cambios en los inputs del formulario
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    // Manejar selección de paquetes turísticos con checkboxes
     const handlePackageSelection = (e) => {
         const packageId = parseInt(e.target.value, 10);
         const isChecked = e.target.checked;
-
+    
         setFormData((prevData) => {
             let updatedTourPackageIds = [...prevData.tourPackageIds];
-
+    
             if (isChecked) {
-                updatedTourPackageIds.push(packageId);
+                if (!updatedTourPackageIds.includes(packageId)) {
+                    updatedTourPackageIds.push(packageId);
+                }
             } else {
                 updatedTourPackageIds = updatedTourPackageIds.filter((id) => id !== packageId);
             }
-
+    
             return { ...prevData, tourPackageIds: updatedTourPackageIds };
         });
     };
+    
 
-    // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const formattedData = {
-                ...formData,
+                title: formData.title,
+                description: formData.description,
                 price: parseFloat(formData.price),
+                currency: formData.currency,
+                restrictions: formData.restrictions,
+                state: formData.state === "true" || formData.state === true, // Asegurar que es booleano
                 discount: parseFloat(formData.discount),
-                mediaCategoryIds: formData.mediaCategoryIds.split(",").map(Number) || []
+                tourPackageIds: formData.tourPackageIds.map(Number), // Asegurar que son enteros
+                mediaCategoryIds: [] // Se envía como array vacío
             };
-
+    
             await addCategory(formattedData);
-
+    
             Swal.fire({
                 title: "¡Categoría Registrada!",
                 text: "La categoría ha sido agregada correctamente.",
                 icon: "success",
                 confirmButtonText: "Aceptar"
             });
-
-            // Limpiar el formulario
+    
+            // Reiniciar formulario
             setFormData({
                 title: "",
                 description: "",
@@ -107,11 +104,10 @@ const CategoryRegistry = () => {
                 restrictions: "",
                 state: true,
                 discount: "",
-                tourPackageIds: [],
-                mediaCategoryIds: ""
+                tourPackageIds: []
             });
-
-        } catch {
+        } catch (error) {
+            console.error("Error al registrar la categoría:", error);
             Swal.fire({
                 title: "¡Error!",
                 text: "Hubo un problema al registrar la categoría.",
@@ -120,10 +116,10 @@ const CategoryRegistry = () => {
             });
         }
     };
+    
 
     return (
         <div className={styles.adminContainer}>
-            {/* Sidebar */}
             <div className={styles.sideBar}>
                 <ul>
                     {adminOptions.map((option, index) => {
@@ -140,24 +136,15 @@ const CategoryRegistry = () => {
                 </ul>
             </div>
 
-            {/* Contenido principal con el formulario */}
             <div className={styles.content}>
                 <div className={styles.cardsContainer}>
                     <h2 className={styles.formTitle}>Registro de Categoría</h2>
                     <form onSubmit={handleSubmit} className={styles.formContainer}>
-                        {/* Campos del formulario */}
-                        {[
-                            { label: "Título", name: "title", type: "text" },
-                            { label: "Descripción", name: "description", type: "text" },
-                            { label: "Precio", name: "price", type: "number" },
-                            { label: "Restricciones", name: "restrictions", type: "text" },
-                            { label: "Descuento (%)", name: "discount", type: "number" },
-                            { label: "IDs de Categorías de Medios (separados por comas)", name: "mediaCategoryIds", type: "text" }
-                        ].map(({ label, name, type }) => (
+                        {["title", "description", "price", "restrictions", "discount"].map((name) => (
                             <div key={name} className="mb-3 text-start">
-                                <label className={`form-label ${styles.label}`}>{label}</label>
+                                <label className={`form-label ${styles.label}`}>{name.charAt(0).toUpperCase() + name.slice(1)}</label>
                                 <input
-                                    type={type}
+                                    type={name === "price" || name === "discount" ? "number" : "text"}
                                     className="form-control"
                                     name={name}
                                     value={formData[name]}
@@ -167,16 +154,9 @@ const CategoryRegistry = () => {
                             </div>
                         ))}
 
-                        {/* Select para la moneda */}
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}>Moneda</label>
-                            <select
-                                className="form-select"
-                                name="currency"
-                                value={formData.currency}
-                                onChange={handleChange}
-                                required
-                            >
+                            <select className="form-select" name="currency" value={formData.currency} onChange={handleChange} required>
                                 <option value="USD">Dólar estadounidense (USD)</option>
                                 <option value="EUR">Euro (EUR)</option>
                                 <option value="COP">Peso colombiano (COP)</option>
@@ -185,7 +165,6 @@ const CategoryRegistry = () => {
                             </select>
                         </div>
 
-                        {/* Checkboxes para los paquetes turísticos */}
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}>Seleccionar Paquetes Turísticos</label>
                             <div className={`${styles.checkboxContainer} ${styles.scrollableContainer}`}>
@@ -199,10 +178,7 @@ const CategoryRegistry = () => {
                                             checked={formData.tourPackageIds.includes(pkg.packageId)}
                                             onChange={handlePackageSelection}
                                         />
-                                        <label
-                                            htmlFor={`package-${pkg.packageId}`}
-                                            className={`form-check-label ${styles.blackText}`}
-                                        >
+                                        <label htmlFor={`package-${pkg.packageId}`} className={`form-check-label ${styles.blackText}`}>
                                             {pkg.title} - {pkg.description}
                                         </label>
                                     </div>
@@ -210,8 +186,6 @@ const CategoryRegistry = () => {
                             </div>
                         </div>
 
-
-                        {/* Select para el estado */}
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}>Estado</label>
                             <select className="form-select" name="state" value={formData.state} onChange={handleChange}>
