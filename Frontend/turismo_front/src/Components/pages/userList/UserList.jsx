@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // <-- Importamos useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./UserList.module.css";
 import { FaUserCog, FaEdit, FaTrash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,10 +12,23 @@ const adminOptions = [
     { name: "Ver usuarios registrados", path: "/admin/users/list", icon: FaUserCog }
 ];
 
+const getRoleBadgeColor = (role) => {
+    switch (role) {
+        case "ADMIN":
+            return "#FF851B";
+        case "AGENT":
+            return "#7367F0";
+        case "USER":
+            return "#28C76F";
+        default:
+            return "#6C757D";
+    }
+};
+
 const UserList = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate(); // <-- Hook para redirigir
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchUsers();
@@ -25,9 +38,19 @@ const UserList = () => {
         setLoading(true);
         try {
             const data = await getUsers();
-            setUsers(data);
+            // Asegurarse de que los roles estén en mayúsculas
+            const formattedData = data.map(user => ({
+                ...user,
+                role: user.role?.toUpperCase() || "USER"
+            }));
+            setUsers(formattedData);
         } catch (error) {
             console.error("Error al obtener usuarios:", error);
+            Swal.fire({
+                title: "Error",
+                text: "No se pudieron cargar los usuarios",
+                icon: "error"
+            });
         } finally {
             setLoading(false);
         }
@@ -46,36 +69,33 @@ const UserList = () => {
         });
 
         if (confirmDelete.isConfirmed) {
-            const result = await deleteUser(userId);
-            if (result.success) {
+            try {
+                await deleteUser(userId);
+                await fetchUsers(); // Recargar la lista después de eliminar
                 Swal.fire("Eliminado", "El usuario ha sido eliminado.", "success");
-                setUsers(users.filter(user => user.userId !== userId));
-            } else {
+            } catch (error) {
+                console.error("Error al eliminar:", error);
                 Swal.fire("Error", "No se pudo eliminar el usuario.", "error");
             }
         }
     };
 
     const handleEditUser = (userId) => {
-        navigate(`/admin/users/edit/${userId}`); 
+        navigate(`/admin/users/edit/${userId}`);
     };
 
     return (
         <div className={styles.adminContainer}>
-            {/* Sidebar */}
             <div className={styles.sideBar}>
                 <ul>
-                    {adminOptions.map((option, index) => {
-                        const IconComponent = option.icon;
-                        return (
-                            <li key={index}>
-                                <Link to={option.path} className="d-flex align-items-center">
-                                    <span className={styles.icon}><IconComponent /></span>
-                                    {option.name}
-                                </Link>
-                            </li>
-                        );
-                    })}
+                    {adminOptions.map((option, index) => (
+                        <li key={index}>
+                            <Link to={option.path} className="d-flex align-items-center">
+                                <span className={styles.icon}><option.icon /></span>
+                                {option.name}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
             </div>
 
@@ -90,7 +110,6 @@ const UserList = () => {
                             <div className="spinner-border text-primary" role="status">
                                 <span className="visually-hidden">Cargando...</span>
                             </div>
-                            <p className="mt-2">Cargando usuarios...</p>
                         </div>
                     ) : (
                         <table className={`${styles.table} table table-hover table-striped align-middle`}>
@@ -105,33 +124,40 @@ const UserList = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? (
-                                    users.map((user) => (
-                                        <tr key={user.userId}>
-                                            <td>{`${user.name} ${user.paternalSurname} ${user.maternalSurname}`}</td>
-                                            <td>{user.username}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.dni}</td>
-                                            <td>
-                                                <span className="badge" style={{ backgroundColor: user.role === "ADMIN" ? "#FF851B" : "#28C76F", color: "#fff" }}>
-                                                    {user.role}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditUser(user.userId)}>
-                                                    <FaEdit /> Editar
-                                                </button>
-                                                <button className="btn btn-danger btn-sm" onClick={() => handleDeleteUser(user.userId)}>
-                                                    <FaTrash /> Eliminar
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="6" className="text-center">No hay usuarios registrados.</td>
+                                {users.map((user) => (
+                                    <tr key={user.userId}>
+                                        <td>{`${user.name} ${user.paternalSurname} ${user.maternalSurname}`}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.dni}</td>
+                                        <td>
+                                            <span 
+                                                className="badge" 
+                                                style={{ 
+                                                    backgroundColor: getRoleBadgeColor(user.role),
+                                                    color: "#fff",
+                                                    padding: "8px 12px"
+                                                }}
+                                            >
+                                                {user.role}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <button 
+                                                className="btn btn-primary btn-sm me-2" 
+                                                onClick={() => handleEditUser(user.userId)}
+                                            >
+                                                <FaEdit /> Editar
+                                            </button>
+                                            <button 
+                                                className="btn btn-danger btn-sm" 
+                                                onClick={() => handleDeleteUser(user.userId)}
+                                            >
+                                                <FaTrash /> Eliminar
+                                            </button>
+                                        </td>
                                     </tr>
-                                )}
+                                ))}
                             </tbody>
                         </table>
                     )}
