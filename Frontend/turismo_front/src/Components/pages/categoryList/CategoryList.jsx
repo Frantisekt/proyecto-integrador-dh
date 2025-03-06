@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaPlusCircle, FaList } from "react-icons/fa";
 import styles from "./CategoryList.module.css";
+import getAllCategories from "../../services/getAllCategories";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const adminOptions = [
     {
@@ -17,6 +19,25 @@ const adminOptions = [
 ];
 
 const CategoryList = () => {
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
+    const fetchCategories = async () => {
+        setLoading(true);
+        try {
+            const data = await getAllCategories();
+            setCategories(data);
+        } catch (error) {
+            console.error("Error al obtener categorías:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className={styles.adminContainer}>
             <div className={styles.sideBar}>
@@ -36,7 +57,69 @@ const CategoryList = () => {
             </div>
 
             <div className={styles.content}>
-                {/* Contenido de la lista de categorías irá aquí */}
+                <div className="mb-3">
+                    <h2 className="text-dark fw-bold text-center">Lista de Categorías</h2>
+                </div>
+
+                <div className={styles.tableContainer}>
+                    {loading ? (
+                        <div className="text-center">
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Cargando...</span>
+                            </div>
+                            <p className="mt-2">Cargando categorías...</p>
+                        </div>
+                    ) : (
+                        <table className={`${styles.table} table table-hover table-striped align-middle`}>
+                            <thead className="table-dark">
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>
+                                    <th>Moneda</th>
+                                    <th>Restricciones</th>
+                                    <th>Estado</th>
+                                    <th>Descuento</th>
+                                    <th>Paquetes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {categories.length > 0 ? (
+                                    categories.map((category) => (
+                                        <tr key={category.categoryId}>
+                                            <td>{category.title}</td>
+                                            <td>{category.description}</td>
+                                            <td>{category.price.toFixed(2)}</td>
+                                            <td>{category.currency}</td>
+                                            <td>{category.restrictions || "N/A"}</td>
+                                            <td>
+                                                <span className={`badge ${category.state ? "bg-success" : "bg-danger"}`}>
+                                                    {category.state ? "Activo" : "Inactivo"}
+                                                </span>
+                                            </td>
+                                            <td>{category.discount}%</td>
+                                            <td>
+                                                {category.tourPackages.length > 0 ? (
+                                                    category.tourPackages.map(pkg => (
+                                                        <span key={pkg.packageId} className="badge bg-info me-1">
+                                                            {pkg.title}
+                                                        </span>
+                                                    ))
+                                                ) : (
+                                                    "Sin paquetes"
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9" className="text-center">No hay categorías registradas.</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
             </div>
         </div>
     );
