@@ -1,164 +1,159 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";  // Importamos el contexto
+import { useAuth } from "../../context/AuthContext";  
+import Swal from "sweetalert2";
 
 const LoginForm = ({ mode }) => {
-  const navigate = useNavigate();
-  const { login } = useAuth();  // Obtenemos la función login del contexto
-  const [error, setError] = useState("");
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    name: "",
-    paternalSurname: "",
-    maternalSurname: "",
-    username: "",
-    dni: "",
-    newsletter: "NO",
-    role: "USER",
-    state: true,
-  });
+    const navigate = useNavigate();
+    const { login } = useAuth();  
+    const [error, setError] = useState("");
+    const [formData, setFormData] = useState({
+        name: "",
+        paternalSurname: "",
+        maternalSurname: "",
+        username: "",
+        email: "",
+        password: "",
+        dni: "",
+        newsletter: "NO",
+        role: "USER",
+        state: true,
+    });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? (checked ? "YES" : "NO") : value,
-    }));
-  };
+    // Manejo de cambios en los inputs
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: type === "checkbox" ? (checked ? "YES" : "NO") : value,
+        }));
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    // Manejo de envío del formulario
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
 
-    try {
-      if (mode === "login") {
-        const loginData = {
-          email: formData.email,
-          password: formData.password,
-        };
-        const response = await authService.login(loginData);
-        if (response.token) {
-          login(response.token); // <-- Aquí actualizamos el contexto
-          navigate("/"); // Redirigimos a la homepage
+        try {
+            let response;
+
+            if (mode === "login") {
+                const loginData = {
+                    email: formData.email,
+                    password: formData.password,
+                };
+                response = await authService.login(loginData);
+            } else {
+                response = await authService.register(formData);
+            }
+
+            console.log("Respuesta de la API:", response);
+
+            if (response.token) {
+                login(response.token);
+                Swal.fire({
+                    title: mode === "login" ? "¡Inicio de sesión exitoso!" : "¡Registro exitoso!",
+                    text: mode === "login" 
+                        ? "Has iniciado sesión correctamente." 
+                        : "El usuario ha sido registrado correctamente.",
+                    icon: "success",
+                    confirmButtonText: "Aceptar"
+                });
+                navigate("/");
+            }
+        } catch (err) {
+            console.error("Error en la solicitud:", err);
+            Swal.fire({
+                title: "¡Error!",
+                text: mode === "login"
+                    ? "Credenciales inválidas, intenta nuevamente."
+                    : "Error en el registro, revisa los datos.",
+                icon: "error",
+                confirmButtonText: "Cerrar"
+            });
+            setError(mode === "login"
+                ? "Credenciales inválidas"
+                : "Error en el registro. Por favor, intente nuevamente."
+            );
         }
-      } else {
-        const response = await authService.register(formData);
-        if (response.token) {
-          login(response.token);
-          navigate("/");
-        }
-      }
-    } catch (err) {
-      setError(
-        mode === "login"
-          ? "Credenciales inválidas"
-          : "Error en el registro. Por favor, intente nuevamente."
-      );
-    }
-  };
+    };
 
-  return (
-    <div className="form-block__input-wrapper">
-      <form onSubmit={handleSubmit}>
-        {error && <div className="error-message">{error}</div>}
-        <div className={`form-group form-group--${mode}`}>
-          {mode === "login" ? (
-            <>
-              <input
-                className="form-group__input"
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="password"
-                placeholder="Contraseña"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </>
-          ) : (
-            <>
-              <input
-                className="form-group__input"
-                type="text"
-                placeholder="Nombre"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="text"
-                placeholder="Apellido Paterno"
-                name="paternalSurname"
-                value={formData.paternalSurname}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="text"
-                placeholder="Apellido Materno"
-                name="maternalSurname"
-                value={formData.maternalSurname}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="text"
-                placeholder="Nombre de usuario"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="password"
-                placeholder="Contraseña"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              <input
-                className="form-group__input"
-                type="text"
-                placeholder="DNI"
-                name="dni"
-                value={formData.dni}
-                onChange={handleChange}
-                required
-              />
-            </>
-          )}
-          <button className="button" type="submit">
-            {mode === "login" ? "INICIAR SESIÓN" : "REGISTRARSE"}
-          </button>
+    return (
+        <div className="form-block__input-wrapper">
+            <form onSubmit={handleSubmit}>
+                {error && <div className="error-message">{error}</div>}
+                <div className={`form-group form-group--${mode}`}>
+
+                    {mode === "login" ? (
+                        <>
+                            <input
+                                className="form-group__input"
+                                type="email"
+                                placeholder="Email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
+                            <input
+                                className="form-group__input"
+                                type="password"
+                                placeholder="Contraseña"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                        </>
+                    ) : (
+                        <>
+                            {/* Mapeo para evitar repetición de código */}
+                            {[
+                                { label: "Nombre", name: "name", type: "text" },
+                                { label: "Apellido Paterno", name: "paternalSurname", type: "text" },
+                                { label: "Apellido Materno", name: "maternalSurname", type: "text" },
+                                { label: "Nombre de usuario", name: "username", type: "text" },
+                                { label: "Email", name: "email", type: "email" },
+                                { label: "Contraseña", name: "password", type: "password" },
+                                { label: "DNI", name: "dni", type: "text" },
+                            ].map(({ label, name, type }) => (
+                                <input
+                                    key={name}
+                                    className="form-group__input"
+                                    type={type}
+                                    placeholder={label}
+                                    name={name}
+                                    value={formData[name]}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            ))}
+
+                            <div className="form-group__checkbox">
+                                <input
+                                    type="checkbox"
+                                    id="newsletter"
+                                    name="newsletter"
+                                    checked={formData.newsletter === "YES"}
+                                    onChange={handleChange}
+                                />
+                                <label htmlFor="newsletter">Suscribirse al newsletter</label>
+                            </div>
+
+                            {/* Campos ocultos */}
+                            <input type="hidden" name="role" value={formData.role} />
+                            <input type="hidden" name="state" value={formData.state} />
+                        </>
+                    )}
+
+                    <button className="button" type="submit">
+                        {mode === "login" ? "INICIAR SESIÓN" : "REGISTRARSE"}
+                    </button>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default LoginForm;
