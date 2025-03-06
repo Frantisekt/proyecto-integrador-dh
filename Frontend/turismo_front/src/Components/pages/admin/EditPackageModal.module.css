@@ -134,3 +134,72 @@
         max-height: 95vh;
     }
 }
+
+.mediaSection {
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+}
+
+.mediaGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.mediaItem {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mediaItem img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.mediaInfo {
+    padding: 0.5rem;
+}
+
+.removeButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.removeButton:hover {
+    background-color: #c82333;
+}
+
+.mediaUploadForm {
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+}
+
+.fileInput {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.uploadButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.uploadButton:hover {
+    background-color: #218838;
+}

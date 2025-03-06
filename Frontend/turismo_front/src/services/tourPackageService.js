@@ -147,5 +147,44 @@ export const tourPackageService = {
             console.error('Error al actualizar paquete:', error);
             throw new Error('Error al actualizar paquete: ' + error.message);
         }
+    },
+
+    uploadMedia: async (formData) => {
+        try {
+            const response = await axios.post(
+                'http://localhost:8087/api/media-packages',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error al subir media:', error);
+            throw new Error('Error al subir la imagen: ' + error.message);
+        }
+    },
+
+    addMediaToPackage: async (packageId, mediaPackageId) => {
+        try {
+            const response = await axiosInstance.post(
+                `/${packageId}/media/${mediaPackageId}`
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error al añadir media al paquete:', error);
+            throw new Error('Error al añadir la imagen al paquete: ' + error.message);
+        }
+    },
+
+    removeMediaFromPackage: async (packageId, mediaPackageId) => {
+        try {
+            await axiosInstance.delete(`/${packageId}/media/${mediaPackageId}`);
+        } catch (error) {
+            console.error('Error al remover media del paquete:', error);
+            throw new Error('Error al eliminar la imagen del paquete: ' + error.message);
+        }
     }
 }; 

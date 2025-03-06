@@ -12,6 +12,9 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
         featureIds: []
     });
 
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [mediaTitle, setMediaTitle] = useState('');
+    const [mediaDescription, setMediaDescription] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [packageDetails, setPackageDetails] = useState(null);
@@ -44,6 +47,14 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
         }
     }, [packageId]);
 
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: name === 'state' ? value === 'true' : value
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -61,6 +72,57 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                 text: 'No se pudo actualizar el paquete',
                 icon: 'error'
             });
+        }
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSelectedFile(file);
+        }
+    };
+
+    const handleMediaUpload = async (e) => {
+        e.preventDefault();
+        if (!selectedFile) {
+            Swal.fire('Error', 'Por favor selecciona una imagen', 'error');
+            return;
+        }
+
+        try {
+            const formDataMedia = new FormData();
+            formDataMedia.append('file', selectedFile);
+            formDataMedia.append('mediaTitle', mediaTitle);
+            formDataMedia.append('mediaDescription', mediaDescription);
+
+            const mediaResponse = await tourPackageService.uploadMedia(formDataMedia);
+            await tourPackageService.addMediaToPackage(packageId, mediaResponse.mediaPackageId);
+
+            // Recargar los detalles del paquete
+            const updatedPackage = await tourPackageService.getPackageById(packageId);
+            setPackageDetails(updatedPackage);
+            
+            // Limpiar el formulario de media
+            setSelectedFile(null);
+            setMediaTitle('');
+            setMediaDescription('');
+            
+            Swal.fire('¡Éxito!', 'Imagen cargada correctamente', 'success');
+        } catch (error) {
+            console.error('Error al cargar la imagen:', error);
+            Swal.fire('Error', 'No se pudo cargar la imagen', 'error');
+        }
+    };
+
+    const handleRemoveMedia = async (mediaPackageId) => {
+        try {
+            await tourPackageService.removeMediaFromPackage(packageId, mediaPackageId);
+            const updatedPackage = await tourPackageService.getPackageById(packageId);
+            setPackageDetails(updatedPackage);
+            Swal.fire('¡Éxito!', 'Imagen eliminada correctamente', 'success');
+        } catch (error) {
+            console.error('Error al eliminar la imagen:', error);
+            Swal.fire('Error', 'No se pudo eliminar la imagen', 'error');
         }
     };
 
@@ -94,7 +156,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                             type="text"
                             name="title"
                             value={formData.title}
-                            onChange={(e) => setFormData({...formData, title: e.target.value})}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -104,7 +166,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                         <textarea
                             name="description"
                             value={formData.description}
-                            onChange={(e) => setFormData({...formData, description: e.target.value})}
+                            onChange={handleChange}
                             required
                         />
                     </div>
@@ -114,7 +176,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                         <select
                             name="state"
                             value={formData.state}
-                            onChange={(e) => setFormData({...formData, state: e.target.value === 'true'})}
+                            onChange={handleChange}
                         >
                             <option value="true">Activo</option>
                             <option value="false">Inactivo</option>
@@ -148,6 +210,61 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                             Cancelar
                         </button>
                     </div>
+                </form>
+
+                {/* Sección de imágenes actuales */}
+                <div className={styles.mediaSection}>
+                    <h3>Imágenes del Paquete</h3>
+                    <div className={styles.mediaGrid}>
+                        {packageDetails?.mediaPackages?.map((media) => (
+                            <div key={media.mediaPackageId} className={styles.mediaItem}>
+                                <img src={media.mediaUrl} alt={media.mediaTitle} />
+                                <div className={styles.mediaInfo}>
+                                    <p>{media.mediaTitle}</p>
+                                    <button 
+                                        onClick={() => handleRemoveMedia(media.mediaPackageId)}
+                                        className={styles.removeButton}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Formulario para agregar nueva imagen */}
+                <form onSubmit={handleMediaUpload} className={styles.mediaUploadForm}>
+                    <h3>Agregar Nueva Imagen</h3>
+                    <div className={styles.formGroup}>
+                        <label>Imagen:</label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className={styles.fileInput}
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Título de la imagen:</label>
+                        <input
+                            type="text"
+                            value={mediaTitle}
+                            onChange={(e) => setMediaTitle(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label>Descripción de la imagen:</label>
+                        <textarea
+                            value={mediaDescription}
+                            onChange={(e) => setMediaDescription(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className={styles.uploadButton}>
+                        Subir Imagen
+                    </button>
                 </form>
             </div>
         </div>
