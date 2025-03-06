@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaPlusCircle, FaList } from "react-icons/fa";
+import { FaPlusCircle, FaList, FaEdit, FaTrash } from "react-icons/fa";
+import Swal from "sweetalert2";
 import styles from "./CategoryList.module.css";
 import getAllCategories from "../../services/getAllCategories";
+import deleteCategory from "../../services/deleteCategory";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const adminOptions = [
@@ -35,6 +37,29 @@ const CategoryList = () => {
             console.error("Error al obtener categorías:", error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteCategory = async (categoryId) => {
+        const confirmDelete = await Swal.fire({
+            title: "¿Estás seguro?",
+            text: "No podrás revertir esta acción.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        });
+
+        if (confirmDelete.isConfirmed) {
+            const result = await deleteCategory(categoryId);
+            if (result.success) {
+                Swal.fire("Eliminado", "La categoría ha sido eliminada.", "success");
+                fetchCategories(); // Actualizar la lista después de eliminar
+            } else {
+                Swal.fire("Error", "No se pudo eliminar la categoría.", "error");
+            }
         }
     };
 
@@ -81,6 +106,7 @@ const CategoryList = () => {
                                     <th>Estado</th>
                                     <th>Descuento</th>
                                     <th>Paquetes</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,6 +134,19 @@ const CategoryList = () => {
                                                 ) : (
                                                     "Sin paquetes"
                                                 )}
+                                            </td>
+                                            <td>
+                                                <div className="d-flex gap-2">
+                                                    <Link to={`/admin/categories/edit/${category.categoryId}`} className="btn btn-primary btn-sm">
+                                                        <FaEdit />
+                                                    </Link>
+                                                    <button
+                                                        className="btn btn-danger btn-sm"
+                                                        onClick={() => handleDeleteCategory(category.categoryId)}
+                                                    >
+                                                        <FaTrash />
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))
