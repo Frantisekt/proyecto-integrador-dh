@@ -115,5 +115,37 @@ export const tourPackageService = {
             }
             throw error;
         }
+    },
+
+    getPackageById: async (id) => {
+        try {
+            console.log('Obteniendo paquete con ID:', id);
+            const response = await axiosInstance.get(`/${id}`);
+            console.log('Respuesta del servidor:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error al obtener paquete por ID:', error);
+            throw new Error('Error al obtener detalles del paquete: ' + error.message);
+        }
+    },
+
+    updatePackage: async (id, packageData) => {
+        try {
+            // Asegurarse de que los datos coincidan con TourPackageRequestDTO
+            const requestData = {
+                title: packageData.title,
+                description: packageData.description,
+                state: packageData.state,
+                mediaPackageIds: packageData.mediaPackageIds || [],
+                featureIds: packageData.featureIds || []
+            };
+
+            console.log('Actualizando paquete:', requestData);
+            const response = await axiosInstance.put(`/${id}`, requestData);
+            return response.data;
+        } catch (error) {
+            console.error('Error al actualizar paquete:', error);
+            throw new Error('Error al actualizar paquete: ' + error.message);
+        }
     }
 }; 

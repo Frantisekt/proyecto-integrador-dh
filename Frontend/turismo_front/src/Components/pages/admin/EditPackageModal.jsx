@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './EditPackageModal.module.css';
 import Swal from 'sweetalert2';
-import * as tourPackageService from '../../../services/tourPackageService';
+import { tourPackageService } from '../../../services/tourPackageService';
 
 const EditPackageModal = ({ packageId, onClose, onSave }) => {
     const [formData, setFormData] = useState({
@@ -19,16 +19,16 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
     useEffect(() => {
         const fetchPackageDetails = async () => {
             try {
-                console.log('Fetching package with ID:', packageId); // Debug log
-                const response = await tourPackageService.tourPackageService.getPackageById(packageId);
-                console.log('Package details:', response); // Debug log
+                console.log('Fetching package with ID:', packageId);
+                const response = await tourPackageService.getPackageById(packageId);
+                console.log('Package details:', response);
                 
                 setPackageDetails(response);
                 setFormData({
                     title: response.title || '',
                     description: response.description || '',
                     state: response.state ?? true,
-                    mediaPackageIds: response.mediaPackages?.map(media => media.id) || [],
+                    mediaPackageIds: response.mediaPackages?.map(media => media.mediaPackageId) || [],
                     featureIds: response.features?.map(feature => feature.id) || []
                 });
                 setLoading(false);
@@ -44,27 +44,10 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
         }
     }, [packageId]);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Asegurarse de que los datos coincidan con TourPackageRequestDTO
-            const updateData = {
-                title: formData.title,
-                description: formData.description,
-                state: formData.state,
-                mediaPackageIds: formData.mediaPackageIds,
-                featureIds: formData.featureIds
-            };
-
-            await tourPackageService.updatePackage(packageId, updateData);
+            await tourPackageService.updatePackage(packageId, formData);
             Swal.fire({
                 title: '¡Éxito!',
                 text: 'Paquete actualizado correctamente',
@@ -111,7 +94,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                             type="text"
                             name="title"
                             value={formData.title}
-                            onChange={handleChange}
+                            onChange={(e) => setFormData({...formData, title: e.target.value})}
                             required
                         />
                     </div>
@@ -121,7 +104,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                         <textarea
                             name="description"
                             value={formData.description}
-                            onChange={handleChange}
+                            onChange={(e) => setFormData({...formData, description: e.target.value})}
                             required
                         />
                     </div>
@@ -130,8 +113,8 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                         <label>Estado:</label>
                         <select
                             name="state"
-                            value={formData.state.toString()}
-                            onChange={handleChange}
+                            value={formData.state}
+                            onChange={(e) => setFormData({...formData, state: e.target.value === 'true'})}
                         >
                             <option value="true">Activo</option>
                             <option value="false">Inactivo</option>
