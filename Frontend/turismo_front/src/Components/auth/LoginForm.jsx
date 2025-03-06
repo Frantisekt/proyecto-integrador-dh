@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";  // Importamos el contexto
+import { registerUser } from "./registerUserForm"; // Añadir esta importación
 
 const LoginForm = ({ mode }) => {
   const navigate = useNavigate();
@@ -40,11 +41,19 @@ const LoginForm = ({ mode }) => {
         };
         const response = await authService.login(loginData);
         if (response.token) {
-          login(response.token); // <-- Aquí actualizamos el contexto
-          navigate("/"); // Redirigimos a la homepage
+          login(response.token);
+          navigate("/");
         }
       } else {
-        const response = await authService.register(formData);
+        // Primero registramos el usuario con registerUser
+        await registerUser(formData);
+        
+        // Luego intentamos hacer login con las credenciales
+        const loginData = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const response = await authService.login(loginData);
         if (response.token) {
           login(response.token);
           navigate("/");
