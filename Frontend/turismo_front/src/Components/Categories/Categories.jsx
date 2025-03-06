@@ -12,16 +12,16 @@ const Categories = () => {
   useEffect(() => {
     const cargarCategorias = async () => {
       const datos = await obtenerCategorias();
-     
+
       const transformados = datos.map((cat) => {
-     
+
         const imageUrl =
           cat.mediaCategories && cat.mediaCategories.length > 0
             ? cat.mediaCategories[0].mediaUrl
             : "https://via.placeholder.com/150";
 
         return {
-          id: cat.categoryId, 
+          id: cat.categoryId,
           title: cat.title,
           price: cat.price || 0,
           imageUrl,
@@ -39,15 +39,30 @@ const Categories = () => {
     setActiveFilter(filter);
   };
 
+  let filteredCategories = [];
+  if (activeFilter === "all") {
+    filteredCategories = categorias;
+  } else if (activeFilter === "featured") {
 
-  const filteredCategories =
-    activeFilter === "all"
-      ? categorias
-      : categorias.filter((category) => category.type === activeFilter);
+    const featuredKeywords = ["business", "vip", "best seller", "romántico"];
+    filteredCategories = categorias.filter((category) =>
+      featuredKeywords.some((keyword) =>
+        category.title.toLowerCase().includes(keyword)
+      )
+    );
+  } else if (activeFilter === "bestseller") {
+
+    const bestsellerKeywords = ["best seller", "estandar", "vip", "tours"];
+    filteredCategories = categorias.filter((category) =>
+      bestsellerKeywords.some((keyword) =>
+        category.title.toLowerCase().includes(keyword)
+      )
+    );
+  }
 
   return (
     <section className={styles.container}>
-
+      {/* CABECERA */}
       <div className={styles.header}>
         <div className={styles.titleContainer}>
           <div className={styles.titleLine}></div>
@@ -82,9 +97,10 @@ const Categories = () => {
         </div>
       </div>
 
-
+     
       <div className={styles.grid}>
         {filteredCategories.map((category, index) => {
+         
           let cardClass = "";
           switch (index) {
             case 0:
