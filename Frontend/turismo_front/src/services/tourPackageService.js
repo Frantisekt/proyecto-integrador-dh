@@ -33,7 +33,9 @@ export const tourPackageService = {
     getAllPackages: async () => {
         try {
             console.log('Intentando obtener paquetes desde:', BASE_URL);
-            const response = await axiosInstance.get('');
+            const response = await axiosInstance.get('', {
+                timeout: 15000  // Aumentamos el timeout a 15 segundos
+            });
             console.log('Respuesta exitosa:', response.data);
             return response.data;
         } catch (error) {
@@ -112,6 +114,77 @@ export const tourPackageService = {
                 throw new Error('No se pudo conectar con el servidor');
             }
             throw error;
+        }
+    },
+
+    getPackageById: async (id) => {
+        try {
+            console.log('Obteniendo paquete con ID:', id);
+            const response = await axiosInstance.get(`/${id}`);
+            console.log('Respuesta del servidor:', response.data);
+            return response.data;
+        } catch (error) {
+            console.error('Error al obtener paquete por ID:', error);
+            throw new Error('Error al obtener detalles del paquete: ' + error.message);
+        }
+    },
+
+    updatePackage: async (id, packageData) => {
+        try {
+            // Asegurarse de que los datos coincidan con TourPackageRequestDTO
+            const requestData = {
+                title: packageData.title,
+                description: packageData.description,
+                state: packageData.state,
+                mediaPackageIds: packageData.mediaPackageIds || [],
+                featureIds: packageData.featureIds || []
+            };
+
+            console.log('Actualizando paquete:', requestData);
+            const response = await axiosInstance.put(`/${id}`, requestData);
+            return response.data;
+        } catch (error) {
+            console.error('Error al actualizar paquete:', error);
+            throw new Error('Error al actualizar paquete: ' + error.message);
+        }
+    },
+
+    uploadMedia: async (formData) => {
+        try {
+            const response = await axios.post(
+                'http://localhost:8087/api/media-packages',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error al subir media:', error);
+            throw new Error('Error al subir la imagen: ' + error.message);
+        }
+    },
+
+    addMediaToPackage: async (packageId, mediaPackageId) => {
+        try {
+            const response = await axiosInstance.post(
+                `/${packageId}/media/${mediaPackageId}`
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error al añadir media al paquete:', error);
+            throw new Error('Error al añadir la imagen al paquete: ' + error.message);
+        }
+    },
+
+    removeMediaFromPackage: async (packageId, mediaPackageId) => {
+        try {
+            await axiosInstance.delete(`/${packageId}/media/${mediaPackageId}`);
+        } catch (error) {
+            console.error('Error al remover media del paquete:', error);
+            throw new Error('Error al eliminar la imagen del paquete: ' + error.message);
         }
     }
 }; 

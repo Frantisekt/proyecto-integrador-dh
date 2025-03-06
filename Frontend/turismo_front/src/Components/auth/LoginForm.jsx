@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../services/authService";
-import { useAuth } from "../../context/AuthContext";  
-import Swal from "sweetalert2";
+
+import { useAuth } from "../../context/AuthContext";  // Importamos el contexto
+import { registerUser } from "./registerUserForm"; // Añadir esta importación
+
 
 const LoginForm = ({ mode }) => {
     const navigate = useNavigate();
@@ -35,47 +37,32 @@ const LoginForm = ({ mode }) => {
         e.preventDefault();
         setError("");
 
-        try {
-            let response;
 
-            if (mode === "login") {
-                const loginData = {
-                    email: formData.email,
-                    password: formData.password,
-                };
-                response = await authService.login(loginData);
-            } else {
-                response = await authService.register(formData);
-            }
+    try {
+      if (mode === "login") {
+        const loginData = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const response = await authService.login(loginData);
+        if (response.token) {
+          login(response.token);
+          navigate("/");
+        }
+      } else {
+        // Primero registramos el usuario con registerUser
+        await registerUser(formData);
+        
+        // Luego intentamos hacer login con las credenciales
+        const loginData = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const response = await authService.login(loginData);
+        if (response.token) {
+          login(response.token);
+          navigate("/");
 
-            console.log("Respuesta de la API:", response);
-
-            if (response.token) {
-                login(response.token);
-                Swal.fire({
-                    title: mode === "login" ? "¡Inicio de sesión exitoso!" : "¡Registro exitoso!",
-                    text: mode === "login" 
-                        ? "Has iniciado sesión correctamente." 
-                        : "El usuario ha sido registrado correctamente.",
-                    icon: "success",
-                    confirmButtonText: "Aceptar"
-                });
-                navigate("/");
-            }
-        } catch (err) {
-            console.error("Error en la solicitud:", err);
-            Swal.fire({
-                title: "¡Error!",
-                text: mode === "login"
-                    ? "Credenciales inválidas, intenta nuevamente."
-                    : "Error en el registro, revisa los datos.",
-                icon: "error",
-                confirmButtonText: "Cerrar"
-            });
-            setError(mode === "login"
-                ? "Credenciales inválidas"
-                : "Error en el registro. Por favor, intente nuevamente."
-            );
         }
     };
 

@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import styles from './AdminPanel.module.css';
 import RegisterProductModal from './RegisterProductModal';
+import EditPackageModal from './EditPackageModal';
 import { tourPackageService } from '../../../services/tourPackageService';
+import Swal from 'sweetalert2';
 
 const AdminPanel = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingPackageId, setEditingPackageId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -29,20 +32,50 @@ const AdminPanel = () => {
         }
     };
 
-    const handleDeletePackage = async (id) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este paquete?')) {
-            try {
+    const handleEditPackage = (packageId) => {
+        console.log('Editando paquete:', packageId);
+        setEditingPackageId(packageId);
+    };
+
+    const handleDeletePackage = async (packageId) => {
+        console.log('Intentando eliminar paquete con ID:', packageId); // Debug log
+        
+        if (!packageId) {
+            console.error('ID de paquete no válido');
+            return;
+        }
+
+        try {
+            const result = await Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás revertir esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
                 setLoading(true);
-                await tourPackageService.deletePackage(id);
-                // Recargar la lista después de eliminar
+                await tourPackageService.deletePackage(packageId);
                 await fetchPackages();
-                // Mostrar mensaje de éxito
-                alert('Paquete eliminado exitosamente');
-            } catch (error) {
-                setError('Error al eliminar el paquete: ' + error.message);
-            } finally {
-                setLoading(false);
+                Swal.fire(
+                    '¡Eliminado!',
+                    'El paquete ha sido eliminado.',
+                    'success'
+                );
             }
+        } catch (error) {
+            console.error('Error al eliminar:', error);
+            Swal.fire(
+                'Error',
+                'No se pudo eliminar el paquete',
+                'error'
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -58,14 +91,11 @@ const AdminPanel = () => {
 
     return (
         <>
-        
-            {/* Mensaje para dispositivos móviles */}
             <div className={styles.mobileMessage}>
                 <h2>Acceso no disponible</h2>
                 <p>El panel de administración solo está disponible para dispositivos de escritorio. Por favor, accede desde una computadora.</p>
             </div>
 
-            {/* Panel de administración */}
             <div className={styles.adminContainer}>
                 <div className={styles.headerSection}>
                     <h1>Productos</h1>
@@ -76,6 +106,7 @@ const AdminPanel = () => {
                         Agregar Producto
                     </button>
                 </div>
+
                 {isModalOpen && (
                     <RegisterProductModal 
                         onClose={() => setIsModalOpen(false)}
@@ -114,9 +145,8 @@ const AdminPanel = () => {
                                             <button 
                                                 className={styles.deleteButton}
                                                 onClick={() => handleDeletePackage(pkg.packageId)}
-                                                disabled={loading}
                                             >
-                                                {loading ? 'Eliminando...' : 'Eliminar'}
+                                                Eliminar
                                             </button>
                                         </td>
                                     </tr>
@@ -156,9 +186,22 @@ const AdminPanel = () => {
                         →
                     </button>
                 </div>
-
-                
             </div>
+
+            {/* Modal de edición */}
+            {editingPackageId && (
+                <EditPackageModal 
+                    key={`edit-modal-${editingPackageId}`}
+                    packageId={editingPackageId}
+                    onClose={() => {
+                        setEditingPackageId(null);
+                    }}
+                    onSave={() => {
+                        fetchPackages();
+                        setEditingPackageId(null);
+                    }}
+                />
+            )}
         </>
     );
 };
