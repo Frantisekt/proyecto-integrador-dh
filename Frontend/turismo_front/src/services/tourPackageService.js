@@ -33,7 +33,9 @@ export const tourPackageService = {
     getAllPackages: async () => {
         try {
             console.log('Intentando obtener paquetes desde:', BASE_URL);
-            const response = await axiosInstance.get('');
+            const response = await axiosInstance.get('', {
+                timeout: 15000  // Aumentamos el timeout a 15 segundos
+            });
             console.log('Respuesta exitosa:', response.data);
             return response.data;
         } catch (error) {
