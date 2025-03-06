@@ -26,7 +26,8 @@ const EditCategory = () => {
         mediaCategories: []
     });
     const [packages, setPackages] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isCategoryLoading, setIsCategoryLoading] = useState(true);
+    const [isPackagesLoading, setIsPackagesLoading] = useState(true);
 
     useEffect(() => {
         const fetchCategory = async () => {
@@ -51,7 +52,7 @@ const EditCategory = () => {
                     confirmButtonText: "Cerrar"
                 });
             } finally {
-                setIsLoading(false);
+                setIsCategoryLoading(false);
             }
         };
 
@@ -61,6 +62,8 @@ const EditCategory = () => {
                 setPackages(data);
             } catch (error) {
                 console.error("Error al obtener los paquetes turísticos:", error);
+            } finally {
+                setIsPackagesLoading(false);
             }
         };
 
@@ -112,6 +115,8 @@ const EditCategory = () => {
         }
     };
 
+    const isLoading = isCategoryLoading || isPackagesLoading;
+
     return (
         <div className={styles.adminContainer}>
             <div className={styles.sideBar}>
@@ -131,58 +136,66 @@ const EditCategory = () => {
             </div>
 
             <div className={styles.content}>
-                <h2 className={styles.title}><strong>Editar Categoría</strong></h2>
-                {isLoading ? (
-                    <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-                        <div className="spinner-border text-primary" role="status">
-                            <span className="visually-hidden">Cargando...</span>
-                        </div>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit} className={styles.formContainer}>
-                        {["title", "description", "price", "restrictions", "discount"].map((field) => (
-                            <div key={field} className="mb-3 text-start">
-                                <label className="form-label text-dark"><strong>{field.charAt(0).toUpperCase() + field.slice(1)}</strong></label>
-                                <input
-                                    type={field === "price" || field === "discount" ? "number" : "text"}
-                                    className="form-control text-dark"
-                                    name={field}
-                                    value={formData[field]}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </div>
-                        ))}
-
-                        <div className="mb-3 text-start">
-                            <label className="form-label text-dark"><strong>Moneda</strong></label>
-                            <select className="form-select text-dark" name="currency" value={formData.currency} onChange={handleChange}>
-                                <option value="USD">USD</option>
-                                <option value="EUR">EUR</option>
-                                <option value="COP">COP</option>
-                            </select>
-                        </div>
-
-                        <div className="mb-3 text-start">
-                            <label className="form-label text-dark"><strong>Seleccionar Paquetes Turísticos</strong></label>
-                            <div className={styles.checkboxContainer}>
-                                {packages.map((pkg) => (
-                                    <div key={pkg.packageId} className="form-check">
-                                        <input
-                                            type="checkbox"
-                                            className="form-check-input"
-                                            value={pkg.packageId}
-                                            checked={formData.tourPackageIds.includes(pkg.packageId)}
-                                            onChange={handlePackageSelection}
-                                        />
-                                        <label className="form-check-label text-dark">{pkg.title}</label>
-                                    </div>
-                                ))}
+                <div className={styles.formWrapper}>
+                    <h2 className={styles.title}><strong>Editar Categoría</strong></h2>
+                    {isLoading ? (
+                        <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+                            <div className="spinner-border text-primary" role="status">
+                                <span className="visually-hidden">Cargando...</span>
                             </div>
                         </div>
-                        <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Actualizar Categoría</button>
-                    </form>
-                )}
+                    ) : (
+                        <form onSubmit={handleSubmit} className={styles.formContainer}>
+                            {["title", "description", "price", "restrictions", "discount"].map((field) => (
+                                <div key={field} className="mb-3 text-start">
+                                    <label className="form-label text-dark"><strong>{
+                                        field === "title" ? "Título" :
+                                        field === "description" ? "Descripción" :
+                                        field === "price" ? "Precio" :
+                                        field === "restrictions" ? "Restricciones" :
+                                        "Descuento"
+                                    }</strong></label>
+                                    <input
+                                        type={field === "price" || field === "discount" ? "number" : "text"}
+                                        className="form-control text-dark"
+                                        name={field}
+                                        value={formData[field]}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                </div>
+                            ))}
+
+                            <div className="mb-3 text-start">
+                                <label className="form-label text-dark"><strong>Moneda</strong></label>
+                                <select className="form-select text-dark" name="currency" value={formData.currency} onChange={handleChange}>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                    <option value="COP">COP</option>
+                                </select>
+                            </div>
+
+                            <div className="mb-3 text-start">
+                                <label className="form-label text-dark"><strong>Seleccionar Paquetes Turísticos</strong></label>
+                                <div className={styles.checkboxContainer}>
+                                    {packages.map((pkg) => (
+                                        <div key={pkg.packageId} className="form-check">
+                                            <input
+                                                type="checkbox"
+                                                className="form-check-input"
+                                                value={pkg.packageId}
+                                                checked={formData.tourPackageIds.includes(pkg.packageId)}
+                                                onChange={handlePackageSelection}
+                                            />
+                                            <label className="form-check-label text-dark">{pkg.title}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Actualizar Categoría</button>
+                        </form>
+                    )}
+                </div>
             </div>
         </div>
     );
