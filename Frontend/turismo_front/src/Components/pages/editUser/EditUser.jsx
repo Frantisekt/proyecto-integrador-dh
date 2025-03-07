@@ -126,6 +126,8 @@ const EditUser = () => {
                                 <select className="form-select" name="role" value={formData.role} onChange={handleChange} required>
                                     <option value="USER">Usuario</option>
                                     <option value="ADMIN">Administrador</option>
+                                    <option value="AGENT">Agente</option>
+
                                 </select>
                             </div>
                             <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Actualizar Datos</button>
