@@ -31,6 +31,7 @@ function MainContent() {
   const noFooterRoutes = [
     "/admin/packages",
     "/admin",
+    "/admin/login",
     "/admin/users",
     "/admin/categories",
     "/admin/users/register",
@@ -50,6 +51,7 @@ function MainContent() {
           <Route path="travelPackage" element={<Package />} />
           <Route path="admin/packages" element={<AdminPanel />} />
           <Route path="admin" element={<AdminPage />} />
+          <Route path="admin/login" element={<AdminLoginComponent />} />
           <Route path="admin/users" element={<UserManagement />} />
           <Route path="admin/categories" element={<CategoryManagement />} />
           <Route path="admin/users/register" element={<UserRegistry />} />

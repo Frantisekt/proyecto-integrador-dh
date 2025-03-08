@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';  // Importar SweetAlert2
 import { authService } from "../../services/authService";
 import { useAuth } from "../../context/AuthContext";  // Importamos el contexto
 import { registerUser } from "./registerUserForm"; // Añadir esta importación
@@ -20,6 +21,7 @@ const LoginForm = ({ mode }) => {
     role: "USER",
     state: true,
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -32,6 +34,7 @@ const LoginForm = ({ mode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       if (mode === "login") {
@@ -48,23 +51,55 @@ const LoginForm = ({ mode }) => {
         // Primero registramos el usuario con registerUser
         await registerUser(formData);
         
+        // Mostrar mensaje de éxito
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registro Exitoso!',
+          text: 'Usuario registrado correctamente',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+        // Limpiar el formulario
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          paternalSurname: "",
+          maternalSurname: "",
+          username: "",
+          dni: "",
+          newsletter: "NO",
+          role: "USER",
+          state: true,
+        });
+
+        // Opcional: cambiar al modo login después del registro
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+
         // Luego intentamos hacer login con las credenciales
         const loginData = {
           email: formData.email,
           password: formData.password,
         };
-        const response = await authService.login(loginData);
-        if (response.token) {
-          login(response.token);
+        const responseLogin = await authService.login(loginData);
+        if (responseLogin.token) {
+          login(responseLogin.token);
           navigate("/");
         }
       }
     } catch (err) {
-      setError(
-        mode === "login"
-          ? "Credenciales inválidas"
-          : "Error en el registro. Por favor, intente nuevamente."
-      );
+      console.error('Error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: err.message || 'Hubo un problema al procesar tu solicitud',
+      });
+      setError(err.message || "Error en el proceso");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -161,8 +196,8 @@ const LoginForm = ({ mode }) => {
               />
             </>
           )}
-          <button className="button" type="submit">
-            {mode === "login" ? "INICIAR SESIÓN" : "REGISTRARSE"}
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? "Procesando..." : (mode === "login" ? "INICIAR SESIÓN" : "REGISTRARSE")}
           </button>
         </div>
       </form>
