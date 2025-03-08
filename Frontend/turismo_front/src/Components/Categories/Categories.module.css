@@ -1,0 +1,136 @@
+.container {
+  padding: 4rem 2rem;
+  background-color: rgba(255, 241, 205, 1);
+}
+
+.header {
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.titleLine {
+  width: 40px;
+  height: 3px;
+  background-color: #17b1bd;
+  margin-right: 15px;
+}
+
+.title {
+  font-size: 2.5rem;
+  color: #023047;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #17b1bd;
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.filterButtons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.filterButton {
+  padding: 0.6rem 2rem;
+  border-radius: 50px;
+  border: none;
+  background-color: #ffffff;
+  color: #666;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.activeFilter {
+  background-color: #17b1bd;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.card1 {
+  grid-column: span 4;
+  height: 400px;
+}
+
+.card2 {
+  grid-column: span 2;
+  height: 400px;
+}
+
+.card3,
+.card4,
+.card5 {
+  grid-column: span 2;
+  height: 300px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .card1 {
+    grid-column: span 4;
+  }
+
+  .card2 {
+    grid-column: span 2;
+  }
+
+  .filterButtons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .titleContainer {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card1,
+  .card2,
+  .card3,
+  .card4,
+  .card5 {
+    grid-column: span 1;
+  }
+
+  .container {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .filterButton {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.8rem;
+  }
+}
+
