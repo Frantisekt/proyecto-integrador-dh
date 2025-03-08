@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+
+$borderRadius: 1px;
+$offset: 150%;
+$inputHeight: 63px;
+$transitionEasing: cubic-bezier(.36,1,.62,.98);
+
+$background1: rgba(41, 105, 161, 0.62);
+$background2: rgba(44, 73, 127, 0.67);
+$yellow: #219ebc;
+$white: #fff;
+
+@mixin box-shadow($props...) {
+    -webkit-box-shadow: $props;
+    -moz-box-shadow: $props;
+    box-shadow: $props;
+}
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin transition($transition...) {
+    -moz-transition: $transition;
+    -webkit-transition: $transition;
+    transition: $transition;
+}
+
+html, body, .container, #app {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    margin: 0 !important;
+}
+
+h1 {
+    color: #fff1cd;
+}
+
+.app {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("/img/bk.png");
+    background-size: cover;
+    background-position: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.form-block {
+    width: 100%;
+    max-width: 320px;
+    background: rgba(44, 73, 127, 0.67);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+
+    .container {
+        margin-bottom: 20px;
+        
+        .logo {
+            width: 120px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: #FFD700;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    }
+
+    &__toggle-block {
+        margin: 15px 0;
+        text-align: center;
+        
+        span {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        a {
+            color: #219ebc;
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 5px;
+            
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.form-group__input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    background: rgba(241, 239, 239, 0.808);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    
+    &::placeholder {
+        color: rgba(255,255,255,0.6);
+    }
+
+    &:focus {
+        outline: none;
+        background: rgba(255,255,255,0.15);
+    }
+}
+
+
+.button {
+    width: 100%;
+    padding: 12px;
+    background: #219ebc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    &:hover {
+        background: #1a7d96;
+    }
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-weight: 300;
+    color: rgba(255, 2505, 255, .5);
+}
+::-moz-placeholder { /* Firefox 19+ */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+:-ms-input-placeholder { /* IE 10+ */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+:-moz-placeholder { /* Firefox 18- */
+    font-weight: 300;
+    color: rgba(255, 255, 255, .5);
+}
+
+.tooltip {
+    padding: 7px;
+    @include border-radius(1px);
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-size: 12px;
+    position: absolute;
+    top: -10px;
+    right: 0
+}
+
+.container {
+    text-align: center;
+  }
+
+  .logo {
+    width: 100%; /* o cualquier tamaño */
+  }
+
+.form-group__checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  
+  input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  label {
+    color: white;
+    font-size: 14px;
+  }
+}
+
+.error-message {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: center;
+}
