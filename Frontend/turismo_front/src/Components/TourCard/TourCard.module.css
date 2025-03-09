@@ -1,0 +1,140 @@
+.card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .cardImage {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .card:hover .cardImage {
+    transform: scale(1.05);
+  }
+  
+  .cardInfo {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+  }
+  
+  .cardTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #023047;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    position: relative;
+  }
+  
+  .cardTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background-color: #ffb703;
+    transition: width 0.3s ease;
+  }
+  
+  .card:hover .cardTitle::after {
+    width: 60px;
+  }
+  
+  .cardDescription {
+    font-size: 1rem;
+    color: #666;
+    margin: 12px 0;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  
+  .cardPrice {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffb703;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .cardPrice::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 20px;
+    background-color: #ffb703;
+    margin-right: 10px;
+    border-radius: 3px;
+  }
+  
+  .cardLink {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #023047;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 2px solid #023047;
+    box-shadow: 0 4px 6px rgba(2, 48, 71, 0.1);
+  }
+  
+  .cardLink:hover {
+    background-color: #ffb703;
+    color: #023047;
+    border-color: #ffb703;
+    box-shadow: 0 6px 12px rgba(255, 183, 3, 0.2);
+  }
+  
+  /* Añadir un badge para destacar características especiales */
+  .badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #ffb703;
+    color: #023047;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .cardImage {
+      height: 180px;
+    }
+    
+    .cardInfo {
+      padding: 15px;
+    }
+    
+    .cardTitle {
+      font-size: 1.3rem;
+    }
+  }
+  

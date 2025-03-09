@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import Gallery from '../../gallery/Gallery';
 import flecha_atras from '../../../assets/flecha_atras.png'
 import PackageDetails from '../../packageDetails/PackageDetails';
+import PackageFeatures from '../../packageFeatures/PackageFeatures';
+
 
 const Package = () => {
     /*const { id } = useParams();
@@ -27,24 +29,24 @@ const Package = () => {
 
     //parte del front harcodeado
     const images = [
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/10/74/8b/bungalows-facing-mont.jpg?w=700&h=-1&s=1",
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/60/b0/bd/bora-bora.jpg?w=1400&h=1400&s=1",
-        "https://images.trvl-media.com/lodging/1000000/560000/558800/558749/37620ff7.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
-        "https://images.prismic.io/airmoana/Zhch6zjCgu4jzvRD_DestinationBoraBora-HERO-BoraBora.jpg?auto=format,compress",
-        "https://thalasso.intercontinental.com/wp-content/uploads/2020/11/17-12-ICB-0082_Tim-Mckenna-1024x768.jpg",
-        "https://images.contentstack.io/v3/assets/blt00454ccee8f8fe6b/blt7d6d1039edc8fad1/60ab286f909370737ae497ee/UK_Bora-Bora_French_Polynesia_Header.jpg"
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/d6/c6/f8/caption.jpg?w=1400&h=1400&s=1&cx=989&cy=446&chk=v1_05762c604da56e26277e",
+        "https://static.hosteltur.com/app/public/uploads/img/articles/2023/06/07/L_134919_londres-unsplash.jpg",
+        "https://viajes.nationalgeographic.com.es/medio/2021/11/29/ljubljana-eslovenia_4a5588a6_1254x836.jpg",
+        "https://turismo.encolombia.com/wp-content/uploads/2022/08/Italia-8-Lugares-Fascinantes-que-No-te-Puedes-Perder.webp",
+        "https://concepto.de/wp-content/uploads/2020/03/coliseo-romano-scaled-e1731632602779.jpg",
+        "https://www.deutschland.de/sites/default/files/styles/image_carousel_mobile/public/media/image/Glaspyramide-vor-dem-Louvre-in-Paris.jpg?itok=F_ukFGXv"
     ];
 
     const travelPackage = {
         packageId: 1,
         title: "Tour Europa",
-        description: "Recorrido por las principales ciudades europeas",
+        description: "Recorrido por las principales islas del Caribe",
         state: true,
         categories: [
             {
                 categoryId: 1,
                 title: "París",
-                description: "Un tour por París es una experiencia inolvidable que te permitirá descubrir la belleza y el encanto de la capital francesa, una de las ciudades más icónicas y románticas del mundo. Durante el recorrido, explorarás sus monumentos más emblemáticos, sus calles llenas de historia, y sus hermosos parques y jardines. Además de estos puntos icónicos, el tour podría incluir un paseo por el Sena, donde se puede disfrutar de un romántico crucero por el río, y una parada en los Jardines de Luxemburgo, ideales para relajarse y disfrutar de la naturaleza.",
+                description: "Imagínate un tour nocturno que te lleve a descubrir la magia de Los Roques, Tortuga y Margarita. Durante la noche, estas islas se transforman en un escenario de ensueño, donde el reflejo de la luna se funde con las aguas cristalinas del mar Caribe. ",
                 price: "1000",
                 currency: "EUR",
                 restrictions: "Ninguna",
@@ -52,8 +54,8 @@ const Package = () => {
                 mediaCategories: [
                     {
                         mediaCategoryId: 1,
-                        mediaTitle: "Torre Eiffel",
-                        mediaDescription: "Un tour nocturno en la Torre Eiffel es una experiencia mágica que ofrece una vista impresionante de París iluminado. Al subir a la cima de la torre, podrás disfrutar de una panorámica única de la ciudad bajo el manto estrellado, mientras las luces de la ciudad brillan a lo lejos, creando un ambiente romántico y lleno de encanto.",
+                        mediaTitle: "Los Roques, Tortuga y Margarita",
+                        mediaDescription: "En Los Roques, la tranquilidad se acentúa, permitiéndote contemplar un cielo estrellado sin igual, en un ambiente íntimo y sereno. En Tortuga, la brisa marina y el sonido de las olas crean un telón de fondo perfecto para disfrutar de una velada relajada, mientras pequeñas fogatas iluminan la costa y reavivan historias de antaño. Finalmente, en Margarita, la vida nocturna se mezcla con la naturaleza, ofreciendo vistas panorámicas donde el resplandor de la ciudad se fusiona con la inmensidad del océano. Este recorrido te invita a sumergirte en una experiencia única, donde cada isla revela su propio encanto bajo el manto estrellado, haciendo de la noche un espectáculo inolvidable.",
                     },
                 ],
             },
@@ -62,6 +64,20 @@ const Package = () => {
     const { title, description, categories } = travelPackage;
     const [{ title: categoryTitle, description: categoryDescription, price, currency, restrictions, mediaCategories }] = categories || [];
     const [{ mediaTitle, mediaDescription, media }] = mediaCategories || [];
+    const characteristics = [
+        "Transporte",
+        "Cata de vinos",
+        "Almuerzo",
+        "Bebidas",
+        "Alojamiento con estrellas (doradas o plateadas)",
+        "N# días",
+        "Tour",
+        "Spa",
+        "Gliding",
+        "Rapel",
+        "Aire acondicionado"
+    ];
+    
 
     return (
         <div className={styles.mainContainer}>
@@ -81,6 +97,7 @@ const Package = () => {
                 mediaTitle={mediaTitle} 
                 mediaDescription={mediaDescription} 
             />
+            <PackageFeatures features={characteristics} />
         </div >
     );
 }
