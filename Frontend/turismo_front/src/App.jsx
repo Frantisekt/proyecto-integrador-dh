@@ -15,6 +15,7 @@ import EditUser from "./Components/pages/editUser/EditUser.jsx";
 import CategoryRegistry from "./Components/pages/CategoryRegistry/CategoryRegistry.jsx";
 import CategoryList from "./Components/pages/categoryList/CategoryList.jsx";
 import EditCategory from "./Components/pages/editCategory/EditCategory.jsx";
+import CategoryTours from "./Components/pages/CategoryTours/CategoryTours.jsx";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function MainContent() {
           <Route path="*" element={<h1>Not Found 404</h1>} />
           <Route index element={<Home />} />
           <Route path="travelPackage" element={<Package />} />
+          <Route path="/packages/:categoryId" element={<CategoryTours />} />
           <Route path="admin/packages" element={<AdminPanel />} />
           <Route path="admin" element={<AdminPage />} />
           <Route path="admin/login" element={<AdminLoginComponent />} />

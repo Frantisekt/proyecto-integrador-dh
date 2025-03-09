@@ -37,7 +37,7 @@ export const authService = {
                 password: userData.password,
                 dni: userData.dni,
                 newsletter: userData.newsletter || "SI",
-                role: "USER"
+                role: userData.role || "USER"  // Aseguramos que siempre tenga un valor por defecto
             });
             
             if (response.data) {
@@ -48,19 +48,16 @@ export const authService = {
                     api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
                 }
                 
-                // Mostrar alerta de éxito
                 alert(`¡Usuario creado exitosamente! Bienvenido ${response.data.username}`);
-                
                 console.log('Registro exitoso:', response.data);
             }
             return response.data;
         } catch (error) {
             console.error('Error en registro:', error);
-            throw error.response?.data || { 
-                message: 'Error al registrar usuario' 
-            };
+            throw error.response?.data || { message: 'Error al registrar usuario' };
         }
     },
+    
 
     logout: () => {
         localStorage.removeItem('user');
