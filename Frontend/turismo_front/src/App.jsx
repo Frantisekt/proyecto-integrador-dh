@@ -3,10 +3,6 @@ import Package from "./Components/pages/package/Package";
 import Layout from "./Components/layout/Layout";
 import Home from "./Components/pages/home/Home";
 import Footer from "./Components/Footer/Footer";
-<<<<<<< HEAD
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-=======
 import AdminPanel from "./Components/pages/admin/AdminPanel";
 import LoginComponent from "./Components/auth/LoginComponent.jsx";
 import AdminLoginComponent from "./Components/auth/AdminLoginComponent.jsx";
@@ -20,24 +16,11 @@ import CategoryRegistry from "./Components/pages/CategoryRegistry/CategoryRegist
 import CategoryList from "./Components/pages/categoryList/CategoryList.jsx";
 import EditCategory from "./Components/pages/editCategory/EditCategory.jsx";
 import CategoryTours from "./Components/pages/CategoryTours/CategoryTours.jsx";
->>>>>>> origin/developer
 
 function App() {
   return (
     <BrowserRouter>
-<<<<<<< HEAD
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="*" element={<h1>Not Found 404</h1>} />
-          <Route index element={<Home />} />
-          {/* <Route path="travelPackage/:id" element={<Package />} /> */} 
-          <Route path="travelPackage" element={<Package />} />
-        </Route>
-      </Routes>
-      <Footer />
-=======
       <MainContent />
->>>>>>> origin/developer
     </BrowserRouter>
   );
 }
