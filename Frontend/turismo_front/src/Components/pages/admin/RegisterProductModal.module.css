@@ -7,7 +7,7 @@
     background: rgba(0, 49, 69, 0.7); /* Color base #003145 con opacidad */
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center; /* Centrado en toda la pantalla */
     padding-top: 50px;
     z-index: 1000;
 }
@@ -19,11 +19,12 @@
     width: 90%;
     max-width: 800px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Añadido para manejar el contenido desbordado */
 }
 
 .form {
     display: grid;
-    grid-template-columns: 1fr 1fr 150px auto;
+    grid-template-columns: 1fr; /* Cambiado para una sola columna */
     gap: 15px;
     align-items: center;
     background: white;
@@ -136,7 +137,7 @@
 /* Responsive */
 @media (max-width: 992px) {
     .form {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr; /* Cambiado a una sola columna para pantallas más pequeñas */
     }
 }
 
@@ -177,7 +178,7 @@
 /* Actualizar el media query para incluir el buttonGroup */
 @media (max-width: 576px) {
     .form {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Para pantallas muy pequeñas */
     }
     
     .buttonGroup {
@@ -211,4 +212,4 @@
 .formGroup select:disabled {
     background-color: #e9ecef;
     cursor: not-allowed;
-} 
+}
