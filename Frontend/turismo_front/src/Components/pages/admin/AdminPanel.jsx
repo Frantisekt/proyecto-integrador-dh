@@ -12,17 +12,19 @@ const AdminPanel = () => {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [totalPages, setTotalPages] = useState(1);
     const itemsPerPage = 10;
 
     useEffect(() => {
         fetchPackages();
-    }, []);
+    }, [currentPage]);
 
     const fetchPackages = async () => {
         try {
             setLoading(true);
-            const data = await tourPackageService.getAllPackages();
-            setPackages(data);
+            const response = await tourPackageService.getAllPackages(currentPage - 1);
+            setPackages(response.content);
+            setTotalPages(response.totalPages);
             setError(null);
         } catch (err) {
             setError('Error al cargar los paquetes');
@@ -79,16 +81,6 @@ const AdminPanel = () => {
         }
     };
 
-    // Calcular el total de páginas
-    const totalPages = Math.max(1, Math.ceil(packages.length / itemsPerPage));
-
-    // Obtener los items de la página actual
-    const getCurrentItems = () => {
-        const indexOfLastItem = currentPage * itemsPerPage;
-        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-        return packages.slice(indexOfFirstItem, indexOfLastItem);
-    };
-
     return (
         <>
             <div className={styles.mobileMessage}>
@@ -130,7 +122,7 @@ const AdminPanel = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getCurrentItems().map(pkg => (
+                                {packages.map(pkg => (
                                     <tr key={pkg.packageId}>
                                         <td>{pkg.title}</td>
                                         <td>{pkg.description}</td>
