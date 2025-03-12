@@ -6,6 +6,7 @@ import styles from "./CategoryRegistry.module.css";
 import { FaPlusCircle, FaList } from "react-icons/fa";
 import addCategory from "../../services/AddCategory";
 import getAllPackages from "../../services/getAllPackages";
+import { mediaCategoriesService } from '../../../services/mediaCategoriesService';
 
 const adminOptions = [
     {
@@ -31,6 +32,8 @@ const CategoryRegistry = () => {
         discount: "",
         tourPackageIds: []
     });
+    const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const [packages, setPackages] = useState([]);
 
@@ -38,7 +41,7 @@ const CategoryRegistry = () => {
         const fetchPackages = async () => {
             try {
                 const data = await getAllPackages();
-                setPackages(data);
+                setPackages(data.content);
             } catch (error) {
                 console.error("Error al obtener los paquetes turísticos:", error);
             }
@@ -72,6 +75,7 @@ const CategoryRegistry = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const formattedData = {
                 title: formData.title,
@@ -113,6 +117,8 @@ const CategoryRegistry = () => {
                 icon: "error",
                 confirmButtonText: "Cerrar"
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -196,6 +202,16 @@ const CategoryRegistry = () => {
                                 <option value={true}>Activo</option>
                                 <option value={false}>Inactivo</option>
                             </select>
+                        </div>
+
+                        <div className="mb-3 text-start">
+                            <label className={`form-label ${styles.label}`}> Subir imagen</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files[0])}
+                                disabled={loading}
+                            />
                         </div>
 
                         <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Registrar Categoría</button>
