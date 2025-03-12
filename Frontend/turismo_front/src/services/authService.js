@@ -75,27 +75,66 @@ export const authService = {
         }
     },
 
+    isAdminLoggedIn: () => {
+        try {
+            const adminData = localStorage.getItem('adminData');
+            if (!adminData) return false;
+            
+            const parsedData = JSON.parse(adminData);
+            return parsedData && parsedData.token && parsedData.role === 'ADMIN';
+        } catch (error) {
+            console.error('Error verificando estado de admin:', error);
+            return false;
+        }
+    },
+
     adminLogin: async (credentials) => {
         try {
-            const response = await api.post('/auth/admin/login', {
-                email: credentials.email,
-                password: credentials.password
-            });
+            const response = await api.post(ENDPOINTS.AUTH.ADMIN_LOGIN, credentials);
             
-            if (response.data) {
-                localStorage.setItem('user', JSON.stringify(response.data));
-                
-                if (response.data.token) {
-                    localStorage.setItem('token', response.data.token);
-                    api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-                }
+            if (response.data.error) {
+                throw new Error(response.data.error);
             }
+
+            if (!response.data.token) {
+                throw new Error('No se recibió el token de autenticación');
+            }
+
+            // Verificar rol
+            if (response.data.role !== 'ADMIN') {
+                throw new Error('Acceso denegado: No tienes permisos de administrador');
+            }
+
+            // Guardar datos y token
+            localStorage.setItem('adminData', JSON.stringify(response.data));
+            
+            if (response.data.token) {
+                api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            }
+
             return response.data;
         } catch (error) {
-            console.error('Error en login de admin:', error);
-            throw error.response?.data || { 
-                message: 'Error al iniciar sesión como administrador' 
-            };
+            console.error('Error en login admin:', error);
+            throw new Error(
+                error.response?.data?.error || 
+                error.message || 
+                'Error al iniciar sesión como administrador'
+            );
+        }
+    },
+
+    adminLogout: () => {
+        localStorage.removeItem('adminData');
+        delete api.defaults.headers.common['Authorization'];
+    },
+
+    getAdminData: () => {
+        try {
+            const adminData = localStorage.getItem('adminData');
+            return adminData ? JSON.parse(adminData) : null;
+        } catch (error) {
+            console.error('Error al obtener datos del admin:', error);
+            return null;
         }
     }
 }; 

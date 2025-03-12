@@ -6,18 +6,36 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
+  },
+  withCredentials: true
 });
 
-// Interceptor para manejar errores
-api.interceptors.response.use(
-  response => response,
+// Interceptor para debugging
+api.interceptors.request.use(
+  config => {
+    console.log('Request:', {
+      url: config.url,
+      method: config.method,
+      data: config.data
+    });
+    return config;
+  },
   error => {
-    console.error('Error en la petición:', {
-      url: error.config?.url,
-      method: error.config?.method,
+    console.error('Request Error:', error);
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  response => {
+    console.log('Response:', response.data);
+    return response;
+  },
+  error => {
+    console.error('Response Error:', {
       status: error.response?.status,
-      data: error.response?.data
+      data: error.response?.data,
+      message: error.message
     });
     return Promise.reject(error);
   }
