@@ -34,7 +34,7 @@ export const tourPackageService = {
         try {
             console.log('Intentando obtener paquetes desde:', BASE_URL);
             const response = await axiosInstance.get('', {
-                timeout: 15000  // Aumentamos el timeout a 15 segundos
+                timeout: 50000  
             });
             console.log('Respuesta exitosa:', response.data);
             return response.data;
@@ -186,5 +186,23 @@ export const tourPackageService = {
             console.error('Error al remover media del paquete:', error);
             throw new Error('Error al eliminar la imagen del paquete: ' + error.message);
         }
+    },
+
+    assignMedia: async (packageId, mediaPackageId) => {
+        try {
+            const url = `${BASE_URL}/${packageId}/media/${mediaPackageId}`;
+            const data = {
+                mediaPackageId: mediaPackageId
+            };
+       
+            console.log(`Asignando imagen ${mediaPackageId} al paquete ${packageId} en: ${url}`);
+            const response = await axiosInstance.post(url, data);
+            console.log('Imagen asignada correctamente al paquete.');
+        } catch (error) {
+            console.error('Error al asignar la imagen al paquete:', error);
+            throw new Error(error.response?.data?.message || 'Error al asignar la imagen al paquete');
+        }
     }
+    
+   
 }; 
