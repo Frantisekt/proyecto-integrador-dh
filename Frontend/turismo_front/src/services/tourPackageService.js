@@ -30,11 +30,15 @@ axiosInstance.interceptors.response.use(
 );
 
 export const tourPackageService = {
-    getAllPackages: async () => {
+    getAllPackages: async (page = 0) => {
         try {
             console.log('Intentando obtener paquetes desde:', BASE_URL);
-            const response = await axiosInstance.get('', {
-                timeout: 50000  
+            const response = await axiosInstance.get('/paged', {
+                timeout: 50000,
+                params: {
+                    page: page,
+                    size: 10
+                }
             });
             console.log('Respuesta exitosa:', response.data);
             return response.data;
