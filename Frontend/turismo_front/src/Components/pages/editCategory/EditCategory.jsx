@@ -59,7 +59,7 @@ const EditCategory = () => {
         const fetchPackages = async () => {
             try {
                 const data = await getAllPackages();
-                setPackages(data);
+                setPackages(data.content);
             } catch (error) {
                 console.error("Error al obtener los paquetes turísticos:", error);
             } finally {

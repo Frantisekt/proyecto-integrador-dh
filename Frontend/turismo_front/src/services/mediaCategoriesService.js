@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const MEDIA_BASE_URL = 'http://localhost:8087/api/mediacategories';
+const MEDIA_BASE_URL = 'http://localhost:8087/api/media-categories';
 const CATEGORIES_BASE_URL = 'http://localhost:8087/api/categories';
 
 const axiosInstance = axios.create({
