@@ -16,6 +16,7 @@ import CategoryRegistry from "./Components/pages/CategoryRegistry/CategoryRegist
 import CategoryList from "./Components/pages/categoryList/CategoryList.jsx";
 import EditCategory from "./Components/pages/editCategory/EditCategory.jsx";
 import CategoryTours from "./Components/pages/CategoryTours/CategoryTours.jsx";
+import ProtectedRoute from "./Components/auth/ProtectedRoute.jsx";
 
 function App() {
   return (
@@ -51,19 +52,20 @@ function MainContent() {
           <Route index element={<Home />} />
           <Route path="travelPackage" element={<Package />} />
           <Route path="/packages/:categoryId" element={<CategoryTours />} />
-          <Route path="admin/packages" element={<AdminPanel />} />
-          <Route path="admin" element={<AdminPage />} />
           <Route path="admin/login" element={<AdminLoginComponent />} />
-          <Route path="admin/users" element={<UserManagement />} />
-          <Route path="admin/categories" element={<CategoryManagement />} />
-          <Route path="admin/users/register" element={<UserRegistry />} />
-          <Route path="admin/users/list" element={<UserList />} />
-          <Route path="admin/users/edit/:id" element={<EditUser />} /> 
-          <Route path="admin/categories/add" element={<CategoryRegistry />} />
-          <Route path="admin/categories/list" element={<CategoryList />} />
-          <Route path="admin/categories/edit/:id" element={<EditCategory />} />
           <Route path="auth" element={<LoginComponent />} />
-          <Route path="administrador" element={<AdminLoginComponent />} />
+          
+          {/* Rutas protegidas de administrador */}
+          <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
+          <Route path="admin/packages" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+          <Route path="admin/users" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+          <Route path="admin/categories" element={<ProtectedRoute><CategoryManagement /></ProtectedRoute>} />
+          <Route path="admin/users/register" element={<ProtectedRoute><UserRegistry /></ProtectedRoute>} />
+          <Route path="admin/users/list" element={<ProtectedRoute><UserList /></ProtectedRoute>} />
+          <Route path="admin/users/edit/:id" element={<ProtectedRoute><EditUser /></ProtectedRoute>} />
+          <Route path="admin/categories/add" element={<ProtectedRoute><CategoryRegistry /></ProtectedRoute>} />
+          <Route path="admin/categories/list" element={<ProtectedRoute><CategoryList /></ProtectedRoute>} />
+          <Route path="admin/categories/edit/:id" element={<ProtectedRoute><EditCategory /></ProtectedRoute>} />
         </Route>
       </Routes>
       {!noFooterRoutes.includes(location.pathname) && <Footer />}

@@ -75,17 +75,23 @@ export const authService = {
         }
     },
 
+    isAdminLoggedIn: () => {
+        try {
+            const adminData = localStorage.getItem('adminData');
+            if (!adminData) return false;
+            
+            const parsedData = JSON.parse(adminData);
+            return parsedData && parsedData.token && parsedData.role === 'ADMIN';
+        } catch (error) {
+            console.error('Error verificando estado de admin:', error);
+            return false;
+        }
+    },
+
     adminLogin: async (credentials) => {
         try {
-            console.log('Intentando login admin con:', {
-                email: credentials.email,
-                password: '***'
-            });
-            
             const response = await api.post(ENDPOINTS.AUTH.ADMIN_LOGIN, credentials);
             
-            console.log('Respuesta del servidor:', response.data);
-
             if (response.data.error) {
                 throw new Error(response.data.error);
             }
@@ -101,26 +107,14 @@ export const authService = {
 
             // Guardar datos y token
             localStorage.setItem('adminData', JSON.stringify(response.data));
-            localStorage.setItem('isAdminLoggedIn', 'true');
             
             if (response.data.token) {
-                localStorage.setItem('adminToken', response.data.token);
                 api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
             }
 
             return response.data;
         } catch (error) {
             console.error('Error en login admin:', error);
-            console.error('Detalles del error:', {
-                status: error.response?.status,
-                data: error.response?.data,
-                message: error.message
-            });
-            
-            if (error.response?.status === 403) {
-                throw new Error('Acceso denegado. Verifica tus credenciales de administrador.');
-            }
-
             throw new Error(
                 error.response?.data?.error || 
                 error.message || 
@@ -129,14 +123,8 @@ export const authService = {
         }
     },
 
-    isAdminLoggedIn: () => {
-        return localStorage.getItem('isAdminLoggedIn') === 'true';
-    },
-
     adminLogout: () => {
         localStorage.removeItem('adminData');
-        localStorage.removeItem('adminToken');
-        localStorage.removeItem('isAdminLoggedIn');
         delete api.defaults.headers.common['Authorization'];
     },
 

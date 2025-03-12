@@ -44,7 +44,7 @@ const AdminLoginForm = ({ mode }) => {
         showConfirmButton: false
       });
 
-      navigate("/admin/dashboard");
+      navigate("/admin");
     } catch (err) {
       console.error('Error de login:', err);
       setError(err.message || "Credenciales inválidas");
