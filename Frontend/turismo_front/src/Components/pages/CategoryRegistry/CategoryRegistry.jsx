@@ -4,8 +4,11 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./CategoryRegistry.module.css";
 import { FaPlusCircle, FaList } from "react-icons/fa";
+import getAllCategories from "../../services/getAllCategories";
 import addCategory from "../../services/AddCategory";
 import getAllPackages from "../../services/getAllPackages";
+import { mediaCategoriesService } from '../../../services/mediaCategoriesService';
+import { categoryServices } from '../../../services/categoryServices';
 
 const adminOptions = [
     {
@@ -31,6 +34,8 @@ const CategoryRegistry = () => {
         discount: "",
         tourPackageIds: []
     });
+    const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const [packages, setPackages] = useState([]);
 
@@ -38,7 +43,7 @@ const CategoryRegistry = () => {
         const fetchPackages = async () => {
             try {
                 const data = await getAllPackages();
-                setPackages(data);
+                setPackages(data.content);
             } catch (error) {
                 console.error("Error al obtener los paquetes turísticos:", error);
             }
@@ -72,6 +77,15 @@ const CategoryRegistry = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+
+        const validationError = validateCategoryForm(formData);
+        if (validationError) {
+            Swal.fire({ title: "Error", text: validationError, icon: "error", confirmButtonText: "Cerrar" });
+            setLoading(false);
+            return;
+        }
+
         try {
             const formattedData = {
                 title: formData.title,
@@ -86,6 +100,20 @@ const CategoryRegistry = () => {
             };
 
             await addCategory(formattedData);
+            let categories = await getAllCategories()
+            let category = categories.find(category => category.title == formattedData.title)
+            let categoryId = category.categoryId
+            
+            if (image) {
+                // 2. Subir la imagen
+                const mediaCategoriesResponse = await mediaCategoriesService.upload(image);
+                const mediaCategoryId = mediaCategoriesResponse.mediaCategoryId;  // Deberíamos usar el id completo de la respuesta
+                console.log('Imagen subida con ID:', mediaCategoryId);
+
+                // 3. Asignar la imagen al paquete
+                await categoryServices.assignMedia(categoryId, mediaCategoryId);
+                console.log(`Imagen ${mediaCategoryId} asociada al paquete ${categoryId}`);
+            }
 
             Swal.fire({
                 title: "¡Categoría Registrada!",
@@ -113,8 +141,24 @@ const CategoryRegistry = () => {
                 icon: "error",
                 confirmButtonText: "Cerrar"
             });
+        } finally {
+            setLoading(false)
         }
     };
+
+    const validateCategoryForm = (data) => {
+        if (!data.title.trim()) return "El título es obligatorio.";
+        if (!data.description.trim()) return "La descripción es obligatoria.";
+        if (!data.price || isNaN(data.price) || data.price <= 0) return "El precio debe ser un número positivo.";
+        if (data.discount && (isNaN(data.discount) || data.discount < 0 || data.discount > 100)) 
+          return "El descuento debe estar entre 0 y 100.";
+        if (!data.currency) return "Debe seleccionar una moneda.";
+        if (!Array.isArray(data.tourPackageIds) || data.tourPackageIds.length === 0) 
+          return "Debe seleccionar al menos un paquete turístico.";
+        
+        return null; // No hay errores
+      };
+      
 
     return (
         <div className={styles.adminContainer}>
@@ -137,7 +181,7 @@ const CategoryRegistry = () => {
             <div className={styles.content}>
                 <div className={styles.cardsContainer}>
                     <h2 className={styles.formTitle}>Registro de Categoría</h2>
-                    <form onSubmit={handleSubmit} className={styles.formContainer}>
+                    <form onSubmit={handleSubmit} className={styles.formContainer} noValidate>
                         {[
                             { name: "title", label: "Título" },
                             { name: "description", label: "Descripción" },
@@ -196,6 +240,16 @@ const CategoryRegistry = () => {
                                 <option value={true}>Activo</option>
                                 <option value={false}>Inactivo</option>
                             </select>
+                        </div>
+
+                        <div className="mb-3 text-start">
+                            <label className={`form-label ${styles.label}`}> Subir imagen</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setImage(e.target.files[0])}
+                                disabled={loading}
+                            />
                         </div>
 
                         <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Registrar Categoría</button>

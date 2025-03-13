@@ -35,7 +35,16 @@ const LoginForm = ({ mode }) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+    const validationError = validateForm(formData, mode);
+    if (validationError) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Datos incorrectos',
+        text: validationError,
+      });
+      setLoading(false);
+      return;
+    }
     try {
       if (mode === "login") {
         const loginData = {
@@ -103,9 +112,35 @@ const LoginForm = ({ mode }) => {
     }
   };
 
+  const validateForm = (data, mode) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const dniRegex = /^[0-9]{8}$/; // DNI de 8 dígitos
+  
+    // Validaciones para LOGIN
+    if (mode === "login") {
+      if (!emailRegex.test(data.email)) return "El correo electrónico no es válido.";
+      if (!data.password.trim()) return "La contraseña es obligatoria.";
+      if (!passwordRegex.test(data.password)) return "La contraseña debe tener al menos 8 caracteres, incluir un número y un símbolo.";
+      return null;
+    }
+  
+    // Validaciones para REGISTRO
+    if (!data.name.trim()) return "El nombre es obligatorio.";
+    if (!data.paternalSurname.trim()) return "El apellido paterno es obligatorio.";
+    if (!data.maternalSurname.trim()) return "El apellido materno es obligatorio.";
+    if (!data.username.trim()) return "El nombre de usuario es obligatorio.";
+    if (!emailRegex.test(data.email)) return "El correo electrónico no es válido.";
+    if (!passwordRegex.test(data.password)) return "La contraseña debe tener al menos 8 caracteres, incluir un número y un símbolo.";
+    if (!dniRegex.test(data.dni)) return "El DNI debe contener 8 dígitos numéricos.";
+  
+    return null; // Si todo está correcto, no hay error
+  };
+  
+
   return (
     <div className="form-block__input-wrapper">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         {error && <div className="error-message">{error}</div>}
         <div className={`form-group form-group--${mode}`}>
           {mode === "login" ? (

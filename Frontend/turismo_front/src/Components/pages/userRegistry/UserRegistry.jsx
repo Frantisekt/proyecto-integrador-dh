@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registerUser } from "../../services/registerUser";
 import { Link } from "react-router-dom";
-import Swal from "sweetalert2"; 
+import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./UserRegistry.module.css";
 import { FaUserCog } from "react-icons/fa";
@@ -31,9 +31,13 @@ const UserRegistry = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const validation = validateFormData(formData);
+        if (!validation.valid) {
+            return Swal.fire("Error", validation.message, "error");
+        }
         try {
             await registerUser(formData);
-            
+
             // ✅ Mostrar mensaje con SweetAlert
             Swal.fire({
                 title: "¡Registro exitoso!",
@@ -65,6 +69,17 @@ const UserRegistry = () => {
         }
     };
 
+    const validateFormData = (data) => {
+        if (data.name.trim().length < 3) return { valid: false, message: "El nombre debe tener al menos 3 caracteres." };
+        if (data.paternalSurname.trim().length < 3) return { valid: false, message: "El primer apellido debe tener al menos 3 caracteres." };
+        if (data.maternalSurname.trim().length < 3) return { valid: false, message: "El segundo apellido debe tener al menos 3 caracteres." };
+        if (!/^\S+@\S+\.\S+$/.test(data.email)) return { valid: false, message: "Correo electrónico no válido." };
+        if (data.password.length < 6) return { valid: false, message: "La contraseña debe tener al menos 6 caracteres." };
+        if (!/^\d{7,9}$/.test(data.dni)) return { valid: false, message: "El DNI debe ser un número de 7 a 9 dígitos." };
+    
+        return { valid: true };
+    };
+
     return (
         <div className={styles.adminContainer}>
             {/* Sidebar */}
@@ -88,7 +103,7 @@ const UserRegistry = () => {
             <div className={styles.content}>
                 <div className={styles.cardsContainer}>
                     <h2 className={styles.formTitle}>Registro de Usuario</h2>
-                    <form onSubmit={handleSubmit} className={styles.formContainer}>
+                    <form onSubmit={handleSubmit} className={styles.formContainer} noValidate>
                         {[
                             { label: "Nombre", name: "name", type: "text" },
                             { label: "Primer apellido", name: "paternalSurname", type: "text" },

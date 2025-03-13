@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './EditPackageModal.module.css';
 import Swal from 'sweetalert2';
 import { tourPackageService } from '../../../services/tourPackageService';
-import { obtenerCategorias } from "../../../services/categoryServices";
+import { categoryServices } from "../../../services/categoryServices";
 
 const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -54,7 +54,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
   useEffect(() => {
     const loadCategories = async () => {
       try {
-        const cats = await obtenerCategorias();
+        const cats = await categoryServices.obtenerCategorias();
         setAllCategories(cats);
       } catch (err) {
         console.error('Error al cargar las categorías:', err);
