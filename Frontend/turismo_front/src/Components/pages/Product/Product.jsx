@@ -24,22 +24,20 @@ const Product = () => {
     cargarProductos();
   }, []);  
 
-  
   if (loading) {
     return (
       <div className={styles.loading}>
         <div className={styles.loadingSpinner}></div>
-        Cargando productos...
+        Cargando paquetes...
       </div>
     );
   }
-
 
   if (products.length === 0) {
     return (
       <div className={styles.container}>
         <div className={styles.titleContainer}>
-          <h2 className={styles.title}>Nuestros Productos</h2>
+          <h2 className={styles.title}>Nuestros Paquetes de Viaje</h2>
         </div>
         <div className={styles.noProducts}>
           <div className={styles.noProductsIcon}>🛫</div>
@@ -52,7 +50,6 @@ const Product = () => {
     );
   }
 
-
   return (
     <section className={styles.container}>
       <div className={styles.titleContainer}>
@@ -61,16 +58,23 @@ const Product = () => {
       </div>
 
       <div className={styles.grid}>
-        {products.map((product) => (
-          <TourCard
-            key={product.id}
-            title={product.title}
-            imageUrl={product.imageUrl || "https://via.placeholder.com/150"}
-            description={product.description}
-            currency={product.price ? `$${product.price}` : "Precio no disponible"}
-            link={`/product/${product.id}`}
-          />
-        ))}
+        {products.map((product) => {
+       
+          const imageUrl = (product.mediaPackages && product.mediaPackages.length > 0 && product.mediaPackages[0].mediaUrl)
+            ? product.mediaPackages[0].mediaUrl
+            : "https://via.placeholder.com/150"; 
+
+          return (
+            <TourCard
+              key={product.id}
+              title={product.title}
+              imageUrl={imageUrl}  
+              description={product.description}
+              currency={product.price ? `$${product.price}` : "Precio no disponible"}
+              link={`/product/${product.id}`}
+            />
+          );
+        })}
       </div>
     </section>
   );
