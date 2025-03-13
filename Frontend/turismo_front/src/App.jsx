@@ -17,6 +17,7 @@ import CategoryList from "./Components/pages/categoryList/CategoryList.jsx";
 import EditCategory from "./Components/pages/editCategory/EditCategory.jsx";
 import CategoryTours from "./Components/pages/CategoryTours/CategoryTours.jsx";
 import ProtectedRoute from "./Components/auth/ProtectedRoute.jsx";
+import Products from "./Components/pages/Product/Product.jsx";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function MainContent() {
           <Route index element={<Home />} />
           <Route path="travelPackage" element={<Package />} />
           <Route path="/packages/:categoryId" element={<CategoryTours />} />
+          <Route path="/products" element={<Products />} />
           <Route path="admin/login" element={<AdminLoginComponent />} />
           <Route path="auth" element={<LoginComponent />} />
           
