@@ -30,7 +30,7 @@ axiosInstance.interceptors.response.use(
 );
 
 
-export const obtenerProductos = async (page = 0, size = 10, sort = 'title,asc') => {
+export const obtenerProductos = async (page = 0, size = 8, sort = 'title,asc') => {
     const source = axios.CancelToken.source();
 
     try {
@@ -41,13 +41,13 @@ export const obtenerProductos = async (page = 0, size = 10, sort = 'title,asc') 
             params: { page, size, sort },
         });
 
-
+        
         if (response.data && response.data.content) {
             console.log('Productos obtenidos:', response.data);
             return {
-                productsData: response.data.content, 
+                productsData: response.data.content,  
                 totalPages: response.data.totalPages, 
-                currentPage: response.data.number, 
+                currentPage: response.data.number,    
             };
         } else {
             throw new Error('No se encontraron productos.');
@@ -57,20 +57,8 @@ export const obtenerProductos = async (page = 0, size = 10, sort = 'title,asc') 
             console.warn('Solicitud cancelada:', error.message);
         } else {
             console.error('Error al obtener productos:', error);
-
-        
-            if (error.code === 'ECONNABORTED') {
-                console.error('Tiempo de espera excedido: La solicitud tardó demasiado en responder.');
-            } else if (error.code === 'ERR_NETWORK') {
-                console.error('Error de conexión: Verifica que el backend está corriendo en el puerto 8087.');
-            }
-
-            if (error.response) {
-                console.error('Respuesta del servidor:', error.response.data);
-            }
         }
 
-
-        return { productsData: [], totalPages: 0, currentPage: 0 };
+        return { productsData: [], totalPages: 0 };
     }
 };
