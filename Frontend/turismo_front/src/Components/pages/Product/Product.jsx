@@ -7,13 +7,16 @@ import styles from "./Products.module.css";
 const Product = () => {
   const [products, setProducts] = useState([]);  
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);  // Estado para la página actual
+  const [totalPages, setTotalPages] = useState(0);  // Estado para el total de páginas
 
   useEffect(() => {
     const cargarProductos = async () => {
       setLoading(true);
       try {
-        const { productsData } = await obtenerProductos();
-        setProducts(productsData);  
+        const { productsData, totalPages } = await obtenerProductos(page);
+        setProducts(productsData);  // Reemplazar productos de la página
+        setTotalPages(totalPages);
       } catch (error) {
         console.error("Error al cargar productos:", error);
       } finally {
@@ -22,7 +25,23 @@ const Product = () => {
     };
 
     cargarProductos();
-  }, []);  
+  }, [page]);  // Recargar cuando cambie la página
+
+  const handleNextPage = () => {
+    if (page < totalPages - 1) {
+      setPage(prevPage => prevPage + 1);  // Siguiente página
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 0) {
+      setPage(prevPage => prevPage - 1);  // Página anterior
+    }
+  };
+
+  const handlePageClick = (pageNumber) => {
+    setPage(pageNumber);  // Cambiar a la página seleccionada
+  };
 
   if (loading) {
     return (
@@ -59,7 +78,6 @@ const Product = () => {
 
       <div className={styles.grid}>
         {products.map((product) => {
-       
           const imageUrl = (product.mediaPackages && product.mediaPackages.length > 0 && product.mediaPackages[0].mediaUrl)
             ? product.mediaPackages[0].mediaUrl
             : "https://via.placeholder.com/150"; 
@@ -75,6 +93,36 @@ const Product = () => {
             />
           );
         })}
+      </div>
+
+      {/* Paginación */}
+      <div className={styles.pagination}>
+        <button 
+          onClick={handlePreviousPage} 
+          disabled={page === 0} 
+          className={styles.paginationButton}>
+          Anterior
+        </button>
+
+        {/* Paginación con puntos */}
+        <div className={styles.pageDots}>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.pageDot} ${page === index ? styles.active : ''}`}
+              onClick={() => handlePageClick(index)}
+            >
+              •
+            </button>
+          ))}
+        </div>
+
+        <button 
+          onClick={handleNextPage} 
+          disabled={page === totalPages - 1} 
+          className={styles.paginationButton}>
+          Siguiente
+        </button>
       </div>
     </section>
   );
