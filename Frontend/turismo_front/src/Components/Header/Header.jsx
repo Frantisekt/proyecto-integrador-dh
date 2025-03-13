@@ -35,7 +35,7 @@ const Header = () => {
       </Link>
 
       <nav className={styles.authButtons}>
-        <Link to="/products" className={styles.authLink}>Ver Productos</Link>
+        <Link to="/products" className={styles.authLink}>Ver Paquetes</Link>
         {!isLoggedIn ? (
           <>
             <Link to="/auth" className={styles.authLink}>Inicia Sesión</Link>
