@@ -34,46 +34,45 @@ const Header = () => {
         <img src={logo || "/placeholder.svg"} alt="Globe on Click" className={styles.logo} />
       </Link>
 
-      {isLoggedIn ? (
-        <div className={styles.userSection}>
-          <div className={styles.welcomeMessage}>
-            Bienvenido/a, {user?.username} {/* Ahora usa el contexto */}
-            <button className={styles.chevronButton} onClick={toggleUserMenu}>
-              {userMenuOpen ? <FaChevronUp /> : <FaChevronDown />}
-            </button>
-          </div>
-
-          <div className={styles.avatarContainer} onClick={toggleUserMenu}>
-            <div className={styles.initialAvatar}>{getUserInitial()}</div>
-          </div>
-
-          {userMenuOpen && (
-            <div className={styles.userMenu}>
-              <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
-                <FaUser className={styles.menuIcon} />
-                <span>Mi Perfil</span>
-              </Link>
-              <Link to="/settings" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
-                <FaCog className={styles.menuIcon} />
-                <span>Configuración</span>
-              </Link>
-              <button className={styles.userMenuItem} onClick={handleLogout}>
-                <FaSignOutAlt className={styles.menuIcon} />
-                <span>Cerrar Sesión</span>
+      <nav className={styles.authButtons}>
+        <Link to="/products" className={styles.authLink}>Ver Productos</Link>
+        {!isLoggedIn ? (
+          <>
+            <Link to="/auth" className={styles.authLink}>Inicia Sesión</Link>
+            <Link to="/auth" className={styles.authLink}>Regístrate</Link>
+          </>
+        ) : (
+          <div className={styles.userSection}>
+            <div className={styles.welcomeMessage}>
+              Bienvenido/a, {user?.username}
+              <button className={styles.chevronButton} onClick={toggleUserMenu}>
+                {userMenuOpen ? <FaChevronUp /> : <FaChevronDown />}
               </button>
             </div>
-          )}
-        </div>
-      ) : (
-        <div className={styles.authButtons}>
-          <Link to="/auth" className={styles.authLink}>
-            Inicia Sesión
-          </Link>
-          <Link to="/auth" className={styles.authLink}>
-            Regístrate
-          </Link>
-        </div>
-      )}
+
+            <div className={styles.avatarContainer} onClick={toggleUserMenu}>
+              <div className={styles.initialAvatar}>{getUserInitial()}</div>
+            </div>
+
+            {userMenuOpen && (
+              <div className={styles.userMenu}>
+                <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                  <FaUser className={styles.menuIcon} />
+                  <span>Mi Perfil</span>
+                </Link>
+                <Link to="/settings" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                  <FaCog className={styles.menuIcon} />
+                  <span>Configuración</span>
+                </Link>
+                <button className={styles.userMenuItem} onClick={handleLogout}>
+                  <FaSignOutAlt className={styles.menuIcon} />
+                  <span>Cerrar Sesión</span>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </nav>
 
       <div className={styles.menuIcon} onClick={toggleMenu}>
         {menuOpen ? <FaTimes /> : <FaBars />}
