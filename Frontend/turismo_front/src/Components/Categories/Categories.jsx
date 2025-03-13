@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Categories.module.css";
 import TravelCard from "../TravelCard/TravelCard";
-import { obtenerCategorias } from "../../services/categoryServices";
+import { categoryServices } from "../../services/categoryServices";
 
 const Categories = () => {
   const [categorias, setCategorias] = useState([]);
@@ -11,7 +11,7 @@ const Categories = () => {
 
   useEffect(() => {
     const cargarCategorias = async () => {
-      const datos = await obtenerCategorias();
+      const datos = await categoryServices.obtenerCategorias();
 
       const transformados = datos.map((cat) => {
 
