@@ -30,38 +30,43 @@ axiosInstance.interceptors.response.use(
 );
 
 export const tourPackageService = {
-    getAllPackages: async (page = 0) => {
+    getAllPackages: async (page = 0, size = 10, sort = 'title,asc') => {
+        const source = axios.CancelToken.source(); // Permite cancelar la solicitud si es necesario
+
         try {
-            console.log('Intentando obtener paquetes desde:', BASE_URL);
-            const response = await axiosInstance.get('/paged', {
-                timeout: 50000,
-                params: {
-                    page: page,
-                    size: 10
-                }
+            console.log(`Obteniendo paquetes: página=${page}, tamaño=${size}, orden=${sort}`);
+            
+            const response = await axiosInstance.get('', {
+                timeout: 20000, // Aumenta el tiempo de espera a 20 segundos
+                cancelToken: source.token,
+                params: { page, size, sort }
             });
-            console.log('Respuesta exitosa:', response.data);
+
+            console.log('Paquetes obtenidos correctamente:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error detallado al obtener paquetes:', {
-                message: error.message,
-                code: error.code,
-                response: error.response,
-                config: error.config
-            });
-            
-            if (error.code === 'ERR_NETWORK') {
-                throw new Error('Error de conexión: Verifica que el servidor backend esté corriendo en el puerto 8087');
+            if (axios.isCancel(error)) {
+                console.warn('Solicitud cancelada:', error.message);
+                return;
             }
-            
+
+            console.error('Error al obtener paquetes:', error);
+
+            if (error.code === 'ECONNABORTED') {
+                throw new Error('Tiempo de espera excedido: La solicitud tardó demasiado en responder. Intenta nuevamente.');
+            }
+
+            if (error.code === 'ERR_NETWORK') {
+                throw new Error('Error de conexión: Verifica que el backend está corriendo en el puerto 8087.');
+            }
+
             if (error.response) {
                 throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
             }
-            
+
             throw new Error('Error al obtener paquetes: ' + error.message);
         }
     },
-
     create: async (packageData) => {
         try {
             console.log('Intentando crear paquete con datos:', packageData);
