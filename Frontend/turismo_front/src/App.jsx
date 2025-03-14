@@ -54,6 +54,7 @@ function MainContent() {
           <Route path="travelPackage" element={<Package />} />
           <Route path="/packages/:categoryId" element={<CategoryTours />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/tour/:id" element={<Package />} />
           <Route path="admin/login" element={<AdminLoginComponent />} />
           <Route path="auth" element={<LoginComponent />} />
           

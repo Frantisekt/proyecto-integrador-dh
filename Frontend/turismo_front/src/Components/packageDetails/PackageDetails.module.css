@@ -1,24 +1,110 @@
-.packageDetailsContainer{
-    padding: 2rem 10vw 5rem 10vw;
-    gap: 30px;
+.packageDetailsContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 15vw;
     background-color: #FFF1CD;
-    color: #023047;
-}
-
-.packageDescription, .categoryTitle, .categoryDescription, .packagePrice, .packageRestrictions, .mediaTitle, .mediaDescription{
     color: black;
+    gap: 40px; 
+    flex-wrap: wrap; 
 }
 
-.reserveButton{
-    background-color: #17B1BD;
+.leftColumn {
+    flex: 1; 
+    max-width: 60%; 
+}
+
+.rightColumn {
+    flex: 1; 
+    max-width: 40%; 
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+.packageDescription {
+    color: black;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.dateContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.dateBox {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: white;
+    width: 150px; 
+}
+
+.dateLabel {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.dateValue {
+    font-size: 1rem;
+    color: black;
+    margin: 0;
+}
+
+.packagePrice {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+}
+
+.reserveButton {
+    background-color: #FF5A5F;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 15px 20px;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
     transition: background-color 0.3s ease;
 }
 
-.reserveButton:hover{
-    background-color: #023047;
+.reserveButton:hover {
+    background-color: #E04A4F;
+}
+
+@media (max-width: 768px) {
+    .packageDetailsContainer {
+        flex-direction: column; 
+        padding: 1rem 5vw; 
+        gap: 20px;
+    }
+
+    .leftColumn, .rightColumn {
+        max-width: 100%; 
+    }
+
+    .dateContainer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .dateBox {
+        width: 100%; 
+    }
+
+    .reserveButton {
+        width: 100%; 
+    }
+}
+
+@media (max-width: 1450px) {
+    .packageDetailsContainer {
+        padding: 2rem 10vw; 
+    }
 }

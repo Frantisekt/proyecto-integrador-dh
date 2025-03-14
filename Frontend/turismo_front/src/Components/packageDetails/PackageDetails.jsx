@@ -1,19 +1,29 @@
 import React from 'react';
 import styles from "./PackageDetails.module.css";
 
-const PackageDetails = ({ description, categoryTitle, categoryDescription, price, currency, restrictions, mediaTitle, mediaDescription }) => {
+const PackageDetails = ({ description, startDate, endDate, price }) => {
     return (
         <div className={styles.packageDetailsContainer}>
-            <h2 className={styles.packageDescription}><strong>{description}</strong> </h2>
-            <h4 className={styles.categoryTitle}><strong>{categoryTitle}</strong></h4>
-            <p className={styles.categoryDescription}>{categoryDescription}</p>
-            <h4 className={styles.packagePrice}><strong>Precio:</strong> {price} {currency}</h4>
-            <h4 className={styles.packageRestrictions}><strong>Restricciones:</strong> {restrictions}</h4>
-            <div className={styles.mediaSection}>
-                <h4 className={styles.mediaTitle}><strong>{mediaTitle}</strong></h4>
-                <p className={styles.mediaDescription}>{mediaDescription}</p>
+            {/* Columna izquierda: Descripción */}
+            <div className={styles.leftColumn}>
+                <p className={styles.packageDescription}>{description}</p>
             </div>
-            <button className={styles.reserveButton}><link rel="stylesheet" href="#" />Reservar</button>
+
+            {/* Columna derecha: Fechas y botón */}
+            <div className={styles.rightColumn}>
+                <div className={styles.dateContainer}>
+                    <div className={styles.dateBox}>
+                        <label className={styles.dateLabel}>LLEGADA</label>
+                        <p className={styles.dateValue}>{startDate}</p>
+                    </div>
+                    <div className={styles.dateBox}>
+                        <label className={styles.dateLabel}>SALIDA</label>
+                        <p className={styles.dateValue}>{endDate}</p>
+                    </div>
+                </div>
+                <p className={styles.packagePrice}><strong>Precio:</strong> ${price}</p>
+                <button className={styles.reserveButton}>Reservar</button>
+            </div>
         </div>
     );
 }
