@@ -10,11 +10,16 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
-    width: 30vw;
-    height: 20vh;
+    width: clamp(250px, 30vw, 400px); /* Se adapta entre 250px y 400px */
+    height: clamp(250px, 20vh, 350px); /* Se adapta entre 250px y 350px */
     text-align: center;
     padding: 20px;
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Mantiene los elementos organizados */
+    overflow: hidden; /* Evita desbordamientos */
 }
 
 .card:hover {
@@ -25,25 +30,34 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
+    height: 100%; /* Asegura que todo el contenido se distribuya bien */
+    width: 100%;
+    overflow: hidden;
 }
 
 .icon {
-    font-size: 3rem;
+    font-size: clamp(2rem, 3vw, 3rem); /* Se adapta al tamaño de la pantalla */
     margin-bottom: 10px;
     color: #023047;
 }
 
 .cardTitle {
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
     font-weight: bold;
     margin-bottom: 10px;
     color: #333;
 }
 
 .cardText {
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
     color: #555;
-    margin-bottom: 15px;
+    text-align: center;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Previene desbordamientos largos */
+    white-space: normal;
+    flex-grow: 1; /* Ocupa el espacio restante sin empujar otros elementos */
 }
 
 .button {
@@ -52,18 +66,33 @@
     justify-content: center;
     background-color: #023047;
     color: white;
-    padding: 10px 15px;
+    padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
-    font-size: .8vw;
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
     transition: background 0.3s;
-    height: 3vh;
-    width: 70%; 
+    height: 3rem;
+    width: 80%; 
     text-align: center;
 }
 
-
 .button:hover {
     background-color: #31708f;
+}
+
+@media (max-width: 768px) {
+    .cardContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        height: auto;
+    }
+
+    .button {
+        width: 100%;
+    }
 }
