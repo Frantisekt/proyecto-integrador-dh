@@ -5,6 +5,7 @@ import styles from './Package.module.css';
 import Gallery from '../../gallery/Gallery';
 import flecha_atras from '../../../assets/flecha_atras.png';
 import PackageDetails from '../../packageDetails/PackageDetails';
+import PackageFeatures from '../../packageFeatures/PackageFeatures';
 
 const Package = () => {
     const { id } = useParams();
@@ -30,7 +31,7 @@ const Package = () => {
     if (error) return <p>{error}</p>;
     if (!travelPackage) return <p>No se encontró el paquete</p>;
 
-    const { title, description, start_date, end_date, price, mediaPackages = [] } = travelPackage;
+    const { title, description, start_date, end_date, price, mediaPackages = [], features = [] } = travelPackage;
     const images = mediaPackages.map(media => media.mediaUrl);
 
     return (
@@ -42,6 +43,7 @@ const Package = () => {
             </div>
             {images.length > 0 && <Gallery images={images} className={styles.gallery} />}
             <PackageDetails description={description} startDate={start_date} endDate={end_date} price={price} />
+            <PackageFeatures features={features} />
         </div>
         
     );
