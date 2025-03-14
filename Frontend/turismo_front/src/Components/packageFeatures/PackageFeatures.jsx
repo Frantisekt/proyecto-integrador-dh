@@ -3,16 +3,18 @@ import { FaCar, FaWineGlassAlt, FaUtensils, FaGlassCheers, FaHotel, FaCalendarAl
 import styles from "./PackageFeatures.module.css";
 
 const iconMap = {
-    "Transporte": FaCar,
-    "Cata de vinos": FaWineGlassAlt,
-    "Almuerzo": FaUtensils,
-    "Bebidas": FaGlassCheers,
-    "Alojamiento con estrellas (doradas o plateadas)": FaHotel,
+    "TRANSPORTE": FaCar,
+    "CATA DE VINOS": FaWineGlassAlt,
+    "ALMUERZO": FaUtensils,
+    "BEBIDAS": FaGlassCheers,
+    "ALOJAMIENTO_1": FaHotel,
+    "ALOJAMIENTO_2": FaHotel,
+    "ALOJAMIENTO_3": FaHotel,
     "N# días": FaCalendarAlt,
-    "Tour": FaMapMarkedAlt,
-    "Spa": FaSpa,
-    "Gliding": FaParachuteBox,
-    "Rapel": FaMountain
+    "TOUR": FaMapMarkedAlt,
+    "SPA": FaSpa,
+    "GLIDING": FaParachuteBox,
+    "RAPEL": FaMountain
 };
 
 const PackageFeatures = ({ features }) => {
