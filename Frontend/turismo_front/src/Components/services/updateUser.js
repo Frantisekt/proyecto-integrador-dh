@@ -1,5 +1,15 @@
 export const updateUser = async (userData) => {
     try {
+        const adminData = localStorage.getItem('adminData');
+        if (!adminData) {
+            throw new Error("No hay datos de administrador");
+        }
+
+        const { token } = JSON.parse(adminData);
+        if (!token) {
+            throw new Error("No hay token de autenticación");
+        }
+
         console.log('Datos originales:', userData); // Debug log
 
         // Preparar el DTO según la estructura exacta esperada por el backend
@@ -26,7 +36,8 @@ export const updateUser = async (userData) => {
         console.log('Enviando petición PUT a:', `http://localhost:8087/api/v1/users/${userData.userId}`);
         console.log('Headers:', {
             "Content-Type": "application/json",
-            "Accept": "application/json"
+            "Accept": "application/json",
+            "Authorization": `Bearer ${token}`
         });
         console.log('Body:', JSON.stringify(userRequestDTO, null, 2));
 
@@ -34,7 +45,8 @@ export const updateUser = async (userData) => {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             credentials: 'include',
             body: JSON.stringify(userRequestDTO)
