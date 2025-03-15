@@ -139,21 +139,18 @@ export const tourPackageService = {
 
     updatePackage: async (id, packageData) => {
         try {
-            // Asegurar que los datos enviados coincidan con el DTO esperado
             const requestData = {
                 title: packageData.title,
                 description: packageData.description,
                 state: packageData.state,
-                start_date: packageData.start_date, // Se agrega start_date
-                end_date: packageData.end_date, // Se agrega end_date
-                price: packageData.price, // Se agrega price
+                start_date: packageData.start_date, 
+                end_date: packageData.end_date, 
+                price: packageData.price,
                 mediaPackageIds: packageData.mediaPackageIds || [],
                 featureIds: packageData.featureIds || []
             };
     
             console.log('Enviando actualización con:', requestData);
-            
-            // Usar la URL fija directamente
             const response = await axiosInstance.put(`http://localhost:8087/api/tourPackages/${id}`, requestData);
     
             console.log('Paquete actualizado con éxito:', response.data);
@@ -186,15 +183,15 @@ export const tourPackageService = {
 
     addMediaToPackage: async (packageId, mediaPackageId) => {
         try {
-            const response = await axiosInstance.post(
-                `/${packageId}/media/${mediaPackageId}`
-            );
+            const url = `http://localhost:8087/api/tourPackages/${packageId}/media/${mediaPackageId}`;
+            const response = await axios.post(url);
             return response.data;
         } catch (error) {
             console.error('Error al añadir media al paquete:', error);
             throw new Error('Error al añadir la imagen al paquete: ' + error.message);
         }
     },
+    
 
     removeMediaFromPackage: async (packageId, mediaPackageId) => {
         try {
