@@ -121,7 +121,6 @@ const LoginForm = ({ mode }) => {
     if (mode === "login") {
       if (!emailRegex.test(data.email)) return "El correo electrónico no es válido.";
       if (!data.password.trim()) return "La contraseña es obligatoria.";
-      if (!passwordRegex.test(data.password)) return "La contraseña debe tener al menos 8 caracteres, incluir un número y un símbolo.";
       return null;
     }
   
