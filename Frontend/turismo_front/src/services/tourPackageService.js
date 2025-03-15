@@ -68,9 +68,11 @@ export const tourPackageService = {
         }
     },
     create: async (packageData) => {
+        const API_URL = 'http://localhost:8087/api/tourPackages';
+        
         try {
             console.log('Intentando crear paquete con datos:', packageData);
-            const response = await axiosInstance.post('', packageData);
+            const response = await axios.post(API_URL, packageData);
             console.log('Paquete creado exitosamente:', response.data);
             return response.data;
         } catch (error) {
@@ -80,18 +82,19 @@ export const tourPackageService = {
                 response: error.response,
                 config: error.config
             });
-            
+    
             if (error.code === 'ERR_NETWORK') {
                 throw new Error('Error de conexión: Verifica que el servidor backend esté corriendo en el puerto 8087');
             }
-            
+    
             if (error.response) {
-                throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
+                throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`);
             }
-            
+    
             throw new Error('Error al crear paquete: ' + error.message);
         }
     },
+    
 
     update: async (id, packageData) => {
         try {
@@ -204,14 +207,14 @@ export const tourPackageService = {
 
     assignMedia: async (packageId, mediaPackageId) => {
         try {
-            const url = `${BASE_URL}/${packageId}/media/${mediaPackageId}`;
-            const data = {
-                mediaPackageId: mediaPackageId
-            };
-       
+            const url = `http://localhost:8087/api/tourPackages/${packageId}/media/${mediaPackageId}`;
+            
             console.log(`Asignando imagen ${mediaPackageId} al paquete ${packageId} en: ${url}`);
-            const response = await axiosInstance.post(url, data);
-            console.log('Imagen asignada correctamente al paquete.');
+            
+            const response = await axiosInstance.post(url);
+            console.log('Imagen asignada correctamente al paquete:', response.data);
+            
+            return response.data;
         } catch (error) {
             console.error('Error al asignar la imagen al paquete:', error);
             throw new Error(error.response?.data?.message || 'Error al asignar la imagen al paquete');
