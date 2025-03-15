@@ -68,9 +68,11 @@ export const tourPackageService = {
         }
     },
     create: async (packageData) => {
+        const API_URL = 'http://localhost:8087/api/tourPackages';
+        
         try {
             console.log('Intentando crear paquete con datos:', packageData);
-            const response = await axiosInstance.post('', packageData);
+            const response = await axios.post(API_URL, packageData);
             console.log('Paquete creado exitosamente:', response.data);
             return response.data;
         } catch (error) {
@@ -80,18 +82,19 @@ export const tourPackageService = {
                 response: error.response,
                 config: error.config
             });
-            
+    
             if (error.code === 'ERR_NETWORK') {
                 throw new Error('Error de conexión: Verifica que el servidor backend esté corriendo en el puerto 8087');
             }
-            
+    
             if (error.response) {
-                throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
+                throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`);
             }
-            
+    
             throw new Error('Error al crear paquete: ' + error.message);
         }
     },
+    
 
     update: async (id, packageData) => {
         try {
@@ -114,49 +117,66 @@ export const tourPackageService = {
     },
 
     deletePackage: async (id) => {
+        if (!id) {
+            console.error('ID de paquete no válido.');
+            throw new Error('ID de paquete no válido');
+        }
+    
         try {
-            const response = await axios.delete(`${BASE_URL}/${id}`);
+            const url = `http://localhost:8087/api/tourPackages/${id}`;
+            console.log(`Eliminando paquete con ID: ${id} en: ${url}`);
+    
+            const response = await axios.delete(url); // ✅ CORRECTO: axios.delete()
+            console.log('Paquete eliminado correctamente.');
             return response.data;
         } catch (error) {
-            console.error('Error al eliminar paquete:', error);
+            console.error('Error al eliminar el paquete:', error);
+            if (error.response?.status === 404) {
+                throw new Error('Paquete no encontrado');
+            }
             if (error.code === 'ERR_NETWORK') {
                 throw new Error('No se pudo conectar con el servidor');
             }
-            throw error;
+            throw new Error(error.response?.data?.message || 'Error al eliminar el paquete');
         }
-    },
+    },    
 
-    getPackageById: async (id) => {
+    getPackageById: async (packageId) => {
         try {
-            console.log('Obteniendo paquete con ID:', id);
-            const response = await axiosInstance.get(`/${id}`);
-            console.log('Respuesta del servidor:', response.data);
+            const response = await axios.get(`$http://localhost:8087/api/tourPackages/${packageId}`);
             return response.data;
         } catch (error) {
-            console.error('Error al obtener paquete por ID:', error);
-            throw new Error('Error al obtener detalles del paquete: ' + error.message);
+            console.error("Error al obtener paquete por ID:", error);
+            throw new Error("Error al obtener detalles del paquete: " + error.message);
         }
     },
+    
 
     updatePackage: async (id, packageData) => {
         try {
-            // Asegurarse de que los datos coincidan con TourPackageRequestDTO
             const requestData = {
                 title: packageData.title,
                 description: packageData.description,
                 state: packageData.state,
+                start_date: packageData.start_date, 
+                end_date: packageData.end_date, 
+                price: packageData.price,
                 mediaPackageIds: packageData.mediaPackageIds || [],
                 featureIds: packageData.featureIds || []
             };
-
-            console.log('Actualizando paquete:', requestData);
-            const response = await axiosInstance.put(`/${id}`, requestData);
+    
+            console.log('Enviando actualización con:', requestData);
+            const response = await axiosInstance.put(`http://localhost:8087/api/tourPackages/${id}`, requestData);
+    
+            console.log('Paquete actualizado con éxito:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error al actualizar paquete:', error);
-            throw new Error('Error al actualizar paquete: ' + error.message);
+            console.error('Error al actualizar paquete:', error.response?.data || error.message);
+            throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
         }
     },
+    
+    
 
     uploadMedia: async (formData) => {
         try {
@@ -178,15 +198,15 @@ export const tourPackageService = {
 
     addMediaToPackage: async (packageId, mediaPackageId) => {
         try {
-            const response = await axiosInstance.post(
-                `/${packageId}/media/${mediaPackageId}`
-            );
+            const url = `http://localhost:8087/api/tourPackages/${packageId}/media/${mediaPackageId}`;
+            const response = await axios.post(url);
             return response.data;
         } catch (error) {
             console.error('Error al añadir media al paquete:', error);
             throw new Error('Error al añadir la imagen al paquete: ' + error.message);
         }
     },
+    
 
     removeMediaFromPackage: async (packageId, mediaPackageId) => {
         try {
@@ -199,14 +219,14 @@ export const tourPackageService = {
 
     assignMedia: async (packageId, mediaPackageId) => {
         try {
-            const url = `${BASE_URL}/${packageId}/media/${mediaPackageId}`;
-            const data = {
-                mediaPackageId: mediaPackageId
-            };
-       
+            const url = `http://localhost:8087/api/tourPackages/${packageId}/media/${mediaPackageId}`;
+            
             console.log(`Asignando imagen ${mediaPackageId} al paquete ${packageId} en: ${url}`);
-            const response = await axiosInstance.post(url, data);
-            console.log('Imagen asignada correctamente al paquete.');
+            
+            const response = await axiosInstance.post(url);
+            console.log('Imagen asignada correctamente al paquete:', response.data);
+            
+            return response.data;
         } catch (error) {
             console.error('Error al asignar la imagen al paquete:', error);
             throw new Error(error.response?.data?.message || 'Error al asignar la imagen al paquete');

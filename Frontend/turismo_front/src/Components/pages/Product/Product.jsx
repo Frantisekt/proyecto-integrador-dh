@@ -83,14 +83,16 @@ const Product = () => {
             : "https://via.placeholder.com/150"; 
 
           return (
-            <TourCard
-              key={product.id}
-              title={product.title}
-              imageUrl={imageUrl}  
-              description={product.description}
-              currency={product.price ? `$${product.price}` : "Precio no disponible"}
-              link={`/product/${product.id}`}
-            />
+            <Link key={product.packageId} to={`/tour/${product.packageId}`} className={styles.cardLink}>
+              <TourCard
+                key={product.packageId}
+                title={product.title}
+                imageUrl={imageUrl}  
+                description={product.description}
+                currency={product.price ? `$${product.price}` : "Precio no disponible"}
+                link={`/product/${product.id}`}
+              />
+            </Link>
           );
         })}
       </div>

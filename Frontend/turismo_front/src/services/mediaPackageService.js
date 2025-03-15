@@ -33,25 +33,30 @@ export const mediaPackageService = {
     /**
      * Sube una imagen al backend y retorna su ID
      * @param {File} mediaFile - Archivo de imagen a subir
-     * @returns {Promise<Number>} - ID del media package creado
+     * @param {string} mediaTitle - Título de la imagen
+     * @param {string} mediaDescription - Descripción de la imagen
+     * @returns {Promise<Object>} - Datos del media package creado
      */
-    upload: async (mediaFile) => {
+    upload: async (mediaFile, mediaTitle, mediaDescription) => {
         try {
             const formData = new FormData();
             formData.append('file', mediaFile);
+            formData.append('mediaTitle', mediaTitle);
+            formData.append('mediaDescription', mediaDescription);
     
             console.log('Subiendo imagen a:', MEDIA_BASE_URL);
+            console.log('FormData:', [...formData]); 
+
             const response = await axios.post(MEDIA_BASE_URL, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
     
             console.log('Imagen subida con éxito:', response.data);
-            return response.data;  // Devuelves toda la respuesta del backend, no solo el id
+            return response.data; 
         } catch (error) {
             console.error('Error al subir imagen:', error);
             throw new Error(error.response?.data?.message || 'Error al subir la imagen');
         }
     },
-    
-  
 };
+
