@@ -117,17 +117,29 @@ export const tourPackageService = {
     },
 
     deletePackage: async (id) => {
+        if (!id) {
+            console.error('ID de paquete no válido.');
+            throw new Error('ID de paquete no válido');
+        }
+    
         try {
-            const response = await axios.delete(`${BASE_URL}/${id}`);
+            const url = `http://localhost:8087/api/tourPackages/${id}`;
+            console.log(`Eliminando paquete con ID: ${id} en: ${url}`);
+    
+            const response = await axios.delete(url); // ✅ CORRECTO: axios.delete()
+            console.log('Paquete eliminado correctamente.');
             return response.data;
         } catch (error) {
-            console.error('Error al eliminar paquete:', error);
+            console.error('Error al eliminar el paquete:', error);
+            if (error.response?.status === 404) {
+                throw new Error('Paquete no encontrado');
+            }
             if (error.code === 'ERR_NETWORK') {
                 throw new Error('No se pudo conectar con el servidor');
             }
-            throw error;
+            throw new Error(error.response?.data?.message || 'Error al eliminar el paquete');
         }
-    },
+    },    
 
     getPackageById: async (packageId) => {
         try {
