@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./UserRegistry.module.css";
 import { FaUserCog } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     { name: "Registrar usuario", path: "/admin/users/register", icon: FaUserCog },
@@ -12,6 +13,7 @@ const adminOptions = [
 ];
 
 const UserRegistry = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: "",
         paternalSurname: "",
@@ -20,8 +22,8 @@ const UserRegistry = () => {
         email: "",
         password: "",
         dni: "",
-        newsletter: "NO",
-        role: "USER",
+        newsletter: "",
+        role: "",
     });
 
     const handleChange = (e) => {
@@ -58,6 +60,10 @@ const UserRegistry = () => {
                 newsletter: "NO",
                 role: "USER",
             });
+
+            setTimeout(() => {
+                navigate("/admin/users");
+            }, 1500);
 
         } catch {
             Swal.fire({
