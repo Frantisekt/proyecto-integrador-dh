@@ -126,37 +126,45 @@ export const tourPackageService = {
         }
     },
 
-    getPackageById: async (id) => {
+    getPackageById: async (packageId) => {
         try {
-            console.log('Obteniendo paquete con ID:', id);
-            const response = await axiosInstance.get(`/${id}`);
-            console.log('Respuesta del servidor:', response.data);
+            const response = await axios.get(`$http://localhost:8087/api/tourPackages/${packageId}`);
             return response.data;
         } catch (error) {
-            console.error('Error al obtener paquete por ID:', error);
-            throw new Error('Error al obtener detalles del paquete: ' + error.message);
+            console.error("Error al obtener paquete por ID:", error);
+            throw new Error("Error al obtener detalles del paquete: " + error.message);
         }
     },
+    
 
     updatePackage: async (id, packageData) => {
         try {
-            // Asegurarse de que los datos coincidan con TourPackageRequestDTO
+            // Asegurar que los datos enviados coincidan con el DTO esperado
             const requestData = {
                 title: packageData.title,
                 description: packageData.description,
                 state: packageData.state,
+                start_date: packageData.start_date, // Se agrega start_date
+                end_date: packageData.end_date, // Se agrega end_date
+                price: packageData.price, // Se agrega price
                 mediaPackageIds: packageData.mediaPackageIds || [],
                 featureIds: packageData.featureIds || []
             };
-
-            console.log('Actualizando paquete:', requestData);
-            const response = await axiosInstance.put(`/${id}`, requestData);
+    
+            console.log('Enviando actualización con:', requestData);
+            
+            // Usar la URL fija directamente
+            const response = await axiosInstance.put(`http://localhost:8087/api/tourPackages/${id}`, requestData);
+    
+            console.log('Paquete actualizado con éxito:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error al actualizar paquete:', error);
-            throw new Error('Error al actualizar paquete: ' + error.message);
+            console.error('Error al actualizar paquete:', error.response?.data || error.message);
+            throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
         }
     },
+    
+    
 
     uploadMedia: async (formData) => {
         try {

@@ -9,6 +9,9 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
     title: '',
     description: '',
     state: true,
+    start_date: '',
+    end_date: '',
+    price: '',
     mediaPackageIds: [],
     featureIds: []
   });
@@ -28,7 +31,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
         console.log('Fetching package with ID:', packageId);
         const response = await tourPackageService.getPackageById(packageId);
         console.log('Package details:', response);
-        
+
         setPackageDetails(response);
         setFormData({
           title: response.title || '',
@@ -117,12 +120,12 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
       // Recargar los detalles del paquete
       const updatedPackage = await tourPackageService.getPackageById(packageId);
       setPackageDetails(updatedPackage);
-      
+
       // Limpiar el formulario de media
       setSelectedFile(null);
       setMediaTitle('');
       setMediaDescription('');
-      
+
       Swal.fire('¡Éxito!', 'Imagen cargada correctamente', 'success');
     } catch (error) {
       console.error('Error al cargar la imagen:', error);
@@ -199,31 +202,46 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
             </select>
           </div>
 
-       {/* Selección de categoría */}
-<div className={styles.formGroup}>
-  <label>Categoría:</label>
-  <select
-    name="categoryId"
-    value={formData.categoryId || ""}
-    onChange={handleChange}
-    required
-  >
-    <option value="" disabled>Selecciona una categoría</option>
-    {allCategories.map(category => (
-      <option key={category.categoryId} value={category.categoryId}>
-        {category.title} - {category.price} {category.currency}
-      </option>
-    ))}
-  </select>
-</div>
+          <div className={styles.formGroup}>
+            <label>Precio:</label>
+            <input type="number" name="price" value={formData.price} onChange={handleChange} required />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label>Fecha de Inicio:</label>
+            <input type="date" name="start_date" value={formData.start_date} onChange={handleChange} required />
+          </div>
+          
+          <div className={styles.formGroup}>
+            <label>Fecha de Fin:</label>
+            <input type="date" name="end_date" value={formData.end_date} onChange={handleChange} required />
+          </div>
+
+          {/* Selección de categoría */}
+          <div className={styles.formGroup}>
+            <label>Categoría:</label>
+            <select
+              name="categoryId"
+              value={formData.categoryId || ""}
+              onChange={handleChange}
+              required
+            >
+              <option value="" disabled>Selecciona una categoría</option>
+              {allCategories.map(category => (
+                <option key={category.categoryId} value={category.categoryId}>
+                  {category.title} - {category.price} {category.currency}
+                </option>
+              ))}
+            </select>
+          </div>
 
 
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.saveButton}>
               Guardar Cambios
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={onClose}
               className={styles.cancelButton}
             >
@@ -241,7 +259,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                 <img src={media.mediaUrl} alt={media.mediaTitle} />
                 <div className={styles.mediaInfo}>
                   <p>{media.mediaTitle}</p>
-                  <button 
+                  <button
                     onClick={() => handleRemoveMedia(media.mediaPackageId)}
                     className={styles.removeButton}
                   >
