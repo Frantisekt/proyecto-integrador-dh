@@ -6,6 +6,7 @@ import styles from "./EditUser.module.css";
 import getUserById from "../../services/getUserById";
 import { updateUser } from "../../services/updateUser";
 import { FaUserCog } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     { name: "Registrar usuario", path: "/admin/users/register", icon: FaUserCog },
@@ -13,6 +14,7 @@ const adminOptions = [
 ];
 
 const EditUser = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [formData, setFormData] = useState({
         name: "",
@@ -62,6 +64,23 @@ const EditUser = () => {
                     icon: "success",
                     confirmButtonText: "Aceptar"
                 });
+
+                setFormData({
+                    name: "",
+                    paternalSurname: "",
+                    maternalSurname: "",
+                    username: "",
+                    email: "",
+                    password: "",
+                    dni: "",
+                    newsletter: "NO",
+                    role: "USER",
+                });
+
+                setTimeout(() => {
+                    navigate("/admin/users/list");
+                }, 2000);
+
             } else {
                 throw new Error("Error al actualizar usuario");
             }
