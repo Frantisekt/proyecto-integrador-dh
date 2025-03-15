@@ -109,7 +109,10 @@ const AdminPanel = () => {
                 {error && <div className={styles.errorMessage}>{error}</div>}
                 
                 {loading ? (
-                    <div className={styles.loading}>Cargando...</div>
+                    <div className={styles.loadingContainer}>
+                        <div className={styles.spinner}></div>
+                        <p>Cargando productos...</p>
+                    </div>
                 ) : (
                     <div className={styles.tableContainer}>
                         <table className={styles.packagesTable}>
