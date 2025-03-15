@@ -57,46 +57,56 @@ const LoginForm = ({ mode }) => {
           navigate("/");
         }
       } else {
-        // Primero registramos el usuario con registerUser
-        await registerUser(formData);
-        
-        // Mostrar mensaje de éxito
-        Swal.fire({
-          icon: 'success',
-          title: '¡Registro Exitoso!',
-          text: 'Usuario registrado correctamente',
-          timer: 2000,
-          showConfirmButton: false
-        });
+        // Registro de usuario
+        try {
+          // Primero registramos el usuario
+          const registrationResponse = await registerUser(formData);
+          
+          // Mostrar mensaje de éxito
+          await Swal.fire({
+            icon: 'success',
+            title: '¡Registro Exitoso!',
+            text: 'Usuario registrado correctamente',
+            timer: 2000,
+            showConfirmButton: false
+          });
 
-        // Limpiar el formulario
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          paternalSurname: "",
-          maternalSurname: "",
-          username: "",
-          dni: "",
-          newsletter: "NO",
-          role: "USER",
-          state: true,
-        });
+          // Intentar hacer login automáticamente
+          const loginData = {
+            email: formData.email,
+            password: formData.password,
+          };
+          
+          const loginResponse = await authService.login(loginData);
+          if (loginResponse.token) {
+            login(loginResponse.token);
+            
+            // Limpiar el formulario
+            setFormData({
+              name: "",
+              email: "",
+              password: "",
+              paternalSurname: "",
+              maternalSurname: "",
+              username: "",
+              dni: "",
+              newsletter: "NO",
+              role: "USER",
+              state: true,
+            });
 
-        // Opcional: cambiar al modo login después del registro
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-
-        // Luego intentamos hacer login con las credenciales
-        const loginData = {
-          email: formData.email,
-          password: formData.password,
-        };
-        const responseLogin = await authService.login(loginData);
-        if (responseLogin.token) {
-          login(responseLogin.token);
-          navigate("/");
+            navigate("/");
+          }
+        } catch (registrationError) {
+          console.error('Error en el registro:', registrationError);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en el registro',
+            text: registrationError.message || 'Hubo un problema al registrar el usuario',
+            confirmButtonText: 'Entendido'
+          });
+          setLoading(false);
+          return;
         }
       }
     } catch (err) {
@@ -105,6 +115,7 @@ const LoginForm = ({ mode }) => {
         icon: 'error',
         title: 'Error',
         text: err.message || 'Hubo un problema al procesar tu solicitud',
+        confirmButtonText: 'Entendido'
       });
       setError(err.message || "Error en el proceso");
     } finally {
