@@ -31,7 +31,13 @@ const Gallery = ({ images }) => {
     return (
         <div className={styles.galleryContainer}>
             {isMobile ? (
-                <ControlledCarousel images={images.map(src => ({ src }))} openModal={() => setIsModalOpen(true)} isModalOpen={isModalOpen} />
+                <div style={{ marginBottom: '30px' }}> 
+                <ControlledCarousel 
+                    images={images.map(src => ({ src }))} 
+                    openModal={() => setIsModalOpen(true)} 
+                    isModalOpen={isModalOpen} 
+                />
+            </div>
             ) : (
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>

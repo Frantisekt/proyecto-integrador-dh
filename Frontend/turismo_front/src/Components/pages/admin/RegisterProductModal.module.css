@@ -1,0 +1,215 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 49, 69, 0.7); /* Color base #003145 con opacidad */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrado en toda la pantalla */
+    padding-top: 50px;
+    z-index: 1000;
+}
+
+.modalContent {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Añadido para manejar el contenido desbordado */
+}
+
+.form {
+    display: grid;
+    grid-template-columns: 1fr; /* Cambiado para una sola columna */
+    gap: 15px;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.formGroup {
+    margin: 0;
+    position: relative;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    color: #003145;
+    font-weight: 500;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #003145;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    height: 42px;
+    transition: all 0.2s ease-in-out;
+    background-color: #fff;
+    color: #003145;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+    border-color: #138496; /* Color secundario */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(19, 132, 150, 0.1);
+    background-color: #fff;
+}
+
+.formGroup input:hover,
+.formGroup select:hover {
+    border-color: #138496;
+    background-color: #f8f9fa;
+}
+
+.formGroup input::placeholder {
+    color: #003145;
+    opacity: 0.7;
+}
+
+.submitButton {
+    background-color: #003145; /* Color primario */
+    color: #ffe69c; /* Color de texto destacado */
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    height: 42px;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:hover {
+    background-color: #138496; /* Color secundario */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para el select */
+.formGroup select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003145' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+    background-color: #fff;
+}
+
+.formGroup select:hover {
+    background-color: #f8f9fa;
+}
+
+/* Header del formulario */
+.formHeader {
+    background-color: #ffe69c;
+    margin: -20px -20px 20px -20px;
+    padding: 15px 20px;
+    border-radius: 8px 8px 0 0;
+    color: #003145;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .form {
+        grid-template-columns: 1fr; /* Cambiado a una sola columna para pantallas más pequeñas */
+    }
+}
+
+.buttonGroup {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    height: 42px;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cancelButton:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cancelButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Actualizar el media query para incluir el buttonGroup */
+@media (max-width: 576px) {
+    .form {
+        grid-template-columns: 1fr; /* Para pantallas muy pequeñas */
+    }
+    
+    .buttonGroup {
+        flex-direction: column-reverse;
+        width: 100%;
+    }
+    
+    .submitButton,
+    .cancelButton {
+        width: 100%;
+    }
+}
+
+.errorMessage {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.submitButton:disabled,
+.cancelButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.formGroup input:disabled,
+.formGroup select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}

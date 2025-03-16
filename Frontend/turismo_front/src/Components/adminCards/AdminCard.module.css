@@ -1,0 +1,98 @@
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    width: clamp(250px, 30vw, 400px); /* Se adapta entre 250px y 400px */
+    height: clamp(250px, 20vh, 350px); /* Se adapta entre 250px y 350px */
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Mantiene los elementos organizados */
+    overflow: hidden; /* Evita desbordamientos */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.cardBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%; /* Asegura que todo el contenido se distribuya bien */
+    width: 100%;
+    overflow: hidden;
+}
+
+.icon {
+    font-size: clamp(2rem, 3vw, 3rem); /* Se adapta al tamaño de la pantalla */
+    margin-bottom: 10px;
+    color: #023047;
+}
+
+.cardTitle {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.cardText {
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    color: #555;
+    text-align: center;
+    padding: 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Previene desbordamientos largos */
+    white-space: normal;
+    flex-grow: 1; /* Ocupa el espacio restante sin empujar otros elementos */
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #023047;
+    color: white;
+    padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: clamp(0.7rem, 1vw, 0.9rem);
+    transition: background 0.3s;
+    height: 3rem;
+    width: 80%; 
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #31708f;
+}
+
+@media (max-width: 768px) {
+    .cardContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        height: auto;
+    }
+
+    .button {
+        width: 100%;
+    }
+}

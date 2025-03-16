@@ -14,11 +14,11 @@ const TravelCard = ({ title, price, imageUrl, href, className }) => {
         <div className={styles.overlay} />
         <div className={styles.content}>
           <h3 className={styles.title}>{title}</h3>
+          <p className={styles.priceText}>Price starts from</p>
           <div className={styles.priceContainer}>
-            <span className={styles.currency}>€</span>
+            <span className={styles.currency}>USD</span>
             <span className={styles.amount}>{price.toFixed(2)}</span>
           </div>
-          <p className={styles.priceText}>Price starts from</p>
         </div>
       </div>
     </Link>
