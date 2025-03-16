@@ -5,7 +5,10 @@ import { Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import styles from "./Header.module.css"
 import logo from "../../assets/Logo_Final.png"
-import { FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUser, FaCog, FaSignOutAlt, FaUserShield } from "react-icons/fa"
+import { 
+  FaBars, FaTimes, FaChevronDown, FaChevronUp, 
+  FaUser, FaCog, FaSignOutAlt, FaUserShield, FaHeart 
+} from "react-icons/fa"
 
 const Header = () => {
   const { user, isLoggedIn, adminData, isAdminLoggedIn, logout } = useAuth()
@@ -93,10 +96,18 @@ const Header = () => {
                     <span>Panel de Admin</span>
                   </Link>
                 ) : (
-                  <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
-                    <FaUser className={styles.menuIcon} />
-                    <span>Mi Perfil</span>
-                  </Link>
+                  <>
+                    <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                      <FaUser className={styles.menuIcon} />
+                      <span>Mi Perfil</span>
+                    </Link>
+
+                    {/* ✅ Nueva opción "Favoritos" con ícono de corazón */}
+                    <Link to="/favorites" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                      <FaHeart className={styles.menuIcon} />
+                      <span>Favoritos</span>
+                    </Link>
+                  </>
                 )}
                 <Link to="/settings" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
                   <FaCog className={styles.menuIcon} />
@@ -148,9 +159,15 @@ const Header = () => {
                   Panel de Admin
                 </Link>
               ) : (
-                <Link to="/profile" onClick={() => setMenuOpen(false)}>
-                  Mi Perfil
-                </Link>
+                <>
+                  <Link to="/profile" onClick={() => setMenuOpen(false)}>
+                    Mi Perfil
+                  </Link>
+                  {/* ✅ Favoritos en menú móvil */}
+                  <Link to="/favorites" onClick={() => setMenuOpen(false)}>
+                    Favoritos
+                  </Link>
+                </>
               )}
               <Link to="/settings" onClick={() => setMenuOpen(false)}>
                 Configuración
@@ -173,4 +190,3 @@ const Header = () => {
 }
 
 export default Header
-
