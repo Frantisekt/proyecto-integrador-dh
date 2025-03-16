@@ -227,7 +227,7 @@ const CategoryRegistry = () => {
                                             onChange={handlePackageSelection}
                                         />
                                         <label htmlFor={`package-${pkg.packageId}`} className={`form-check-label ${styles.blackText}`}>
-                                            {pkg.title} - {pkg.description}
+                                            {pkg.title}
                                         </label>
                                     </div>
                                 ))}

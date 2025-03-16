@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { tourPackageService } from '../../../services/tourPackageService';
+import { featureService } from '../../services/getAllFeatures';
 
 const API_URL = 'http://localhost:8087/api/tourPackages';
 
@@ -23,32 +24,59 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [mediaTitle, setMediaTitle] = useState('');
   const [mediaDescription, setMediaDescription] = useState('');
+  const [features, setFeatures] = useState([]);
 
   useEffect(() => {
-    const fetchPackageDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/${packageId}`);
-        setPackageDetails(response.data);
+        const featuresResponse = await featureService.getAll();
+        setFeatures(featuresResponse);
+
+
+        const packageResponse = await axios.get(`${API_URL}/${packageId}`);
+        setPackageDetails(packageResponse.data);
+
+        const featureIds = packageResponse.data.features
+          .map(featureName => {
+            const feature = featuresResponse.find(f => f.name === featureName);
+            return feature ? feature.featureId : null;
+          })
+          .filter(id => id !== null); 
+
         setFormData({
-          title: response.data.title,
-          description: response.data.description,
-          state: response.data.state,
-          start_date: response.data.start_date,
-          end_date: response.data.end_date,
-          price: response.data.price,
-          mediaPackageIds: response.data.mediaPackages?.map(media => media.mediaPackageId) || [],
-          featureIds: response.data.features?.map(feature => feature.id) || []
+          title: packageResponse.data.title,
+          description: packageResponse.data.description,
+          state: packageResponse.data.state,
+          start_date: packageResponse.data.start_date,
+          end_date: packageResponse.data.end_date,
+          price: packageResponse.data.price,
+          mediaPackageIds: packageResponse.data.mediaPackages?.map(media => media.mediaPackageId) || [],
+          featureIds: featureIds 
         });
+
         setLoading(false);
       } catch (err) {
-        console.error('Error al cargar los detalles:', err);
-        setError('Error al cargar los detalles del paquete');
+        console.error('Error al cargar los datos:', err);
+        setError('Error al cargar los datos del paquete');
         setLoading(false);
       }
     };
 
-    if (packageId) fetchPackageDetails();
+    if (packageId) {
+      fetchData();
+    }
   }, [packageId]);
+
+  const handleFeatureChange = (featureId) => {
+    setFormData((prev) => {
+      const exists = prev.featureIds.includes(featureId);
+      const updatedFeatures = exists
+        ? prev.featureIds.filter((f) => f !== featureId)
+        : [...prev.featureIds, featureId];
+
+      return { ...prev, featureIds: updatedFeatures };
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +85,26 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const featureIds1 = formData.featureIds.map(feature => Number(feature));
+
+    console.log("featureIds1:", featureIds1);
+
+    const requestBody = {
+      title: formData.title,
+      description: formData.description,
+      state: formData.state,
+      start_date: formData.start_date,
+      end_date: formData.end_date,
+      price: Number(formData.price),
+      mediaPackageIds: formData.mediaPackageIds,
+      featureIds: featureIds1,
+    };
+
+    console.log("Request Body:", requestBody);
+
     try {
-      await axios.put(`${API_URL}/${packageId}`, formData);
+      await axios.put(`${API_URL}/${packageId}`, requestBody);
       Swal.fire('¡Éxito!', 'Paquete actualizado correctamente', 'success');
       onSave();
     } catch (error) {
@@ -151,6 +197,25 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
               <div className="mb-3">
                 <label className="form-label text-dark">Fecha de Fin:</label>
                 <input type="date" className="form-control" name="end_date" value={formData.end_date} onChange={handleChange} required />
+              </div>
+              <div className="mb-3">
+                <label className="form-label text-dark">Características:</label>
+                <div style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                  {features.map((feature) => (
+                    <div key={feature.featureId} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={feature.featureId}
+                        checked={formData.featureIds.includes(feature.featureId)}
+                        onChange={() => handleFeatureChange(feature.featureId)}
+                      />
+                      <label className="form-check-label text-dark">
+                        {feature.displayName}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="modal-footer">
                 <button type="submit" className="btn btn-primary">Guardar Cambios</button>

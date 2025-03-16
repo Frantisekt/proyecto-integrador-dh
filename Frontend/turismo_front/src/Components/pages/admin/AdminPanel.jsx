@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { FaEdit, FaTrash } from "react-icons/fa";
 import styles from './AdminPanel.module.css';
 import RegisterProductModal from './RegisterProductModal';
 import EditPackageModal from './EditPackageModal';
 import { tourPackageService } from '../../../services/tourPackageService';
 import Swal from 'sweetalert2';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminPanel = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,167 +37,111 @@ const AdminPanel = () => {
     };
 
     const handleEditPackage = (packageId) => {
-        console.log('Editando paquete:', packageId);
         setEditingPackageId(packageId);
     };
 
     const handleDeletePackage = async (packageId) => {
-        console.log('Intentando eliminar paquete con ID:', packageId); // Debug log
-        
-        if (!packageId) {
-            console.error('ID de paquete no válido');
-            return;
-        }
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
 
-        try {
-            const result = await Swal.fire({
-                title: '¿Estás seguro?',
-                text: "No podrás revertir esta acción",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            });
-
-            if (result.isConfirmed) {
+        if (result.isConfirmed) {
+            try {
                 setLoading(true);
                 await tourPackageService.deletePackage(packageId);
                 await fetchPackages();
-                Swal.fire(
-                    '¡Eliminado!',
-                    'El paquete ha sido eliminado.',
-                    'success'
-                );
+                Swal.fire('¡Eliminado!', 'El paquete ha sido eliminado.', 'success');
+            } catch (error) {
+                Swal.fire('Error', 'No se pudo eliminar el paquete', 'error');
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            console.error('Error al eliminar:', error);
-            Swal.fire(
-                'Error',
-                'No se pudo eliminar el paquete',
-                'error'
-            );
-        } finally {
-            setLoading(false);
         }
     };
 
     return (
-        <>
-            <div className={styles.mobileMessage}>
-                <h2>Acceso no disponible</h2>
-                <p>El panel de administración solo está disponible para dispositivos de escritorio. Por favor, accede desde una computadora.</p>
+        <div className={styles.adminContainer}>
+            <div className={styles.headerSection}>
+                <h1>Productos</h1>
+                <button className="btn btn-success" onClick={() => setIsModalOpen(true)}>
+                    Agregar Producto
+                </button>
             </div>
 
-            <div className={styles.adminContainer}>
-                <div className={styles.headerSection}>
-                    <h1>Productos</h1>
-                    <button 
-                        className={styles.addButton}
-                        onClick={() => setIsModalOpen(true)}
-                    >
-                        Agregar Producto
-                    </button>
+            {isModalOpen && (
+                <RegisterProductModal onClose={() => setIsModalOpen(false)} onSave={fetchPackages} />
+            )}
+
+            {error && <div className="alert alert-danger">{error}</div>}
+            
+            {loading ? (
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
                 </div>
-
-                {isModalOpen && (
-                    <RegisterProductModal 
-                        onClose={() => setIsModalOpen(false)}
-                        onSave={fetchPackages}
-                    />
-                )}
-
-                {error && <div className={styles.errorMessage}>{error}</div>}
-                
-                {loading ? (
-                    <div className={styles.loading}>Cargando...</div>
-                ) : (
-                    <div className={styles.tableContainer}>
-                        <table className={styles.packagesTable}>
-                            <thead>
-                                <tr>
-                                    <th>Título</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+            ) : (
+                <div className="table-responsive">
+                    <table className="table table-hover table-striped align-middle">
+                        <thead className="table-dark">
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {packages.map(pkg => (
+                                <tr key={pkg.packageId}>
+                                    <td>{pkg.title}</td>
+                                    <td>{pkg.description}</td>
+                                    <td>
+                                        <span className={`badge ${pkg.state ? 'bg-success' : 'bg-secondary'}`}>
+                                            {pkg.state ? 'Activo' : 'Inactivo'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditPackage(pkg.packageId)}>
+                                            <FaEdit /> Editar
+                                        </button>
+                                        <button className="btn btn-danger btn-sm" onClick={() => handleDeletePackage(pkg.packageId)}>
+                                            <FaTrash /> Eliminar
+                                        </button>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {packages.map(pkg => (
-                                    <tr key={pkg.packageId}>
-                                        <td>{pkg.title}</td>
-                                        <td>{pkg.description}</td>
-                                        <td>{pkg.state ? 'Activo' : 'Inactivo'}</td>
-                                        <td>
-                                            <button 
-                                                className={styles.editButton}
-                                                onClick={() => handleEditPackage(pkg.packageId)}
-                                            >
-                                                Editar
-                                            </button>
-                                            <button 
-                                                className={styles.deleteButton}
-                                                onClick={() => handleDeletePackage(pkg.packageId)}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-
-                {/* Paginación */}
-                <div className={styles.pagination}>
-                    <button 
-                        onClick={() => setCurrentPage(prev => prev - 1)}
-                        disabled={currentPage === 1}
-                        className={`${styles.pageButton} ${styles.arrowButton}`}
-                    >
-                        ←
-                    </button>
-                    
-                    <div className={styles.pageIndicators}>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <div
-                                key={index + 1}
-                                onClick={() => setCurrentPage(index + 1)}
-                                className={`${styles.pageIndicator} ${
-                                    currentPage === index + 1 ? styles.activeIndicator : ''
-                                }`}
-                            />
-                        ))}
-                    </div>
-                    
-                    <button 
-                        onClick={() => setCurrentPage(prev => prev + 1)}
-                        disabled={currentPage === totalPages}
-                        className={`${styles.pageButton} ${styles.arrowButton}`}
-                    >
-                        →
-                    </button>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
+            )}
+
+            <div className="d-flex justify-content-center mt-3">
+                <button className="btn btn-outline-primary me-2" disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>← Anterior</button>
+                <span className="align-self-center">Página {currentPage} de {totalPages}</span>
+                <button className="btn btn-outline-primary ms-2" disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Siguiente →</button>
             </div>
 
-            {/* Modal de edición */}
             {editingPackageId && (
                 <EditPackageModal 
                     key={`edit-modal-${editingPackageId}`}
                     packageId={editingPackageId}
-                    onClose={() => {
-                        setEditingPackageId(null);
-                    }}
+                    onClose={() => setEditingPackageId(null)}
                     onSave={() => {
                         fetchPackages();
                         setEditingPackageId(null);
                     }}
                 />
             )}
-        </>
+        </div>
     );
 };
 
-export default AdminPanel; 
+export default AdminPanel;

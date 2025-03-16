@@ -143,7 +143,7 @@ export const tourPackageService = {
 
     getPackageById: async (packageId) => {
         try {
-            const response = await axios.get(`$http://localhost:8087/api/tourPackages/${packageId}`);
+            const response = await axios.get(`http://localhost:8087/api/tourPackages/${packageId}`);
             return response.data;
         } catch (error) {
             console.error("Error al obtener paquete por ID:", error);
@@ -151,52 +151,28 @@ export const tourPackageService = {
         }
     },
     
+    
 
     updatePackage: async (id, packageData) => {
         try {
-            const adminData = localStorage.getItem('adminData');
-            if (!adminData) {
-                throw new Error("No hay datos de administrador. Inicia sesión nuevamente.");
-            }
-    
-            const { token } = JSON.parse(adminData);
-            if (!token) {
-                throw new Error("No hay token de autenticación. Inicia sesión nuevamente.");
-            }
-    
             const requestData = {
                 title: packageData.title,
                 description: packageData.description,
                 state: packageData.state,
-                start_date: packageData.start_date,
-                end_date: packageData.end_date,
+                start_date: packageData.start_date, 
+                end_date: packageData.end_date, 
                 price: packageData.price,
                 mediaPackageIds: packageData.mediaPackageIds || [],
-                featureIds: packageData.featureIds || [],
+                featureIds: packageData.featureIds || []
             };
     
             console.log('Enviando actualización con:', requestData);
-    
-            const response = await axios.put(
-                `http://localhost:8087/api/tourPackages/${id}`,
-                requestData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            const response = await axiosInstance.put(`http://localhost:8087/api/tourPackages/${id}`, requestData);
     
             console.log('Paquete actualizado con éxito:', response.data);
             return response.data;
         } catch (error) {
             console.error('Error al actualizar paquete:', error.response?.data || error.message);
-    
-            if (error.response?.status === 401) {
-                throw new Error('No autorizado: Token inválido o expirado. Inicia sesión nuevamente.');
-            }
-    
             throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
         }
     },
