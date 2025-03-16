@@ -102,7 +102,7 @@ const Header = () => {
                       <span>Mi Perfil</span>
                     </Link>
 
-                    {/* ✅ Nueva opción "Favoritos" con ícono de corazón */}
+                   
                     <Link to="/favorites" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
                       <FaHeart className={styles.menuIcon} />
                       <span>Favoritos</span>
