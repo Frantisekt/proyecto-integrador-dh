@@ -58,6 +58,11 @@ export const authService = {
         }
     },
     
+    isAuthenticated: () => {
+        const user = localStorage.getItem('user');
+        const token = localStorage.getItem('token');
+        return !!(user && token);
+    },
 
     logout: () => {
         localStorage.removeItem('user');

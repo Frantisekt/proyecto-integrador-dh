@@ -1,15 +1,67 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./TourCard.module.css"
+import { favoriteService } from "../../services/favoriteService"
+import { useNavigate } from "react-router-dom"
+import { authService } from "../../services/authService"
+import Swal from "sweetalert2"
 
-const TourCard = ({ title, description, imageUrl, currency, link, type }) => {
-  const [isFavorite, setIsFavorite] = useState(false)
+const TourCard = ({ title, description, imageUrl, currency, link, type, packageId, initialIsFavorite = false }) => {
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite)
+  const [isLoading, setIsLoading] = useState(false)
+  const navigate = useNavigate()
 
-  const toggleFavorite = (e) => {
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (packageId && authService.isAuthenticated()) {
+        const isFav = await favoriteService.checkIsFavorite(packageId)
+        setIsFavorite(isFav)
+      }
+    }
+    checkFavoriteStatus()
+  }, [packageId])
+
+  const handleFavoriteClick = async (e) => {
     e.preventDefault() // Prevent navigation when clicking the heart
-    setIsFavorite(!isFavorite)
-    // Here you would typically call an API to save the favorite status
+    
+    if (!authService.isAuthenticated()) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Necesitas iniciar sesión para guardar favoritos",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Ir a iniciar sesión",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/auth")
+        }
+      })
+      return
+    }
+
+    if (isLoading) return
+
+    setIsLoading(true)
+    try {
+      if (isFavorite) {
+        await favoriteService.removeFromFavorites(packageId)
+      } else {
+        await favoriteService.addToFavorites(packageId)
+      }
+      setIsFavorite(!isFavorite)
+    } catch (error) {
+      console.error("Error al actualizar favorito:", error)
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo actualizar el favorito. Intenta nuevamente.",
+        icon: "error",
+        confirmButtonText: "Ok"
+      })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -17,8 +69,9 @@ const TourCard = ({ title, description, imageUrl, currency, link, type }) => {
       {type === "featured" && <span className={styles.badge}>Destacado</span>}
 
       <button
-        className={`${styles.favoriteButton} ${isFavorite ? styles.favorited : ""}`}
-        onClick={toggleFavorite}
+        className={`${styles.favoriteButton} ${isFavorite ? styles.favorited : ""} ${isLoading ? styles.loading : ""}`}
+        onClick={handleFavoriteClick}
+        disabled={isLoading}
         aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
       >
         <svg

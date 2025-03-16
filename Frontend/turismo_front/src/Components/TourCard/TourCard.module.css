@@ -175,6 +175,16 @@
   fill: #ff3b5c;
 }
 
+/* Loading state */
+.favoriteButton.loading {
+  cursor: not-allowed;
+  animation: pulse 1.5s infinite;
+}
+
+.loading .heartIcon {
+  opacity: 0.5;
+}
+
 @keyframes heartPop {
   0% {
     transform: scale(1);
@@ -184,6 +194,18 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
