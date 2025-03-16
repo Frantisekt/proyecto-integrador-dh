@@ -1,6 +1,7 @@
 .gallery {
     display: flex;
     justify-content: center;
+    margin-bottom: 5vh;
     gap: 10px;
 }
 
@@ -146,7 +147,6 @@
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
     width: 60px;
 }
-
 
 .closeBtn:hover {
     transform: scale(1.1);
