@@ -1,0 +1,41 @@
+{
+  "name": "turismo_front",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "node server.js",
+    "build": "vite build",
+    "lint": "eslint .",
+      "preview": "vite preview --host 0.0.0.0 --port $PORT"
+  },
+  "dependencies": {
+    "20": "^3.1.9",
+    "axios": "^1.8.1",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
+    "react-router-dom": "^7.1.5",
+    "sweetalert2": "^11.17.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "sass": "^1.85.1",
+    "sass-embedded": "^1.85.1",
+    "vite": "^6.1.0"
+  }
+}
