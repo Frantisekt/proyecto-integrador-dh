@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { tourPackageService } from '../../../services/tourPackageService';
+import { featureService } from '../../services/getAllFeatures';
 
 const API_URL = 'http://localhost:8087/api/tourPackages';
 
@@ -23,6 +24,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [mediaTitle, setMediaTitle] = useState('');
   const [mediaDescription, setMediaDescription] = useState('');
+  const [features, setFeatures] = useState([]);
 
   useEffect(() => {
     const fetchPackageDetails = async () => {
@@ -37,7 +39,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
           end_date: response.data.end_date,
           price: response.data.price,
           mediaPackageIds: response.data.mediaPackages?.map(media => media.mediaPackageId) || [],
-          featureIds: response.data.features?.map(feature => feature.id) || []
+          featureIds: response.data.features || []
         });
         setLoading(false);
       } catch (err) {
@@ -47,8 +49,31 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
       }
     };
 
-    if (packageId) fetchPackageDetails();
+    const fetchFeatures = async () => {
+      try {
+        const response = await featureService.getAll();
+        setFeatures(response);
+      } catch (error) {
+        console.error('Error al cargar características:', error);
+      }
+    };
+
+    if (packageId) {
+      fetchPackageDetails();
+      fetchFeatures();
+    }
   }, [packageId]);
+
+  const handleFeatureChange = (featureId) => {
+    setFormData((prev) => {
+      const exists = prev.featureIds.includes(featureId); // Compara con featureId
+      const updatedFeatures = exists
+        ? prev.featureIds.filter((f) => f !== featureId) // Filtra por featureId
+        : [...prev.featureIds, featureId]; // Agrega featureId
+
+      return { ...prev, featureIds: updatedFeatures };
+    });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +82,28 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verifica que featureIds sea un arreglo de números
+    const featureIds1 = formData.featureIds.map(feature => Number(feature));
+
+    console.log("featureIds1:", featureIds1);
+
+    // Prepara el cuerpo de la solicitud
+    const requestBody = {
+      title: formData.title,
+      description: formData.description,
+      state: formData.state,
+      start_date: formData.start_date,
+      end_date: formData.end_date,
+      price: Number(formData.price), // Asegúrate de que el precio sea un número
+      mediaPackageIds: formData.mediaPackageIds,
+      featureIds: featureIds1, // Asegúrate de que featureIds sea un arreglo de números
+    };
+
+    console.log("Request Body:", requestBody); // Depuración
+
     try {
-      await axios.put(`${API_URL}/${packageId}`, formData);
+      await axios.put(`${API_URL}/${packageId}`, requestBody);
       Swal.fire('¡Éxito!', 'Paquete actualizado correctamente', 'success');
       onSave();
     } catch (error) {
@@ -151,6 +196,25 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
               <div className="mb-3">
                 <label className="form-label text-dark">Fecha de Fin:</label>
                 <input type="date" className="form-control" name="end_date" value={formData.end_date} onChange={handleChange} required />
+              </div>
+              <div className="mb-3">
+                <label className="form-label text-dark">Características:</label>
+                <div style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                  {features.map((feature) => (
+                    <div key={feature.featureId} className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value={feature.featureId}
+                        checked={formData.featureIds.includes(feature.featureId)}
+                        onChange={() => handleFeatureChange(feature.featureId)} 
+                      />
+                      <label className="form-check-label text-dark">
+                        {feature.displayName}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="modal-footer">
                 <button type="submit" className="btn btn-primary">Guardar Cambios</button>
