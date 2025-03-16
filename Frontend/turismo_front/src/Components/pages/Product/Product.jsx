@@ -74,8 +74,8 @@ const Product = () => {
   return (
     <section className={styles.container}>
       <div className={styles.titleContainer}>
-        <h2 className={styles.title}>Explora Nuestros Productos</h2>
-        <p className={styles.subtitle}>Descubre experiencias de viaje únicas y emocionantes</p>
+        <h2 className={styles.title}>Explora Nuestros Maravillosos Destinos</h2>
+        <p className={styles.subtitle}>Descubre experiencias de viaje únicas y emocionantes, siempre al mejor precio</p>
       </div>
 
       <div className={styles.grid}>
