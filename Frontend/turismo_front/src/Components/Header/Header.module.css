@@ -26,14 +26,17 @@
   height: 130px;
 }
 
-/* Auth buttons (non-logged in state) */
-.authButtons {
+
+.navContainer {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
   margin-left: auto;
   padding-right: 50px;
 }
 
+/* Common link styles */
+.navLink,
 .authLink {
   color: #fff1cd;
   text-decoration: none;
@@ -44,6 +47,7 @@
   transition: color 0.3s ease;
 }
 
+.navLink::after,
 .authLink::after {
   content: "";
   position: absolute;
@@ -57,22 +61,28 @@
   transition: transform 0.3s ease;
 }
 
+.navLink:hover,
 .authLink:hover {
   color: #8ecae6;
 }
 
+.navLink:hover::after,
 .authLink:hover::after {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
 
-/* User section (logged in state) */
+
+.authLinks {
+  display: flex;
+  gap: 20px;
+}
+
+
 .userSection {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-left: auto;
-  padding-right: 50px;
   position: relative;
 }
 
@@ -127,11 +137,11 @@
   border: 2px solid #8ecae6;
 }
 
-/* User dropdown menu */
+
 .userMenu {
   position: absolute;
   top: 70px;
-  right: 20px;
+  right: 0;
   background-color: #023047;
   border-radius: 8px;
   width: 200px;
@@ -167,8 +177,8 @@
   color: #8ecae6;
 }
 
-/* Mobile menu */
-.menuIcon {
+
+.mobileMenuIcon {
   display: none;
   font-size: 30px;
   color: #fff;
@@ -248,37 +258,11 @@
   color: #8ecae6;
 }
 
-/* Demo toggle buttons - remove in production */
-.demoToggle {
-  margin-top: 15px;
-  padding: 10px;
-  background-color: #8ecae6;
-  color: #023047;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.demoToggleDesktop {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  padding: 10px;
-  background-color: #8ecae6;
-  color: #023047;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  z-index: 1000;
-}
-
 /* Responsive styles */
 @media (max-width: 1024px) {
-  .authButtons,
-  .userSection {
+  .navContainer {
     padding-right: 20px;
+    gap: 20px;
   }
 
   .welcomeMessage {
@@ -287,21 +271,16 @@
 }
 
 @media (max-width: 768px) {
-  .authButtons,
-  .userSection {
+  .navContainer {
     display: none;
   }
 
-  .menuIcon {
+  .mobileMenuIcon {
     display: block;
   }
 
   .mobileMenu {
     display: flex;
-  }
-
-  .demoToggleDesktop {
-    display: none;
   }
 }
 
