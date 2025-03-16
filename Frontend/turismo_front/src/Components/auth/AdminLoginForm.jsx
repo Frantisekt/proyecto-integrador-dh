@@ -1,99 +1,105 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { authService } from "../../services/authService";
-import Swal from "sweetalert2";
+"use client"
+
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
+import { authService } from "../../services/authService"
+import Swal from "sweetalert2"
 
 const AdminLoginForm = ({ mode }) => {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
+  const { adminLogin } = useAuth() // Use the adminLogin function from AuthContext
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  });
+  })
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    
+    e.preventDefault()
+    setError("")
+    setLoading(true)
+
     try {
-      const response = await authService.adminLogin(formData);
-      
-      if (response.role !== 'ADMIN') {
-        throw new Error('Acceso denegado: No tienes permisos de administrador');
+      const response = await authService.adminLogin(formData)
+
+      if (response.role !== "ADMIN") {
+        throw new Error("Acceso denegado: No tienes permisos de administrador")
       }
 
-      // Guardar datos del admin y token
-      localStorage.setItem('adminData', JSON.stringify(response));
-      localStorage.setItem('isAdminLoggedIn', 'true');
+      // Use the adminLogin function to update the context state
+      // This will trigger the header to update immediately
+      adminLogin(response)
+
+      // Still store in localStorage for persistence (the adminLogin function does this too)
+      // But we keep this for backward compatibility
+      localStorage.setItem("adminData", JSON.stringify(response))
+      localStorage.setItem("isAdminLoggedIn", "true")
 
       Swal.fire({
-        icon: 'success',
-        title: '¡Bienvenido!',
+        icon: "success",
+        title: "¡Bienvenido!",
         text: `Has iniciado sesión como administrador`,
         timer: 2000,
-        showConfirmButton: false
-      });
+        showConfirmButton: false,
+      })
 
-      navigate("/admin");
+      navigate("/admin")
     } catch (err) {
-      console.error('Error de login:', err);
-      setError(err.message || "Credenciales inválidas");
+      console.error("Error de login:", err)
+      setError(err.message || "Credenciales inválidas")
       Swal.fire({
-        icon: 'error',
-        title: 'Error de acceso',
-        text: err.message || 'Credenciales inválidas',
-      });
+        icon: "error",
+        title: "Error de acceso",
+        text: err.message || "Credenciales inválidas",
+      })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="form-block__input-wrapper">
       <form onSubmit={handleSubmit}>
         {error && <div className="error-message">{error}</div>}
         <div className="form-group form-group--admin">
-          <input 
-            className="form-group__input" 
-            type="email" 
-            placeholder="Email" 
+          <input
+            className="form-group__input"
+            type="email"
+            placeholder="Email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required 
+            required
             disabled={loading}
           />
-          <input 
-            className="form-group__input" 
-            type="password" 
-            placeholder="Contraseña" 
+          <input
+            className="form-group__input"
+            type="password"
+            placeholder="Contraseña"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required 
+            required
             disabled={loading}
           />
-          <button 
-            className="button" 
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? 'INICIANDO SESIÓN...' : 'INICIAR SESIÓN COMO ADMINISTRADOR'}
+          <button className="button" type="submit" disabled={loading}>
+            {loading ? "INICIANDO SESIÓN..." : "INICIAR SESIÓN COMO ADMINISTRADOR"}
           </button>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AdminLoginForm;
+export default AdminLoginForm
+
