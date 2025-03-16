@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { obtenerProductos } from "../../services/productService"; 
@@ -83,16 +85,18 @@ const Product = () => {
             : "https://via.placeholder.com/150"; 
 
           return (
-            <Link key={product.packageId} to={`/tour/${product.packageId}`} className={styles.cardLink}>
+            <div key={product.packageId} className={styles.cardWrapper}>
               <TourCard
-                key={product.packageId}
+                packageId={product.packageId}
                 title={product.title}
                 imageUrl={imageUrl}  
                 description={product.description}
                 currency={product.price ? `$${product.price}` : "Precio no disponible"}
-                link={`/product/${product.id}`}
+                link={`/tour/${product.packageId}`}
+                type={product.featured ? "featured" : "standard"}
+                initialIsFavorite={product.isFavorite}
               />
-            </Link>
+            </div>
           );
         })}
       </div>
