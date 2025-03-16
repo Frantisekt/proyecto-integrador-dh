@@ -27,49 +27,52 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const [features, setFeatures] = useState([]);
 
   useEffect(() => {
-    const fetchPackageDetails = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/${packageId}`);
-        setPackageDetails(response.data);
+        const featuresResponse = await featureService.getAll();
+        setFeatures(featuresResponse);
+
+
+        const packageResponse = await axios.get(`${API_URL}/${packageId}`);
+        setPackageDetails(packageResponse.data);
+
+        const featureIds = packageResponse.data.features
+          .map(featureName => {
+            const feature = featuresResponse.find(f => f.name === featureName);
+            return feature ? feature.featureId : null;
+          })
+          .filter(id => id !== null); 
+
         setFormData({
-          title: response.data.title,
-          description: response.data.description,
-          state: response.data.state,
-          start_date: response.data.start_date,
-          end_date: response.data.end_date,
-          price: response.data.price,
-          mediaPackageIds: response.data.mediaPackages?.map(media => media.mediaPackageId) || [],
-          featureIds: response.data.features || []
+          title: packageResponse.data.title,
+          description: packageResponse.data.description,
+          state: packageResponse.data.state,
+          start_date: packageResponse.data.start_date,
+          end_date: packageResponse.data.end_date,
+          price: packageResponse.data.price,
+          mediaPackageIds: packageResponse.data.mediaPackages?.map(media => media.mediaPackageId) || [],
+          featureIds: featureIds 
         });
+
         setLoading(false);
       } catch (err) {
-        console.error('Error al cargar los detalles:', err);
-        setError('Error al cargar los detalles del paquete');
+        console.error('Error al cargar los datos:', err);
+        setError('Error al cargar los datos del paquete');
         setLoading(false);
-      }
-    };
-
-    const fetchFeatures = async () => {
-      try {
-        const response = await featureService.getAll();
-        setFeatures(response);
-      } catch (error) {
-        console.error('Error al cargar características:', error);
       }
     };
 
     if (packageId) {
-      fetchPackageDetails();
-      fetchFeatures();
+      fetchData();
     }
   }, [packageId]);
 
   const handleFeatureChange = (featureId) => {
     setFormData((prev) => {
-      const exists = prev.featureIds.includes(featureId); // Compara con featureId
+      const exists = prev.featureIds.includes(featureId);
       const updatedFeatures = exists
-        ? prev.featureIds.filter((f) => f !== featureId) // Filtra por featureId
-        : [...prev.featureIds, featureId]; // Agrega featureId
+        ? prev.featureIds.filter((f) => f !== featureId)
+        : [...prev.featureIds, featureId];
 
       return { ...prev, featureIds: updatedFeatures };
     });
@@ -83,24 +86,22 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Verifica que featureIds sea un arreglo de números
     const featureIds1 = formData.featureIds.map(feature => Number(feature));
 
     console.log("featureIds1:", featureIds1);
 
-    // Prepara el cuerpo de la solicitud
     const requestBody = {
       title: formData.title,
       description: formData.description,
       state: formData.state,
       start_date: formData.start_date,
       end_date: formData.end_date,
-      price: Number(formData.price), // Asegúrate de que el precio sea un número
+      price: Number(formData.price),
       mediaPackageIds: formData.mediaPackageIds,
-      featureIds: featureIds1, // Asegúrate de que featureIds sea un arreglo de números
+      featureIds: featureIds1,
     };
 
-    console.log("Request Body:", requestBody); // Depuración
+    console.log("Request Body:", requestBody);
 
     try {
       await axios.put(`${API_URL}/${packageId}`, requestBody);
@@ -207,7 +208,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
                         type="checkbox"
                         value={feature.featureId}
                         checked={formData.featureIds.includes(feature.featureId)}
-                        onChange={() => handleFeatureChange(feature.featureId)} 
+                        onChange={() => handleFeatureChange(feature.featureId)}
                       />
                       <label className="form-check-label text-dark">
                         {feature.displayName}
