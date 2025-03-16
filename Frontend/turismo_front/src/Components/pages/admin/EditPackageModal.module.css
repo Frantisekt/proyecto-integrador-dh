@@ -1,0 +1,205 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modalContent {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modalContent h2 {
+    margin-bottom: 2rem;
+    color: #333;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus,
+.formGroup select:focus {
+    outline: none;
+    border-color: #17B1BD;
+    box-shadow: 0 0 0 2px rgba(23, 177, 189, 0.2);
+}
+
+.buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.saveButton,
+.cancelButton {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.saveButton {
+    background-color: #17B1BD;
+    color: white;
+}
+
+.saveButton:hover {
+    background-color: #148F99;
+}
+
+.cancelButton {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.cancelButton:hover {
+    background-color: #d0d0d0;
+}
+
+.error {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #fde8e8;
+}
+
+.modalOverlay * {
+    box-sizing: border-box;
+}
+
+.categoriesList {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.categoryItem {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.categoryItem:last-child {
+    border-bottom: none;
+}
+
+.categoryItem p {
+    margin: 0.25rem 0;
+}
+
+@media (max-width: 768px) {
+    .modalContent {
+        width: 95%;
+        margin: 10px;
+        max-height: 95vh;
+    }
+}
+
+.mediaSection {
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+}
+
+.mediaGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.mediaItem {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.mediaItem img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.mediaInfo {
+    padding: 0.5rem;
+}
+
+.removeButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.removeButton:hover {
+    background-color: #c82333;
+}
+
+.mediaUploadForm {
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 1rem;
+}
+
+.fileInput {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.uploadButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.uploadButton:hover {
+    background-color: #218838;
+}

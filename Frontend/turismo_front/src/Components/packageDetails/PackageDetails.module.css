@@ -1,0 +1,207 @@
+.packageDetailsContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15vw;
+    background-color: transparent;
+    color: black;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .leftColumn {
+    flex: 1;
+    max-width: 60%;
+  }
+  
+  .rightColumn {
+    flex: 1;
+    max-width: 40%;
+  }
+  
+  .descriptionCard,
+  .bookingCard {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    height: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .descriptionCard:hover,
+  .bookingCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .sectionTitle {
+    color: rgba(33, 158, 188, 1);
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .sectionTitle::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background-color: rgba(33, 158, 188, 1);
+  }
+  
+  .packageDescription {
+    color: #444;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .dateContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .dateBox {
+    flex: 1;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+  }
+  
+  .dateBox:hover {
+    border-color: rgba(33, 158, 188, 0.5);
+  }
+  
+  .dateLabel {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .dateValue {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+  }
+  
+  .packagePrice {
+    font-size: 1.4rem;
+    color: #333;
+    margin: 20px 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .reserveButton {
+    background-color: #ff5a5f;
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 90, 95, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .reserveButton:hover {
+    background-color: #e04a4f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 90, 95, 0.4);
+  }
+  
+  .reserveButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(255, 90, 95, 0.3);
+  }
+  
+  .reserveButton::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+  }
+  
+  .reserveButton:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+  }
+  
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.5;
+    }
+    20% {
+      transform: scale(25, 25);
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(40, 40);
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .packageDetailsContainer {
+      padding: 0 10vw;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .packageDetailsContainer {
+      flex-direction: column;
+      padding: 0 5vw;
+      gap: 30px;
+    }
+  
+    .leftColumn,
+    .rightColumn {
+      max-width: 100%;
+    }
+  
+    .descriptionCard,
+    .bookingCard {
+      padding: 20px;
+    }
+  
+    .dateContainer {
+      flex-direction: row;
+      gap: 15px;
+    }
+  
+    .dateBox {
+      padding: 12px;
+    }
+  
+    .packagePrice {
+      font-size: 1.3rem;
+      margin: 15px 0;
+      padding-bottom: 15px;
+    }
+  
+    .reserveButton {
+      padding: 14px;
+    }
+  }
+  
+  

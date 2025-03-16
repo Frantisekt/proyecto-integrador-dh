@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+}
+
+body {
+    min-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto !important;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    position: relative;
+}
+
+main {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    height: auto;
+}
+
+/* Asegurarse de que el contenido sea scrolleable en iOS */
+@supports (-webkit-touch-callout: none) {
+    body {
+        height: -webkit-fill-available;
+    }
+    
+    #root {
+        min-height: -webkit-fill-available;
+    }
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+
+
+
