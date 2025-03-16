@@ -6,7 +6,7 @@ const getApiUrl = () => {
   return 'http://localhost:8087/';
 };
 
-export const API_BASE_URL = ${getApiUrl()}/api/v1;
+export const API_BASE_URL = `${getApiUrl()}/api/v1`;
 export const API_URL = getApiUrl();
 
 // Endpoints específicos
@@ -27,5 +27,5 @@ export const ENDPOINTS = {
 
 export const getAuthHeader = () => {
   const token = localStorage.getItem('adminToken') || localStorage.getItem('token');
-  return token ? { Authorization: Bearer ${token} } : {};
+  return token ? { Authorization: `Bearer ${token}` } : {};
 };
