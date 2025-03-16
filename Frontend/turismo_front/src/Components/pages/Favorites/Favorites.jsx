@@ -1,51 +1,61 @@
-import { useState, useEffect } from "react";
-import { authService } from "../../services/authService";
-import { userService } from "../../services/userService";
-import { tourPackageService } from "../../services/tourPackageService";
-import TourCard from "../../TourCard/TourCard";
-import styles from "./Favorites.module.css";
+"use client"
+
+import { useState, useEffect } from "react"
+import { authService } from "../../services/authService"
+import { userService } from "../../services/userService"
+import { tourPackageService } from "../../services/tourPackageService"
+import TourCard from "../../TourCard/TourCard"
+import styles from "./Favorites.module.css"
 
 const Favorites = () => {
-  const [favoritePackages, setFavoritePackages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [favoritePackages, setFavoritePackages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const user = authService.getCurrentUser();
+        const user = authService.getCurrentUser()
         if (!user) {
-          setError("Debes iniciar sesión para ver tus favoritos.");
-          setLoading(false);
-          return;
+          setError("Debes iniciar sesión para ver tus favoritos.")
+          setLoading(false)
+          return
         }
 
-        const userData = await userService.getUserById(user.userId);
-        const favoriteIds = userData.favoritePackageIds || [];
-        console.log(favoriteIds);
+        const userData = await userService.getUserById(user.userId)
+        const favoriteIds = userData.favoritePackageIds || []
 
         // Obtener detalles de los paquetes favoritos
         const packagePromises = favoriteIds.map((id) => {
-          console.log(`Obteniendo paquete con ID: ${id}`);
-          return tourPackageService.getPackageById(id);
-        });
+          return tourPackageService.getPackageById(id)
+        })
 
-        const packages = await Promise.all(packagePromises);
-        console.log("paquetes", packages);
-
-        setFavoritePackages(packages);
+        // Filtrar paquetes nulos o indefinidos
+        const packages = (await Promise.all(packagePromises)).filter((pkg) => pkg && pkg.packageId)
+        setFavoritePackages(packages)
       } catch (err) {
-        setError("Error al cargar los favoritos");
+        console.error("Error al cargar favoritos:", err)
+        setError("Error al cargar los favoritos")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchFavorites();
-  }, []);
+    fetchFavorites()
+  }, [])
 
-  if (loading) return <p>Cargando favoritos...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading)
+    return (
+      <div className={styles.favoritesContainer}>
+        <p>Cargando favoritos...</p>
+      </div>
+    )
+  if (error)
+    return (
+      <div className={styles.favoritesContainer}>
+        <p>{error}</p>
+      </div>
+    )
 
   return (
     <div className={styles.favoritesContainer}>
@@ -55,30 +65,30 @@ const Favorites = () => {
       ) : (
         <div className={styles.tourGrid}>
           {favoritePackages.map((pkg) => {
-            console.log("pkg", pkg);
+            // Asegurarse de que la URL de la imagen sea válida
             const imageUrl =
-  (pkg.mediaPackages && pkg.mediaPackages.length > 0 && pkg.mediaPackages[0].mediaUrl)
-    ? pkg.mediaPackages[0].mediaUrl  
-    : "https://www.example.com/default-image.jpg";  
-
+              pkg.mediaPackages && pkg.mediaPackages.length > 0 && pkg.mediaPackages[0].mediaUrl
+                ? pkg.mediaPackages[0].mediaUrl
+                : "https://via.placeholder.com/300x200?text=Imagen+no+disponible"
 
             return (
               <TourCard
                 key={pkg.packageId}
                 packageId={pkg.packageId}
-                title={pkg.title}
-                description={pkg.description}
+                title={pkg.title || "Sin título"}
+                description={pkg.description || "Sin descripción"}
                 imageUrl={imageUrl}
-                currency={`$${pkg.price}`}
+                currency={`$${pkg.price || 0}`}
                 link={`/tour/${pkg.packageId}`}
                 initialIsFavorite={true}
               />
-            );
+            )
           })}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Favorites;
+export default Favorites
+
