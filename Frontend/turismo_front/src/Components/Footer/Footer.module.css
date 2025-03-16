@@ -10,7 +10,7 @@
   
 .logo {
     position: absolute;
-    top: -60px;
+    top: -30px;
     left: 20px;
     width: 120px;
     height: 120px;
@@ -25,7 +25,7 @@
   
 .footer {
     background-color: #002E47;
-    padding: 20px;
+    padding: 40px;
     width: 100%;
     text-align: center;
     min-height: 80px;
