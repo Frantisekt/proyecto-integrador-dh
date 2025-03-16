@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import getTourPackage from "../../services/getOneTourPackage"
-import styles from "./Package.module.css"
+import styles from "./package.module.css"
 import Gallery from "../../gallery/Gallery"
 import flecha_atras from "../../../assets/flecha_atras.png"
 import PackageDetails from "../../packageDetails/PackageDetails"
