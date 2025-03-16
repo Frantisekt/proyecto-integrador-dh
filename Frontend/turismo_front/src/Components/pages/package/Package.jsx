@@ -42,6 +42,7 @@ const Package = () => {
 
   const { title, description, start_date, end_date, price, mediaPackages = [], features = [] } = travelPackage
   const images = mediaPackages.map((media) => media.mediaUrl)
+  const formattedFeatures = features.map((feature) => ({ name: feature, displayName: feature.replace(/_/g, " ") }))/*---------------*/ 
 
   return (
     <div className={styles.mainContainer}>
@@ -65,7 +66,7 @@ const Package = () => {
       <PackageDetails description={description} startDate={start_date} endDate={end_date} price={price} />
 
       <div className={styles.featuresWrapper}>
-        <PackageFeatures features={features} />
+        <PackageFeatures features={formattedFeatures} />/*---------------*/ 
       </div>
     </div>
   )
