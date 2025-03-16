@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Importa el contexto
+import { useAuth } from "../../context/AuthContext";
 import styles from "./Header.module.css";
 import logo from "../../assets/Logo_Final.png";
 import { FaBars, FaTimes, FaChevronDown, FaChevronUp, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
 
 const Header = () => {
-  const { user, isLoggedIn, logout } = useAuth(); // Obtiene datos del contexto
+  const { user, isLoggedIn, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
@@ -34,13 +34,14 @@ const Header = () => {
         <img src={logo || "/placeholder.svg"} alt="Globe on Click" className={styles.logo} />
       </Link>
 
-      <nav className={styles.authButtons}>
-        <Link to="/products" className={styles.authLink}>Ver Paquetes</Link>
+      <nav className={styles.navContainer}>
+        <Link to="/products" className={styles.navLink}>Ver Paquetes</Link>
+        
         {!isLoggedIn ? (
-          <>
+          <div className={styles.authLinks}>
             <Link to="/auth" className={styles.authLink}>Inicia Sesión</Link>
             <Link to="/auth" className={styles.authLink}>Regístrate</Link>
-          </>
+          </div>
         ) : (
           <div className={styles.userSection}>
             <div className={styles.welcomeMessage}>
@@ -74,9 +75,35 @@ const Header = () => {
         )}
       </nav>
 
-      <div className={styles.menuIcon} onClick={toggleMenu}>
+      <div className={styles.mobileMenuIcon} onClick={toggleMenu}>
         {menuOpen ? <FaTimes /> : <FaBars />}
       </div>
+
+      {menuOpen && (
+        <div className={styles.mobileMenu}>
+          {isLoggedIn && (
+            <div className={styles.mobileUserInfo}>
+              <div className={styles.mobileInitialAvatar}>{getUserInitial()}</div>
+              <span>Hola, {user?.username}</span>
+            </div>
+          )}
+          <Link to="/products" onClick={() => setMenuOpen(false)}>Ver Paquetes</Link>
+          {!isLoggedIn ? (
+            <>
+              <Link to="/auth" onClick={() => setMenuOpen(false)}>Inicia Sesión</Link>
+              <Link to="/auth" onClick={() => setMenuOpen(false)}>Regístrate</Link>
+            </>
+          ) : (
+            <>
+              <Link to="/profile" onClick={() => setMenuOpen(false)}>Mi Perfil</Link>
+              <Link to="/settings" onClick={() => setMenuOpen(false)}>Configuración</Link>
+              <button className={styles.logoutButton} onClick={() => { handleLogout(); setMenuOpen(false); }}>
+                Cerrar Sesión
+              </button>
+            </>
+          )}
+        </div>
+      )}
     </header>
   );
 };
