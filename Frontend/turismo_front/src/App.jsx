@@ -18,6 +18,7 @@ import EditCategory from "./Components/pages/editCategory/EditCategory.jsx";
 import CategoryTours from "./Components/pages/CategoryTours/CategoryTours.jsx";
 import ProtectedRoute from "./Components/auth/ProtectedRoute.jsx";
 import Products from "./Components/pages/Product/Product.jsx";
+import Favorites from "./Components/pages/Favorites/Favorites.jsx";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function MainContent() {
           <Route path="/tour/:id" element={<Package />} />
           <Route path="admin/login" element={<AdminLoginComponent />} />
           <Route path="auth" element={<LoginComponent />} />
+          <Route path="/favorites" element={<Favorites />} />
           
           {/* Rutas protegidas de administrador */}
           <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
