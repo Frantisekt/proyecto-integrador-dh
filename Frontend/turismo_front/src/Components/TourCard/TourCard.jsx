@@ -7,7 +7,17 @@ import { useNavigate } from "react-router-dom"
 import { authService } from "../../services/authService"
 import Swal from "sweetalert2"
 
-const TourCard = ({ title, description, imageUrl, currency, link, type, packageId, initialIsFavorite = false }) => {
+const TourCard = ({ 
+  title, 
+  description, 
+  imageUrl, 
+  currency, 
+  link, 
+  type, 
+  packageId, 
+  initialIsFavorite = false,
+  onRemoveFavorite // Nueva prop para actualizar favoritos en tiempo real
+}) => {
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite)
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
@@ -23,8 +33,8 @@ const TourCard = ({ title, description, imageUrl, currency, link, type, packageI
   }, [packageId])
 
   const handleFavoriteClick = async (e) => {
-    e.preventDefault() // Prevent navigation when clicking the heart
-    
+    e.preventDefault() // Evita la navegación accidental
+
     if (!authService.isAuthenticated()) {
       Swal.fire({
         title: "Inicia sesión",
@@ -47,10 +57,12 @@ const TourCard = ({ title, description, imageUrl, currency, link, type, packageI
     try {
       if (isFavorite) {
         await favoriteService.removeFromFavorites(packageId)
+        setIsFavorite(false)
+        onRemoveFavorite?.(packageId) // Llamamos a la función para eliminar en tiempo real
       } else {
         await favoriteService.addToFavorites(packageId)
+        setIsFavorite(true)
       }
-      setIsFavorite(!isFavorite)
     } catch (error) {
       console.error("Error al actualizar favorito:", error)
       Swal.fire({
@@ -105,4 +117,3 @@ const TourCard = ({ title, description, imageUrl, currency, link, type, packageI
 }
 
 export default TourCard
-
