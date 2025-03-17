@@ -234,3 +234,45 @@
   }
 }
 
+.shareButton {
+  position: absolute;
+  top: 15px;
+  left: 65px; /* Position it next to the favorite button */
+  z-index: 10;
+  background-color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  color: #023047;
+  opacity: 0.9;
+  transform: scale(1);
+}
+
+.shareButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  color: #023047; 
+}
+
+.shareButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 183, 3, 0.3), 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+
+@media (max-width: 768px) {
+  .shareButton {
+    width: 36px;
+    height: 36px;
+    left: 60px;
+  }
+}
+
+
