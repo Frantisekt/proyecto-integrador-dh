@@ -85,7 +85,7 @@ const Favorites = () => {
                 currency={`$${pkg.price || 0}`}
                 link={`/tour/${pkg.packageId}`}
                 initialIsFavorite={true}
-                onRemoveFavorite={handleRemoveFavorite} // Pasar la función
+                onRemoveFavorite={handleRemoveFavorite} 
               />
             )
           })}
