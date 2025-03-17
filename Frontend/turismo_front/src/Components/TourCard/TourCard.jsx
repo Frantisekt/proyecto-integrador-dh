@@ -6,6 +6,7 @@ import { favoriteService } from "../../services/favoriteService"
 import { useNavigate } from "react-router-dom"
 import { authService } from "../../services/authService"
 import Swal from "sweetalert2"
+import { FaShareAlt, FaFacebook, FaTwitter, FaWhatsapp, FaTelegram } from "react-icons/fa"
 
 const TourCard = ({ 
   title, 
@@ -60,7 +61,6 @@ const TourCard = ({
         setIsFavorite(false)
         onRemoveFavorite?.(packageId) 
 
-        
         Swal.fire({
           title: "Eliminado de favoritos",
           text: "Este paquete ha sido eliminado de tus favoritos.",
@@ -72,7 +72,6 @@ const TourCard = ({
         await favoriteService.addToFavorites(packageId)
         setIsFavorite(true)
 
-        
         Swal.fire({
           title: "¡Añadido a favoritos!",
           text: "Este paquete se ha guardado en tus favoritos.",
@@ -93,6 +92,36 @@ const TourCard = ({
       setIsLoading(false)
     }
   }
+
+  const handleShare = () => {
+    const productUrl = `http://localhost:5173/tour/${packageId}`
+  
+    const shareLinks = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(productUrl)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${productUrl}`)}`,
+      telegram: `https://t.me/share/url?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(title)}`
+    }
+  
+    Swal.fire({
+      title: "Compartir paquete",
+      html: `
+        <img src="${imageUrl}" alt="${title}" style="width:100px; height:100px; border-radius:10px; margin-bottom:10px;" />
+        <p>${description}</p>
+        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+          <a href="${shareLinks.whatsapp}" target="_blank" rel="noopener noreferrer">
+            <button style="background: #25D366; color: white; border: none; padding: 10px; border-radius: 5px;">
+              WhatsApp
+            </button>
+          </a>
+        </div>
+      `,
+      showCancelButton: true,
+      showConfirmButton: false,
+      cancelButtonText: "Cerrar"
+    })
+  }
+  
 
   return (
     <div className={styles.card}>
@@ -115,6 +144,10 @@ const TourCard = ({
         >
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
         </svg>
+      </button>
+
+      <button className={styles.shareButton} onClick={handleShare}>
+        <FaShareAlt size={20} />
       </button>
 
       <div className={styles.imageContainer}>
