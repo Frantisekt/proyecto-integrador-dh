@@ -69,18 +69,21 @@ const CategoryTours = () => {
       <div className={styles.grid}>
         {tours.map((tour) => (
           <TourCard
-            key={tour.packageId}
-            title={tour.title}
-            imageUrl={
-              tour.mediaPackages && tour.mediaPackages.length > 0
-                ? tour.mediaPackages[0].mediaUrl
-                : "https://via.placeholder.com/150"
-            }
-            description={tour.description}
-            currency={tour.price ? `$${tour.price}` : null}
-            link={`/tour/${tour.packageId}`}
-            type={tour.featured ? "featured" : "standard"}
-          />
+          key={tour.packageId}
+          packageId={tour.packageId}  // ✅ Ahora se pasa correctamente
+          title={tour.title}
+          imageUrl={
+            tour.mediaPackages && tour.mediaPackages.length > 0
+              ? tour.mediaPackages[0].mediaUrl
+              : "https://via.placeholder.com/150"
+          }
+          description={tour.description}
+          currency={tour.price ? `$${tour.price}` : null}
+          link={`/tour/${tour.packageId}`}
+          type={tour.featured ? "featured" : "standard"}
+          initialIsFavorite={tour.isFavorite} 
+        />
+          
         ))}
       </div>
     </section>
