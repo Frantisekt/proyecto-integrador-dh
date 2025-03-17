@@ -16,7 +16,7 @@ const TourCard = ({
   type, 
   packageId, 
   initialIsFavorite = false,
-  onRemoveFavorite // Nueva prop para actualizar favoritos en tiempo real
+  onRemoveFavorite 
 }) => {
   const [isFavorite, setIsFavorite] = useState(initialIsFavorite)
   const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +33,7 @@ const TourCard = ({
   }, [packageId])
 
   const handleFavoriteClick = async (e) => {
-    e.preventDefault() // Evita la navegación accidental
+    e.preventDefault() 
 
     if (!authService.isAuthenticated()) {
       Swal.fire({
@@ -58,10 +58,28 @@ const TourCard = ({
       if (isFavorite) {
         await favoriteService.removeFromFavorites(packageId)
         setIsFavorite(false)
-        onRemoveFavorite?.(packageId) // Llamamos a la función para eliminar en tiempo real
+        onRemoveFavorite?.(packageId) 
+
+        
+        Swal.fire({
+          title: "Eliminado de favoritos",
+          text: "Este paquete ha sido eliminado de tus favoritos.",
+          icon: "warning",
+          timer: 2000,
+          showConfirmButton: false
+        })
       } else {
         await favoriteService.addToFavorites(packageId)
         setIsFavorite(true)
+
+        
+        Swal.fire({
+          title: "¡Añadido a favoritos!",
+          text: "Este paquete se ha guardado en tus favoritos.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false
+        })
       }
     } catch (error) {
       console.error("Error al actualizar favorito:", error)
