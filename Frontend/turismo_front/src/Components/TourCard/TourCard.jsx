@@ -95,12 +95,12 @@ const TourCard = ({
 
   const handleShare = () => {
     const productUrl = `http://localhost:5173/tour/${packageId}`
+    
+    // Mensaje más personalizado
+    const message = `${title}\n\n${description}\n\nPrecio: ${currency}\n\nMás información: ${productUrl}`;
   
     const shareLinks = {
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(productUrl)}`,
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${title} - ${productUrl}`)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(productUrl)}&text=${encodeURIComponent(title)}`
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(message)}`
     }
   
     Swal.fire({
@@ -121,6 +121,7 @@ const TourCard = ({
       cancelButtonText: "Cerrar"
     })
   }
+  
   
 
   return (
