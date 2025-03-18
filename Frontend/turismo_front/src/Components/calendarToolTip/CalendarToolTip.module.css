@@ -1,0 +1,69 @@
+.calendarPopup {
+    position: absolute; 
+    top: 100%; 
+    left: 50%;
+    transform: translateX(-50%); 
+    z-index: 1050; 
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    min-width: 320px;
+    font-family: var(--bs-body-font-family);
+    white-space: nowrap;
+}
+
+.highlightedStartEnd {
+    background-color: #ff5a5f !important;
+    color: white !important;
+    border-radius: 50%;
+}
+
+.highlightedRange {
+    background-color: #ffdadc !important;
+    border-radius: 10px;
+}
+
+  
+  .calendarHeader {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .calendarWrapper {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .highlightedStartEnd {
+    background-color: #ff5a5f !important;
+    color: white !important;
+    border-radius: 50%;
+  }
+  
+  .highlightedRange {
+    background-color: #ffdadc !important;
+    border-radius: 10px;
+  }
+  
+  .calendarFooter {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .closeButton {
+    background-color: #ff5a5f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .closeButton:hover {
+    background-color: #e0484d;
+  }
