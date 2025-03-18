@@ -6,8 +6,10 @@ import EditPackageModal from './EditPackageModal';
 import { tourPackageService } from '../../../services/tourPackageService';
 import Swal from 'sweetalert2';
 import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 
 const AdminPanel = () => {
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingPackageId, setEditingPackageId] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -70,9 +72,14 @@ const AdminPanel = () => {
         <div className={styles.adminContainer}>
             <div className={styles.headerSection}>
                 <h1>Productos</h1>
-                <button className="btn btn-success" onClick={() => setIsModalOpen(true)}>
-                    Agregar Producto
-                </button>
+                <div className={styles.buttonGroup}>
+                    <button className="btn btn-secondary" onClick={() => navigate("/admin")}>
+                        Regresar al Panel Administrador
+                    </button>
+                    <button className="btn btn-success" onClick={() => setIsModalOpen(true)}>
+                        Agregar Producto
+                    </button>
+                </div>
             </div>
 
             {isModalOpen && (
@@ -80,7 +87,7 @@ const AdminPanel = () => {
             )}
 
             {error && <div className="alert alert-danger">{error}</div>}
-            
+
             {loading ? (
                 <div className="text-center">
                     <div className="spinner-border text-primary" role="status">
@@ -130,7 +137,7 @@ const AdminPanel = () => {
             </div>
 
             {editingPackageId && (
-                <EditPackageModal 
+                <EditPackageModal
                     key={`edit-modal-${editingPackageId}`}
                     packageId={editingPackageId}
                     onClose={() => setEditingPackageId(null)}
