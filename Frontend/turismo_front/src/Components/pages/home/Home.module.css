@@ -1,3 +1,26 @@
 .container{
     margin-top: 100px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.filterSection {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 2rem 0;
+    margin: 1rem 0;
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 768px) {
+    .container {
+        gap: 1rem;
+    }
+
+    .filterSection {
+        padding: 1rem 0;
+        margin: 0.5rem 0;
+    }
 }
