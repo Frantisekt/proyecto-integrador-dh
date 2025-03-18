@@ -223,28 +223,29 @@ const EditCategory = () => {
                             <div className="mb-3 text-start">
                                 <label className={`form-label ${styles.label}`}> Subir imagen</label>
                                 <input
+                                    className="form-control"
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => setImage(e.target.files[0])}
                                     disabled={loading}
                                 />
                                 <div className={styles.buttonContainer}>
-                                <button
-                                    type="button"
-                                    onClick={() => navigate('/admin/categories/list')}
-                                    className={`${styles.btnRegresar} ${styles.btnSmall}`}
-                                >
-                                    Regresar
-                                </button>
-                                <button
-                                    type="submit"
-                                    className={`${styles.btnPrimary} ${styles.btnSmall}`}
-                                >
-                                    Editar
-                                </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/admin/categories/list')}
+                                        className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                                    >
+                                        Regresar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className={`${styles.btnPrimary} ${styles.btnSmall}`}
+                                    >
+                                        Editar
+                                    </button>
+                                </div>
                             </div>
-                            </div>
-                            
+
                         </form>
                     )}
 

@@ -247,6 +247,7 @@ const CategoryRegistry = () => {
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}> Subir imagen</label>
                             <input
+                                className="form-control"
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => setImage(e.target.files[0])}
