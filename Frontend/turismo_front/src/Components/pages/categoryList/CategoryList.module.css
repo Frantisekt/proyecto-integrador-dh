@@ -77,6 +77,7 @@
     overflow-y: auto;
     scrollbar-width: none; 
     -ms-overflow-style: none; 
+    margin-bottom: 30px;
 }
 
 .tableContainer::-webkit-scrollbar {
@@ -90,7 +91,23 @@
     color: white;
     z-index: 10;
 }
+.btnRegresar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.btnRegresar:hover {
+    background-color: #5a6268;
+}
 
+.btnSmall {
+    font-size: 14px;
+    width: 12%;
+    height: 50px;
+}
 
 @media (max-width: 1369px) {
     .container {
