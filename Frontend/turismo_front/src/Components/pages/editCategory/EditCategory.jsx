@@ -3,9 +3,12 @@ import { useParams, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaPlusCircle, FaList } from "react-icons/fa";
 import styles from "./EditCategory.module.css";
+import getAllCategories from "../../services/getAllCategories";
 import getCategoryById from "../../services/getCategoryById";
 import editCategory from "../../services/editCategory";
 import getAllPackages from "../../services/getAllPackages";
+import { categoryServices } from '../../../services/categoryServices';
+import { mediaCategoriesService } from "../../../services/mediaCategoriesService";
 
 const adminOptions = [
     { name: "Agregar nueva categoría", path: "/admin/categories/add", icon: FaPlusCircle },
@@ -25,7 +28,9 @@ const EditCategory = () => {
         tourPackageIds: [],
         mediaCategories: []
     });
+    const [image, setImage] = useState(null);
     const [packages, setPackages] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [isCategoryLoading, setIsCategoryLoading] = useState(true);
     const [isPackagesLoading, setIsPackagesLoading] = useState(true);
 
@@ -44,6 +49,7 @@ const EditCategory = () => {
                     tourPackageIds: data.tourPackages.map(pkg => pkg.packageId),
                     mediaCategories: data.mediaCategories || []
                 });
+                return data
             } catch (error) {
                 Swal.fire({
                     title: "Error",
@@ -97,8 +103,24 @@ const EditCategory = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        setLoading(true);
         try {
             await editCategory(id, formData);
+            if (image) {
+                let categories = await getAllCategories()
+                let category = categories.find(category => category.title == formData.title)
+                let categoryId = category.categoryId
+
+                await categoryServices.removeMediaFromCategory(categoryId, formData.mediaCategories[0].mediaCategoryId)
+    
+                const mediaCategoriesResponse = await mediaCategoriesService.upload(image);
+                const mediaCategoryId = mediaCategoriesResponse.mediaCategoryId;
+                console.log('Imagen subida con ID:', mediaCategoryId);
+    
+                await categoryServices.assignMedia(categoryId, mediaCategoryId);
+                console.log(`Imagen ${mediaCategoryId} asociada al paquete ${categoryId}`);
+            }
             Swal.fire({
                 title: "¡Actualización exitosa!",
                 text: "La categoría ha sido actualizada correctamente.",
@@ -106,12 +128,15 @@ const EditCategory = () => {
                 confirmButtonText: "Aceptar"
             });
         } catch (error) {
+            console.error('Error al actualizar la categoría:', error)
             Swal.fire({
                 title: "¡Error!",
                 text: "Hubo un problema al actualizar la categoría.",
                 icon: "error",
                 confirmButtonText: "Cerrar"
             });
+        } finally {
+            setLoading(false)
         }
     };
 
@@ -150,10 +175,10 @@ const EditCategory = () => {
                                 <div key={field} className="mb-3 text-start">
                                     <label className="form-label text-dark"><strong>{
                                         field === "title" ? "Título" :
-                                        field === "description" ? "Descripción" :
-                                        field === "price" ? "Precio" :
-                                        field === "restrictions" ? "Restricciones" :
-                                        "Descuento"
+                                            field === "description" ? "Descripción" :
+                                                field === "price" ? "Precio" :
+                                                    field === "restrictions" ? "Restricciones" :
+                                                        "Descuento"
                                     }</strong></label>
                                     <input
                                         type={field === "price" || field === "discount" ? "number" : "text"}
@@ -191,6 +216,16 @@ const EditCategory = () => {
                                         </div>
                                     ))}
                                 </div>
+                            </div>
+
+                            <div className="mb-3 text-start">
+                                <label className={`form-label ${styles.label}`}> Subir imagen</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setImage(e.target.files[0])}
+                                    disabled={loading}
+                                />
                             </div>
                             <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Actualizar Categoría</button>
                         </form>
