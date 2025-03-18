@@ -1,0 +1,108 @@
+/* Estilos generales */
+html, body {
+    overflow: visible !important;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Título principal */
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #1a3e5a;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Secciones */
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  /* Títulos de sección */
+  .sectionTitle {
+    font-size: 22px;
+    font-weight: bold;
+    color: #264653;
+    margin-bottom: 10px;
+    padding-left: 10px;
+  }
+  
+  /* Subtítulos */
+  .subTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a9d8f;
+    margin-top: 15px;
+  }
+  
+  /* Párrafos */
+  p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #2b4d66;
+    margin-bottom: 15px;
+  }
+  
+  /* Listas */
+  .list {
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+  
+  .listItem {
+    font-size: 16px;
+    color: #2b4d66;
+    margin-bottom: 5px;
+    position: relative;
+  }
+  
+  .listItem::before {
+    content: "✔";
+    color: #2a9d8f;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+  
+
+  .email {
+    font-size: 16px;
+    font-weight: bold;
+    color:#002E47;
+    text-align: center;
+  }
+  
+  .buttonContainer {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .button {
+    background-color: #2a9d8f;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button:hover {
+    background-color: #21867a;
+  }
+  ul {
+    list-style: none; 
+    padding-left: 0;  
+  }
+  
