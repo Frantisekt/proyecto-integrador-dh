@@ -5,12 +5,15 @@
     margin-top: 100px;
     color: #003145;
 }
-
+.buttonGroup {
+    display: flex;
+    gap: 10px; 
+  }
 .headerSection {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2rem; 
 }
 
 .headerSection h1 {

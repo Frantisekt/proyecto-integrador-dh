@@ -9,6 +9,7 @@ import editCategory from "../../services/editCategory";
 import getAllPackages from "../../services/getAllPackages";
 import { categoryServices } from '../../../services/categoryServices';
 import { mediaCategoriesService } from "../../../services/mediaCategoriesService";
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     { name: "Agregar nueva categoría", path: "/admin/categories/add", icon: FaPlusCircle },
@@ -16,6 +17,7 @@ const adminOptions = [
 ];
 
 const EditCategory = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [formData, setFormData] = useState({
         title: "",
@@ -113,11 +115,11 @@ const EditCategory = () => {
                 let categoryId = category.categoryId
 
                 await categoryServices.removeMediaFromCategory(categoryId, formData.mediaCategories[0].mediaCategoryId)
-    
+
                 const mediaCategoriesResponse = await mediaCategoriesService.upload(image);
                 const mediaCategoryId = mediaCategoriesResponse.mediaCategoryId;
                 console.log('Imagen subida con ID:', mediaCategoryId);
-    
+
                 await categoryServices.assignMedia(categoryId, mediaCategoryId);
                 console.log(`Imagen ${mediaCategoryId} asociada al paquete ${categoryId}`);
             }
@@ -221,15 +223,32 @@ const EditCategory = () => {
                             <div className="mb-3 text-start">
                                 <label className={`form-label ${styles.label}`}> Subir imagen</label>
                                 <input
+                                    className="form-control"
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => setImage(e.target.files[0])}
                                     disabled={loading}
                                 />
+                                <div className={styles.buttonContainer}>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/admin/categories/list')}
+                                        className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                                    >
+                                        Regresar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className={`${styles.btnPrimary} ${styles.btnSmall}`}
+                                    >
+                                        Editar
+                                    </button>
+                                </div>
                             </div>
-                            <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Actualizar Categoría</button>
+
                         </form>
                     )}
+
                 </div>
             </div>
         </div>
