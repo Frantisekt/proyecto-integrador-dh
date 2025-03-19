@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const MEDIA_BASE_URL = 'http://localhost:8087/api/media-packages';
-const TOUR_PACKAGE_BASE_URL = 'http://localhost:8087/api/tourPackages';
+const MEDIA_BASE_URL = '/api/media-packages';
+const TOUR_PACKAGE_BASE_URL = '/api/tourPackages';
 
 const axiosInstance = axios.create({
     timeout: 5000,

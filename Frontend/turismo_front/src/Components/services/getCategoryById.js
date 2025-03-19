@@ -1,5 +1,5 @@
 const getCategoryById = async (categoryId) => {
-    const url = `http://localhost:8087/api/categories/${categoryId}`;
+    const url = `/api/categories/${categoryId}`;
 
     try {
         const response = await fetch(url, {

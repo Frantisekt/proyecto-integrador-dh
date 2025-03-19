@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8087/api/v1/users";
+const API_URL = "/api/v1/users";
 
 export const getUsers = async () => {
     const adminDataString = localStorage.getItem("adminData");

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_URL = 'http://localhost:8087/api/v1/favorites';
+const API_URL = '/api/v1/favorites';
 
 const getAuthHeaders = () => {
     const user = authService.getCurrentUser();
