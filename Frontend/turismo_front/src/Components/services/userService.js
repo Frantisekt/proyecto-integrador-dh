@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8087/api/v1/users";
+const API_BASE_URL = "/api/v1/users";
 
 export const userService = {
   getUserById: async (userId) => {

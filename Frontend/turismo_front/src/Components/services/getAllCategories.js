@@ -1,6 +1,6 @@
 const getAllCategories = async () => {
     try {
-        const response = await fetch("http://localhost:8087/api/categories");
+        const response = await fetch("/api/categories");
         if (!response.ok) {
             throw new Error(`Error al obtener las categorías: ${response.statusText}`);
         }

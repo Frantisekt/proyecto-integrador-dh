@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8087/api/features';
+const API_URL = '/api/features';
 
 export const featureService = {
     getAll: async () => {
