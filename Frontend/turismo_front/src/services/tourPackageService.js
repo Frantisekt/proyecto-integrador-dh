@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8087/api/tourPackages/paged';
+const BASE_URL = '/api/tourPackages/paged';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
