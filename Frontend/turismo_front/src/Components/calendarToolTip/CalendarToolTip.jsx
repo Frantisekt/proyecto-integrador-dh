@@ -3,7 +3,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./CalendarToolTip.module.css";
-import { parseISO, isWithinInterval, isSameDay, addDays, differenceInMonths } from "date-fns";
+import { parseISO, isWithinInterval, isSameDay, addDays, differenceInCalendarMonths  } from "date-fns";
 
 const CalendarTooltip = ({ startDate, endDate, children }) => {
   const [showCalendar, setShowCalendar] = useState(false);
@@ -45,7 +45,7 @@ const CalendarTooltip = ({ startDate, endDate, children }) => {
         <div ref={modalRef} className={`${styles.calendarPopup} p-3 shadow-lg rounded bg-white text-dark`}>
           <div className="d-flex gap-3 justify-content-center">
             <Calendar tileClassName={tileClassName} value={start} className="p-2 border-0" />
-            {differenceInMonths(end, start) > 0 && (
+            {differenceInCalendarMonths(end, start) > 0 && (
               <Calendar tileClassName={tileClassName} value={end} className="p-2 border-0" />
             )}
           </div>
