@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import TourCard from "../../TourCard/TourCard";
 import styles from "./SearchResults.module.css";
 
 const SearchResults = () => {
   const [tours, setTours] = useState([]);
+  const [filteredTours, setFilteredTours] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
@@ -39,10 +39,11 @@ const SearchResults = () => {
 
         const data = await response.json();
         setTours(data.content || []);
-        setTotalPages(data.totalPages || 0);
+        setFilteredTours(data.content || []);
       } catch (error) {
         console.error("Error al obtener los paquetes de viaje:", error);
         setTours([]);
+        setFilteredTours([]);
       } finally {
         setLoading(false);
       }
@@ -52,24 +53,27 @@ const SearchResults = () => {
     window.scrollTo(0, 0);
   }, [destination, startDate, endDate, minPrice, maxPrice, currentPage]);
 
-  // Función para corregir el formato de la fecha en la vista
-  const formatDateDisplay = (dateString) => {
-    if (!dateString) return "";
-    const date = new Date(dateString + "T00:00:00"); // Evita problemas de zona horaria
-    return date.toLocaleDateString();
-  };
+  // Filtrar los tours por destino (título del paquete) cuando el estado destination cambie
+  useEffect(() => {
+    if (destination === "") {
+      setFilteredTours(tours); // Si no hay filtro, mostrar todos los tours
+    } else {
+      const filtered = tours.filter((tour) =>
+        tour.title.toLowerCase().includes(destination.toLowerCase()) // Comparar con cualquier parte del título
+      );
+      setFilteredTours(filtered);
+    }
+  }, [destination, tours]);
 
   return (
     <div className={styles.container}>
       <div className={styles.titleContainer}>
         <h2 className={styles.title}>Resultados de búsqueda</h2>
-        <p className={styles.subtitle}>
-          {destination && <span>Destino: <span className={styles.highlight}>{destination}</span></span>}
-          {startDate && ` • Desde: ${formatDateDisplay(startDate)}`}
-          {endDate && ` • Hasta: ${formatDateDisplay(endDate)}`}
-          {minPrice && ` • Precio mínimo: $${minPrice}`}
-          {maxPrice && ` • Precio máximo: $${maxPrice}`}
-        </p>
+        {destination && <p className={styles.subtitle}>Destino: <span className={styles.highlight}>{destination}</span></p>}
+        {startDate && <p className={styles.subtitle}>Desde: {new Date(startDate).toLocaleDateString()}</p>}
+        {endDate && <p className={styles.subtitle}>Hasta: {new Date(endDate).toLocaleDateString()}</p>}
+        {minPrice && <p className={styles.subtitle}>Precio mínimo: ${minPrice}</p>}
+        {maxPrice && <p className={styles.subtitle}>Precio máximo: ${maxPrice}</p>}
       </div>
 
       {loading ? (
@@ -77,9 +81,9 @@ const SearchResults = () => {
           <div className={styles.spinner}></div>
           <p>Cargando paquetes...</p>
         </div>
-      ) : tours.length > 0 ? (
+      ) : filteredTours.length > 0 ? (
         <div className={styles.grid}>
-          {tours.map((tour) => {
+          {filteredTours.map((tour) => {
             const imageUrl = tour.mediaPackages?.[0]?.mediaUrl || "https://via.placeholder.com/150";
 
             return (
