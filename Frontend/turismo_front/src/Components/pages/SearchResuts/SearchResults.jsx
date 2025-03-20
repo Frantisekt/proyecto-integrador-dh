@@ -17,13 +17,19 @@ const SearchResults = () => {
   const minPrice = queryParams.get("minPrice") || "";
   const maxPrice = queryParams.get("maxPrice") || "";
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const [year, month, day] = dateString.split("-");
+    return `${day}/${month}/${year}`;
+  };
+
   useEffect(() => {
     const fetchTours = async () => {
       try {
         setLoading(true);
         const url = new URL("http://localhost:8087/api/tourPackages/filtered");
         url.searchParams.append("page", currentPage);
-        url.searchParams.append("size", 8);
+        url.searchParams.append("size", 12);
 
         if (destination) url.searchParams.append("destination", destination);
         if (startDate) url.searchParams.append("startDate", startDate);
@@ -51,15 +57,40 @@ const SearchResults = () => {
 
     fetchTours();
     window.scrollTo(0, 0);
-  }, [destination, startDate, endDate, minPrice, maxPrice, currentPage]);
+  }, [startDate, endDate, minPrice, maxPrice, currentPage]);
 
-  // Filtrar los tours por destino (título del paquete) cuando el estado destination cambie
+  useEffect(() => {
+    const fetchAllTours = async () => {
+      try {
+        const url = new URL("http://localhost:8087/api/tourPackages/paged");
+        url.searchParams.append("page", 0);
+        url.searchParams.append("size", 1000);
+        url.searchParams.append("sort", "title,asc");
+
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Error al obtener todos los paquetes");
+        }
+
+        const data = await response.json();
+        setTours(data.content || []);
+      } catch (error) {
+        console.error("Error al obtener todos los paquetes:", error);
+        setTours([]);
+      }
+    };
+
+    if (destination) {
+      fetchAllTours();
+    }
+  }, [destination]);
+
   useEffect(() => {
     if (destination === "") {
-      setFilteredTours(tours); // Si no hay filtro, mostrar todos los tours
+      setFilteredTours(tours);
     } else {
       const filtered = tours.filter((tour) =>
-        tour.title.toLowerCase().includes(destination.toLowerCase()) // Comparar con cualquier parte del título
+        tour.title.toLowerCase().includes(destination.toLowerCase())
       );
       setFilteredTours(filtered);
     }
@@ -70,8 +101,8 @@ const SearchResults = () => {
       <div className={styles.titleContainer}>
         <h2 className={styles.title}>Resultados de búsqueda</h2>
         {destination && <p className={styles.subtitle}>Destino: <span className={styles.highlight}>{destination}</span></p>}
-        {startDate && <p className={styles.subtitle}>Desde: {new Date(startDate).toLocaleDateString()}</p>}
-        {endDate && <p className={styles.subtitle}>Hasta: {new Date(endDate).toLocaleDateString()}</p>}
+        {startDate && <p className={styles.subtitle}>Desde: {formatDate(startDate)}</p>}
+        {endDate && <p className={styles.subtitle}>Hasta: {formatDate(endDate)}</p>}
         {minPrice && <p className={styles.subtitle}>Precio mínimo: ${minPrice}</p>}
         {maxPrice && <p className={styles.subtitle}>Precio máximo: ${maxPrice}</p>}
       </div>
