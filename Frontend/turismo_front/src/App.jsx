@@ -48,6 +48,9 @@ function MainContent() {
     "/admin/categories/edit/:id"
   ];
 
+  // Obtener la ruta base sin parámetros de consulta
+  const basePath = location.pathname.split('?')[0];
+
   return (
     <>
       <Routes>
@@ -64,7 +67,6 @@ function MainContent() {
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/search-results" element={<SearchResults />} />
 
-          
           {/* Rutas protegidas de administrador */}
           <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
           <Route path="admin/packages" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
@@ -78,7 +80,7 @@ function MainContent() {
           <Route path="admin/categories/edit/:id" element={<ProtectedRoute><EditCategory /></ProtectedRoute>} />
         </Route>
       </Routes>
-      {!noFooterRoutes.includes(location.pathname) && <Footer />}
+      {!noFooterRoutes.includes(basePath) && <Footer />}
     </>
   );
 }
