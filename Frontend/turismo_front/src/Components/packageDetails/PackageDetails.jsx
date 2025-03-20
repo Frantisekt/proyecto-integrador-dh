@@ -4,6 +4,7 @@ import CalendarTooltip from "../calendarToolTip/CalendarToolTip"
 const PackageDetails = ({ description, startDate, endDate, price }) => {
   return (
     <div className={styles.packageDetailsContainer}>
+
       <div className={styles.leftColumn}>
         <div className={styles.descriptionCard}>
           <h3 className={styles.sectionTitle}>Descripción</h3>
