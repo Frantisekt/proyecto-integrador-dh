@@ -85,6 +85,14 @@
     font-weight: 600;
     letter-spacing: 1px;
   }
+
+  .dateLabel {
+    display: block; 
+    width: 100%; 
+    text-align: left; 
+    font-weight: bold;
+  }
+  
   
   .dateValue {
     font-size: 1.1rem;
