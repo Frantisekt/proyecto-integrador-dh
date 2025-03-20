@@ -12,7 +12,6 @@ const CalendarTooltip = ({ startDate, endDate, children }) => {
   const start = parseISO(startDate);
   const end = parseISO(endDate);
 
-  // Detectar clics fuera del modal para cerrarlo
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
