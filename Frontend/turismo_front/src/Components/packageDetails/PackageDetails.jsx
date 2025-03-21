@@ -16,17 +16,26 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
         <div className={styles.bookingCard}>
           <div className={styles.dateContainer}>
             <div className={styles.dateBox}>
-              <label className={styles.dateLabel}>LLEGADA</label>
+              <div style={{ width: "100%" }}>
+                <label className={styles.dateLabel}>
+                  FECHA LLEGADA: <br />
+                </label>
+              </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
                 <p className={styles.dateValue}>{startDate}</p>
               </CalendarTooltip>
             </div>
             <div className={styles.dateBox}>
-              <label className={styles.dateLabel}>SALIDA</label>
+              <div style={{ width: "100%" }}>
+                <label className={styles.dateLabel}>
+                  FECHA SALIDA: <br />
+                </label>
+              </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
                 <p className={styles.dateValue}>{endDate}</p>
               </CalendarTooltip>
             </div>
+
           </div>
           <p className={styles.packagePrice}>
             <strong>Precio:</strong> ${price}
