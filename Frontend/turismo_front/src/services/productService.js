@@ -5,7 +5,7 @@ const API_URL = '/api/tourPackages';
 
 const axiosInstance = axios.create({
     baseURL: API_URL,
-    timeout: 10000,
+    timeout: 5000000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

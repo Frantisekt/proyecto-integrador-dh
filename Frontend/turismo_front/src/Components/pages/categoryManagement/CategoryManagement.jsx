@@ -3,6 +3,7 @@ import styles from "./CategoryManagement.module.css";
 import { FaPlusCircle, FaList } from "react-icons/fa";
 import { FaUserCog, FaPlane, FaTags } from "react-icons/fa";
 import AdminCard from "../../adminCards/AdminCard";
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     {
@@ -22,7 +23,7 @@ const adminOptions = [
 ];
 
 const categoryManagement = () => {
-
+    const navigate = useNavigate();
     return (
         <div className={styles.adminContainer}>
             <div className={styles.sideBar}>
@@ -45,6 +46,14 @@ const categoryManagement = () => {
                 <div className={styles.cardsContainer}>
                     <div className={styles.cardContainer}>
                         <AdminCard options={adminOptions} />
+                    </div>
+                    <div className="d-flex justify-content-center align-items-center mt-3">
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => navigate("/admin")}
+                        >
+                            Regresar al Panel Administrador
+                        </button>
                     </div>
                 </div>
             </div>

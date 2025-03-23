@@ -13,7 +13,7 @@ const adminOptions = [
 ];
 
 const UserRegistry = () => {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const [formData, setFormData] = useState({
         name: "",
         paternalSurname: "",
@@ -82,7 +82,7 @@ const UserRegistry = () => {
         if (!/^\S+@\S+\.\S+$/.test(data.email)) return { valid: false, message: "Correo electrónico no válido." };
         if (data.password.length < 6) return { valid: false, message: "La contraseña debe tener al menos 6 caracteres." };
         if (!/^\d{7,9}$/.test(data.dni)) return { valid: false, message: "El DNI debe ser un número de 7 a 9 dígitos." };
-    
+
         return { valid: true };
     };
 
@@ -139,8 +139,23 @@ const UserRegistry = () => {
                                 <option value="ADMIN">Administrador</option>
                                 <option value="AGENT">Agente</option>
                             </select>
+                        </div >
+                        <div className={styles.buttonContainer}>
+                            <button
+                                type="button"
+                                onClick={() => navigate('/admin/users')}
+                                className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                            >
+                                Regresar
+                            </button>
+                            <button
+                                type="submit"
+                                className={`${styles.btnPrimary} ${styles.btnSmall}`}
+                            >
+                                Registrar
+                            </button>
                         </div>
-                        <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Registrar</button>
+
                     </form>
                 </div>
             </div>

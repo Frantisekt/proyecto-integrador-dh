@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./UserManagement.module.css";
 import { FaUserCog, FaPlane, FaTags } from "react-icons/fa";
 import AdminCard from "../../adminCards/AdminCard";
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     {
@@ -21,13 +22,13 @@ const adminOptions = [
 ];
 
 const UserManagement = () => {
-
+    const navigate = useNavigate();
     return (
         <div className={styles.adminContainer}>
             <div className={styles.sideBar}>
                 <ul>
                     {adminOptions.map((option, index) => {
-                        const IconComponent = option.icon; 
+                        const IconComponent = option.icon;
                         return (
                             <li key={index}>
                                 <Link to={option.path}>
@@ -45,9 +46,18 @@ const UserManagement = () => {
                     <div className={styles.cardContainer}>
                         <AdminCard options={adminOptions} />
                     </div>
+                    <div className="d-flex justify-content-center align-items-center mt-3">
+                        <button
+                            className="btn btn-secondary"
+                            onClick={() => navigate("/admin")}
+                        >
+                            Regresar al Panel Administrador
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     );
 };
 

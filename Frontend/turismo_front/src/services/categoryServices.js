@@ -6,8 +6,8 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 5000,
   headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   },
   withCredentials: true // Importante para CORS con credenciales
 });
@@ -24,20 +24,28 @@ export const categoryServices = {
   },
   assignMedia: async (categoryId, mediaCategoryId) => {
     try {
-        const url = `${API_URL}/${categoryId}/media/${mediaCategoryId}`;
-        const data = {
-            mediaCategoryId: mediaCategoryId
-        };
-   
-        console.log(`Asignando imagen ${mediaCategoryId} al paquete ${categoryId} en: ${url}`);
-        const response = await axiosInstance.post(url, data);
-        console.log('Imagen asignada correctamente al paquete.');
+      const url = `${API_URL}/${categoryId}/media/${mediaCategoryId}`;
+      const data = {
+        mediaCategoryId: mediaCategoryId
+      };
+
+      console.log(`Asignando imagen ${mediaCategoryId} al paquete ${categoryId} en: ${url}`);
+      const response = await axiosInstance.post(url, data);
+      console.log('Imagen asignada correctamente al paquete.');
     } catch (error) {
-        console.error('Error al asignar la imagen al paquete:', error);
-        throw new Error(error.response?.data?.message || 'Error al asignar la imagen al paquete');
+      console.error('Error al asignar la imagen al paquete:', error);
+      throw new Error(error.response?.data?.message || 'Error al asignar la imagen al paquete');
+    }
+  },
+  removeMediaFromCategory: async (categoryId, mediaCategoryId) => {
+    try {
+      const response = await axiosInstance.delete(`/${categoryId}/media/${mediaCategoryId}`);
+      console.log(`Imagen con id ${mediaCategoryId}, removida de la categoría ${categoryId}`)
+    } catch (error) {
+      console.error('Error al remover media del paquete:', error);
+      throw new Error('Error al eliminar la imagen del paquete: ' + error.message);
     }
   }
 }
 
 
- 
