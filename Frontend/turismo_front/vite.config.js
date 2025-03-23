@@ -24,7 +24,6 @@ export default defineConfig({
         target: 'https://pi-dh-infradeploy-backend-production.up.railway.app', // URL de tu backend en Railway
         changeOrigin: true, // Cambia el origen de la solicitud para que coincida con el backend
         secure: false, // Desactiva la verificación de certificados SSL (útil si tu backend no tiene un certificado válido)
-        rewrite: (path) => path.replace(/^\/api/, ''), // Elimina el prefijo /api antes de enviar la solicitud al backend
       },
     },
   },
