@@ -1,5 +1,6 @@
-import style from './Footer.module.css'
-import logo from "../../assets/Logo_Final.png";
+import { Link } from "react-router-dom";
+import style from './Footer.module.css';
+import logo from '../../assets/Logo_Final.png';
 
 const Footer = () => {
   return (
@@ -9,6 +10,9 @@ const Footer = () => {
       </div>
       <footer className={style.footer}>
         <p className={style.copyright}>Copyright © 2025 Globe On Click</p>
+        <Link to="/PrivacyPolicy" className={style.privacyLink}>
+          Políticas de Privacidad
+        </Link>
       </footer>
     </div>
   );

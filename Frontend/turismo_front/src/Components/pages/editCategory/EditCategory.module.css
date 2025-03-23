@@ -124,4 +124,44 @@
     border-radius: 5px;
     background-color: #f8f9fa;
 }
+.buttonContainer {
+    display: flex;
+    justify-content: flex-end; 
+    gap: 10px; 
+    margin-top: 120px; 
+}
 
+.btnPrimary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background 0.3s;
+}
+
+.btnPrimary:hover {
+    background-color: #0056b3;
+}
+
+/* Botón Regresar */
+.btnRegresar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btnRegresar:hover {
+    background-color: #5a6268;
+}
+
+.btnSmall {
+    font-size: 14px;
+    width: 45%;
+    height: 50px;
+}

@@ -44,6 +44,10 @@ const Favorites = () => {
     fetchFavorites()
   }, [])
 
+  const handleRemoveFavorite = (packageId) => {
+    setFavoritePackages((prevFavorites) => prevFavorites.filter(pkg => pkg.packageId !== packageId));
+  };
+
   if (loading)
     return (
       <div className={styles.favoritesContainer}>
@@ -81,6 +85,7 @@ const Favorites = () => {
                 currency={`$${pkg.price || 0}`}
                 link={`/tour/${pkg.packageId}`}
                 initialIsFavorite={true}
+                onRemoveFavorite={handleRemoveFavorite} 
               />
             )
           })}
@@ -91,4 +96,3 @@ const Favorites = () => {
 }
 
 export default Favorites
-

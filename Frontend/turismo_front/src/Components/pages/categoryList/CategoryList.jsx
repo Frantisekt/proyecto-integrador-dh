@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPlusCircle, FaList, FaEdit, FaTrash } from "react-icons/fa";
 import Swal from "sweetalert2";
 import styles from "./CategoryList.module.css";
@@ -21,6 +21,7 @@ const adminOptions = [
 ];
 
 const CategoryList = () => {
+    const navigate = useNavigate(); // Hook para regresar a la página anterior
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -159,6 +160,13 @@ const CategoryList = () => {
                         </table>
                     )}
                 </div>
+                <button
+                    type="button"
+                    onClick={() => navigate('/admin/categories')}
+                    className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                >
+                    Regresar
+                </button>
             </div>
         </div>
     );

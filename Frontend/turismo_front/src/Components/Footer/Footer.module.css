@@ -30,8 +30,9 @@
     text-align: center;
     min-height: 80px;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    flex-direction: column; /* Asegura que los elementos estén en columna */
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
     box-sizing: border-box;
 }
   

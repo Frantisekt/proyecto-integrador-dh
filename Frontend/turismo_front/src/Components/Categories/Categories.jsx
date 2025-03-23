@@ -14,10 +14,9 @@ const Categories = () => {
       const datos = await categoryServices.obtenerCategorias();
 
       const transformados = datos.map((cat) => {
-
         const imageUrl =
           cat.mediaCategories && cat.mediaCategories.length > 0
-            ? cat.mediaCategories[0].mediaUrl
+            ? cat.mediaCategories[cat.mediaCategories.length - 1].mediaUrl
             : "https://via.placeholder.com/150";
 
         return {

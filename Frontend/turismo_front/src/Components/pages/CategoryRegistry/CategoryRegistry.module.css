@@ -109,3 +109,45 @@
     padding: 10px;
     border-radius: 5px;
 }
+/* Contenedor para los botones */
+.buttonContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* Botón Registrar */
+.btnPrimary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btnPrimary:hover {
+    background-color: #0056b3;
+}
+
+/* Botón Regresar */
+.btnRegresar {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btnRegresar:hover {
+    background-color: #5a6268;
+}
+
+.btnSmall {
+    font-size: 14px;
+    width: 45%;
+    height: 50px;
+}

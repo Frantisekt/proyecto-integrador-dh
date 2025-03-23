@@ -1,9 +1,10 @@
 import styles from "./PackageDetails.module.css"
+import CalendarTooltip from "../calendarToolTip/CalendarToolTip"
 
 const PackageDetails = ({ description, startDate, endDate, price }) => {
   return (
     <div className={styles.packageDetailsContainer}>
-      {/* Columna izquierda: Descripción */}
+
       <div className={styles.leftColumn}>
         <div className={styles.descriptionCard}>
           <h3 className={styles.sectionTitle}>Descripción</h3>
@@ -11,18 +12,30 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
         </div>
       </div>
 
-      {/* Columna derecha: Fechas y botón */}
       <div className={styles.rightColumn}>
         <div className={styles.bookingCard}>
           <div className={styles.dateContainer}>
             <div className={styles.dateBox}>
-              <label className={styles.dateLabel}>LLEGADA</label>
-              <p className={styles.dateValue}>{startDate}</p>
+              <div style={{ width: "100%" }}>
+                <label className={styles.dateLabel}>
+                  FECHA LLEGADA: <br />
+                </label>
+              </div>
+              <CalendarTooltip startDate={startDate} endDate={endDate}>
+                <p className={styles.dateValue}>{startDate}</p>
+              </CalendarTooltip>
             </div>
             <div className={styles.dateBox}>
-              <label className={styles.dateLabel}>SALIDA</label>
-              <p className={styles.dateValue}>{endDate}</p>
+              <div style={{ width: "100%" }}>
+                <label className={styles.dateLabel}>
+                  FECHA SALIDA: <br />
+                </label>
+              </div>
+              <CalendarTooltip startDate={startDate} endDate={endDate}>
+                <p className={styles.dateValue}>{endDate}</p>
+              </CalendarTooltip>
             </div>
+
           </div>
           <p className={styles.packagePrice}>
             <strong>Precio:</strong> ${price}
@@ -31,8 +44,7 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PackageDetails
-
+export default PackageDetails;
