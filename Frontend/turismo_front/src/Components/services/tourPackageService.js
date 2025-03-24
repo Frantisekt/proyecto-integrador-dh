@@ -1,15 +1,15 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8087";
+const BASE_URL = '/api/tourPackages/paged';
 
 const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: BASE_URL,
     timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        'Accept': 'application/json'
     },
-    withCredentials: true, // Importante para CORS con credenciales
+    withCredentials: true // Importante para CORS con credenciales
 });
 
 // Interceptor para logs de desarrollo
