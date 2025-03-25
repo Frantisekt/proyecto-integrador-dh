@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8087";
 
 const axiosInstance = axios.create({
-    baseURL: `${API_BASE_URL}/tourPackages`,
+    baseURL: API_BASE_URL,
     timeout: 5000000,
     headers: {
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export const tourPackageService = {
             };
     
             console.log('Enviando actualización con:', requestData);
-            const response = await axiosInstance.put(`http://localhost:8087/api/tourPackages/${id}`, requestData);
+            const response = await axiosInstance.put(`${API_BASE_URL}/api/tourPackages/${id}`, requestData);
     
             console.log('Paquete actualizado con éxito:', response.data);
             return response.data;
