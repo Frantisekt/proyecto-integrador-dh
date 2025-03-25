@@ -2,14 +2,17 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8087";
 
+
+const API_PREFIX = "/api/v1/tourPackages"; // Nuevo prefijo
+
 const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: `${API_BASE_URL}${API_PREFIX}`, // URL completa: http://localhost:8087/api/v1/tourPackages
     timeout: 5000000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     },
-    withCredentials: true // Importante para CORS con credenciales
+    withCredentials: true
 });
 
 // Interceptor para logs de desarrollo
@@ -98,7 +101,7 @@ export const tourPackageService = {
 
     update: async (id, packageData) => {
         try {
-            const response = await axiosInstance.put(`/${id}`, packageData);
+            const response = await axiosInstance.put(`${id}`, packageData);
             return response.data;
         } catch (error) {
             console.error('Error al actualizar paquete:', error);
@@ -118,19 +121,20 @@ export const tourPackageService = {
 
     deletePackage: async (id) => {
         if (!id) {
-            console.error('ID de paquete no válido.');
             throw new Error('ID de paquete no válido');
         }
-    
+        
         try {
-            const url = `http://localhost:8087/api/tourPackages/${id}`;
-            console.log(`Eliminando paquete con ID: ${id} en: ${url}`);
-    
-            const response = await axios.delete(url); // ✅ CORRECTO: axios.delete()
-            console.log('Paquete eliminado correctamente.');
+            // ✅ Usa axiosInstance con ruta relativa
+            const response = await axiosInstance.delete(`/${id}`);
             return response.data;
         } catch (error) {
-            console.error('Error al eliminar el paquete:', error);
+            console.error('Error completo al eliminar:', {
+                url: error.config.url,  // Muestra la URL real usada
+                status: error.response?.status,
+                data: error.response?.data
+            });
+            
             if (error.response?.status === 404) {
                 throw new Error('Paquete no encontrado');
             }
@@ -139,7 +143,7 @@ export const tourPackageService = {
             }
             throw new Error(error.response?.data?.message || 'Error al eliminar el paquete');
         }
-    },    
+    },
 
     getPackageById: async (packageId) => {
         try {
@@ -167,16 +171,26 @@ export const tourPackageService = {
             };
     
             console.log('Enviando actualización con:', requestData);
-            const response = await axiosInstance.put(`${API_BASE_URL}/api/tourPackages/${id}`, requestData);
+            
+            // ✅ Cambio clave: Usar ruta relativa con axiosInstance
+            const response = await axiosInstance.put(`/${id}`, requestData);
     
             console.log('Paquete actualizado con éxito:', response.data);
             return response.data;
         } catch (error) {
-            console.error('Error al actualizar paquete:', error.response?.data || error.message);
-            throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
+            console.error('Error detallado al actualizar paquete:', {
+                url: error.config?.url,  // Muestra la URL que falló
+                status: error.response?.status,
+                data: error.response?.data,
+                message: error.message
+            });
+            
+            if (error.code === 'ERR_NETWORK') {
+                throw new Error('Error de conexión: No se pudo contactar al servidor');
+            }
+            throw new Error(error.response?.data?.message || 'Error al actualizar el paquete');
         }
     },
-    
     
 
     uploadMedia: async (formData) => {
