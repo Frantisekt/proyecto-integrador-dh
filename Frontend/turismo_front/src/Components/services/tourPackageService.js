@@ -1,20 +1,17 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8087";
-
-
-const API_PREFIX = "/api/v1/tourPackages"; // Nuevo prefijo
+const API_PREFIX = "/api/v1";
 
 const axiosInstance = axios.create({
-    baseURL: `${API_BASE_URL}${API_PREFIX}`, // URL completa: http://localhost:8087/api/v1/tourPackages
-    timeout: 5000000,
+    baseURL: `${API_BASE_URL}${API_PREFIX}/tourPackages`, // URL completa
+    timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     },
     withCredentials: true
 });
-
 // Interceptor para logs de desarrollo
 axiosInstance.interceptors.request.use(request => {
     console.log('Starting Request:', request);
