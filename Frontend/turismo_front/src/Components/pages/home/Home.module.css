@@ -1,26 +1,134 @@
-.container{
+.container {
     margin-top: 100px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     gap: 2rem;
-}
-
-.filterSection {
+  }
+  
+  .filterSection {
     width: 100%;
     background-color: #ffffff;
     padding: 2rem 0;
     margin: 1rem 0;
-}
-
-/* Media queries para dispositivos móviles */
-@media (max-width: 768px) {
+  }
+  
+  /* WhatsApp button styling - modernized version */
+  .whatsappButton {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .whatsappButtonInner {
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+  }
+  
+  .whatsappButtonInner img {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  }
+  
+  /* Pulsing animation */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+    70% {
+      transform: scale(1.1);
+      box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+  }
+  
+  /* Tooltip styling - modernized */
+  .tooltip {
+    visibility: hidden;
+    background-color: #023047;
+    color: #fff;
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(10px);
+    max-width: 250px;
+    line-height: 1.4;
+  }
+  
+  /* Add a small triangle to the tooltip */
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 25px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #023047 transparent transparent transparent;
+  }
+  
+  /* Show tooltip on hover with animation */
+  .whatsappButton:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Hover effect for the button */
+  .whatsappButton:hover .whatsappButtonInner {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+  }
+  
+  /* Media queries para dispositivos móviles */
+  @media (max-width: 768px) {
     .container {
-        gap: 1rem;
+      gap: 1rem;
     }
-
+  
     .filterSection {
-        padding: 1rem 0;
-        margin: 0.5rem 0;
+      padding: 1rem 0;
+      margin: 0.5rem 0;
     }
-}
+  
+    .whatsappButtonInner {
+      width: 55px;
+      height: 55px;
+    }
+  
+    .tooltip {
+      font-size: 0.8rem;
+      padding: 8px 12px;
+      bottom: 70px;
+      max-width: 200px;
+    }
+  }
+  
+  
