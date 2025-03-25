@@ -35,7 +35,7 @@ export const tourPackageService = {
 
         try {
             console.log(`Obteniendo paquetes: página=${page}, tamaño=${size}, orden=${sort}`);
-            
+
             const response = await axiosInstance.get('', {
                 timeout: 20000000, // Aumenta el tiempo de espera a 20 segundos
                 cancelToken: source.token,
