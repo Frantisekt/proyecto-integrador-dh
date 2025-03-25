@@ -98,7 +98,7 @@ export const tourPackageService = {
 
     update: async (id, packageData) => {
         try {
-            const response = await axiosInstance.put(`${id}`, packageData);
+            const response = await axiosInstance.put(`/${id}`, packageData);
             return response.data;
         } catch (error) {
             console.error('Error al actualizar paquete:', error);
