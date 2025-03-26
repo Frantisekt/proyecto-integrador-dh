@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { tourPackageService } from '../../../services/tourPackageService';
 import { featureService } from '../../services/getAllFeatures';
 
-const API_URL = 'http://localhost:8087/api/tourPackages';
+const API_BASE_URL = '/api/tourPackages';
 
 const EditPackageModal = ({ packageId, onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -33,7 +33,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
         setFeatures(featuresResponse);
 
 
-        const packageResponse = await axios.get(`${API_URL}/${packageId}`);
+        const packageResponse = await axios.get(`${API_BASE_URL}/${packageId}`);
         setPackageDetails(packageResponse.data);
 
         const featureIds = packageResponse.data.features
@@ -104,7 +104,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
     console.log("Request Body:", requestBody);
 
     try {
-      await axios.put(`${API_URL}/${packageId}`, requestBody);
+      await axios.put(`${API_BASE_URL}/${packageId}`, requestBody);
       Swal.fire('¡Éxito!', 'Paquete actualizado correctamente', 'success');
       onSave();
     } catch (error) {
@@ -149,7 +149,7 @@ const EditPackageModal = ({ packageId, onClose, onSave }) => {
 
   const handleRemoveMedia = async (mediaPackageId) => {
     try {
-      await axios.delete(`${API_URL}/${packageId}/media/${mediaPackageId}`);
+      await axios.delete(`${API_BASE_URL}/${packageId}/media/${mediaPackageId}`);
       setPackageDetails(prev => ({ ...prev, mediaPackages: prev.mediaPackages.filter(media => media.mediaPackageId !== mediaPackageId) }));
       Swal.fire('¡Éxito!', 'Imagen eliminada correctamente', 'success');
     } catch (error) {
