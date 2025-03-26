@@ -93,7 +93,7 @@ export const tourPackageService = {
       throw new Error('Error al crear paquete: ' + error.message);
     }
   },
-/*   update: async (id, packageData) => {
+  update: async (id, packageData) => {
     try {
       const response = await axiosInstance.put(`/${id}`, packageData);
       return response.data;
@@ -101,7 +101,7 @@ export const tourPackageService = {
       console.error('Error al actualizar paquete:', error);
       throw error;
     }
-  }, */
+  },
   delete: async (id) => {
     try {
       const response = await axiosInstance.delete(`/${id}`);
@@ -127,7 +127,7 @@ export const tourPackageService = {
       throw new Error("Error al obtener detalles del paquete: " + error.message);
     }
   },
-  updatePackage: async (id, packageData) => {
+ /*  updatePackage: async (id, packageData) => {
     try {
       const requestData = {
         title: packageData.title,
@@ -147,7 +147,7 @@ export const tourPackageService = {
       console.error('Error al actualizar paquete:', error.response?.data || error.message);
       throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
     }
-  },
+  }, */
   uploadMedia: async (formData) => {
     try {
       const response = await axios.post(
