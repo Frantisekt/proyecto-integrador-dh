@@ -28,7 +28,7 @@ const PriceFilter = () => {
     useEffect(() => {
         const fetchPriceRanges = async () => {
             try {
-                const response = await axios.get('http://localhost:8087/api/price-ranges');
+                const response = await axios.get('/api/price-ranges');
                 setPriceRanges(response.data);
                 setLoading(false);
             } catch (err) {
