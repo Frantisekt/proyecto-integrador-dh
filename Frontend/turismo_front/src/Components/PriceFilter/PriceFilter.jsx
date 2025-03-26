@@ -76,7 +76,7 @@ const PriceFilter = () => {
                 const minPrice = Math.min(...selectedRanges.map(range => range.minPrice));
                 const maxPrice = Math.max(...selectedRanges.map(range => range.maxPrice));
 
-                const response = await axios.post('http://localhost:8087/api/price-ranges/search', {
+                const response = await axios.post('/api/price-ranges/search', {
                     minPrice,
                     maxPrice
                 });
