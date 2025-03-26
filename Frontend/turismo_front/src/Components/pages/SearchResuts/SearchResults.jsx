@@ -2,17 +2,6 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import TourCard from "../../TourCard/TourCard";
 import styles from "./SearchResults.module.css";
-import axios from 'axios';
-import { API_BASE_URL, ENDPOINTS } from '../../../config/api.config';
-
-const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    withCredentials: true
-});
 
 const SearchResults = () => {
   const [tours, setTours] = useState([]);
@@ -38,25 +27,26 @@ const SearchResults = () => {
     const fetchTours = async () => {
       try {
         setLoading(true);
-        const params = {
-          page: currentPage,
-          size: 12
-        };
+        const baseUrl = "https://pi-dh-infradeploy-backend-production.up.railway.app/";
+        const url = new URL("/api/tourPackages/filtered", baseUrl);
+        url.searchParams.append("page", currentPage);
+        url.searchParams.append("size", 12);
 
-        if (destination) params.destination = destination;
-        if (startDate) params.startDate = startDate;
-        if (endDate) params.endDate = endDate;
-        if (minPrice) params.minPrice = minPrice;
-        if (maxPrice) params.maxPrice = maxPrice;
+        if (destination) url.searchParams.append("destination", destination);
+        if (startDate) url.searchParams.append("startDate", startDate);
+        if (endDate) url.searchParams.append("endDate", endDate);
+        if (minPrice) url.searchParams.append("minPrice", minPrice);
+        if (maxPrice) url.searchParams.append("maxPrice", maxPrice);
 
-        const response = await axiosInstance.get(ENDPOINTS.TOUR_PACKAGES.FILTERED, { params });
+        const response = await fetch(url);
 
-        if (!response.data) {
+        if (!response.ok) {
           throw new Error("Error al obtener los paquetes de viaje");
         }
 
-        setTours(response.data.content || []);
-        setFilteredTours(response.data.content || []);
+        const data = await response.json();
+        setTours(data.content || []);
+        setFilteredTours(data.content || []);
       } catch (error) {
         console.error("Error al obtener los paquetes de viaje:", error);
         setTours([]);
@@ -73,19 +63,19 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchAllTours = async () => {
       try {
-        const params = {
-          page: 0,
-          size: 1000,
-          sort: "title,asc"
-        };
+        const baseUrl = "https://pi-dh-infradeploy-backend-production.up.railway.app/";
+        const url = new URL("/api/tourPackages/paged", baseUrl);
+        url.searchParams.append("page", 0);
+        url.searchParams.append("size", 1000);
+        url.searchParams.append("sort", "title,asc");
 
-        const response = await axiosInstance.get(ENDPOINTS.TOUR_PACKAGES.PAGED, { params });
-        
-        if (!response.data) {
+        const response = await fetch(url);
+        if (!response.ok) {
           throw new Error("Error al obtener todos los paquetes");
         }
 
-        setTours(response.data.content || []);
+        const data = await response.json();
+        setTours(data.content || []);
       } catch (error) {
         console.error("Error al obtener todos los paquetes:", error);
         setTours([]);
