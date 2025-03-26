@@ -1,19 +1,20 @@
 import axios from 'axios';
 
-// Se obtiene la URL base desde la variable de entorno VITE_API_URL.
-// Si la URL no contiene 'http', se le antepone 'https://'.
+// En producción, no queremos fallback; si la variable no está definida, lanzamos error.
 const envUrl = import.meta.env.VITE_API_URL;
-const API_BASE_URL =
-  envUrl && envUrl.startsWith('http')
-    ? envUrl
-    : envUrl
-    ? `https://${envUrl}`
-    : 'http://localhost:8087';
+const API_BASE_URL = 
+  envUrl 
+    ? envUrl.startsWith('http')
+      ? envUrl
+      : `https://${envUrl}`
+    : (import.meta.env.DEV ? 'http://localhost:8087' : (() => { throw new Error('VITE_API_URL no está definida en producción') })());
 
 // Ruta base para los endpoints de tourPackages.
 const TOUR_PACKAGES_BASE = `${API_BASE_URL}/api/tourPackages`;
 
-// Instancia de axios unificada para tourPackages.
+// Log para confirmar la URL (quitar en producción si lo deseás)
+console.log('API_BASE_URL:', API_BASE_URL);
+
 const axiosInstance = axios.create({
   baseURL: TOUR_PACKAGES_BASE,
   timeout: 50000,
@@ -21,10 +22,9 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json'
   },
-  withCredentials: true // Importante para CORS con credenciales
+  withCredentials: true
 });
 
-// Interceptor para logs de desarrollo
 axiosInstance.interceptors.request.use(request => {
   console.log('Starting Request:', request);
   return request;
@@ -42,19 +42,15 @@ axiosInstance.interceptors.response.use(
 );
 
 export const tourPackageService = {
-  // Listado paginado: se utiliza el endpoint '/paged'
   getAllPackages: async (page = 0, size = 10, sort = 'title,asc') => {
-    const source = axios.CancelToken.source(); // Permite cancelar la solicitud si es necesario
-
+    const source = axios.CancelToken.source();
     try {
       console.log(`Obteniendo paquetes: página=${page}, tamaño=${size}, orden=${sort}`);
-      
       const response = await axiosInstance.get('/paged', {
-        timeout: 500000, // Aumenta el tiempo de espera
+        timeout: 500000,
         cancelToken: source.token,
         params: { page, size, sort }
       });
-
       console.log('Paquetes obtenidos correctamente:', response.data);
       return response.data;
     } catch (error) {
@@ -62,26 +58,19 @@ export const tourPackageService = {
         console.warn('Solicitud cancelada:', error.message);
         return;
       }
-
       console.error('Error al obtener paquetes:', error);
-
       if (error.code === 'ECONNABORTED') {
         throw new Error('Tiempo de espera excedido: La solicitud tardó demasiado en responder. Intenta nuevamente.');
       }
-
       if (error.code === 'ERR_NETWORK') {
         throw new Error('Error de conexión: Verifica que el backend esté corriendo en el puerto 8087.');
       }
-
       if (error.response) {
         throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Error desconocido'}`);
       }
-
       throw new Error('Error al obtener paquetes: ' + error.message);
     }
   },
-
-  // Crear nuevo paquete usando la instancia unificada
   create: async (packageData) => {
     try {
       console.log('Intentando crear paquete con datos:', packageData);
@@ -95,20 +84,15 @@ export const tourPackageService = {
         response: error.response,
         config: error.config
       });
-
       if (error.code === 'ERR_NETWORK') {
         throw new Error('Error de conexión: Verifica que el servidor backend esté corriendo en el puerto 8087');
       }
-
       if (error.response) {
         throw new Error(`Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`);
       }
-
       throw new Error('Error al crear paquete: ' + error.message);
     }
   },
-  
-  // Actualización de paquete
   update: async (id, packageData) => {
     try {
       const response = await axiosInstance.put(`/${id}`, packageData);
@@ -118,8 +102,6 @@ export const tourPackageService = {
       throw error;
     }
   },
-
-  // Eliminación de paquete
   delete: async (id) => {
     try {
       const response = await axiosInstance.delete(`/${id}`);
@@ -129,8 +111,6 @@ export const tourPackageService = {
       throw error;
     }
   },
-
-  // Método alternativo para eliminar, redirige al método delete
   deletePackage: async (id) => {
     if (!id) {
       console.error('ID de paquete no válido.');
@@ -138,8 +118,6 @@ export const tourPackageService = {
     }
     return tourPackageService.delete(id);
   },
-
-  // Obtener paquete por ID
   getPackageById: async (packageId) => {
     try {
       const response = await axiosInstance.get(`/${packageId}`);
@@ -149,8 +127,6 @@ export const tourPackageService = {
       throw new Error("Error al obtener detalles del paquete: " + error.message);
     }
   },
-  
-  // Actualización de paquete con procesamiento de datos
   updatePackage: async (id, packageData) => {
     try {
       const requestData = {
@@ -163,10 +139,8 @@ export const tourPackageService = {
         mediaPackageIds: packageData.mediaPackageIds || [],
         featureIds: packageData.featureIds || []
       };
-
       console.log('Enviando actualización con:', requestData);
       const response = await axiosInstance.put(`/${id}`, requestData);
-
       console.log('Paquete actualizado con éxito:', response.data);
       return response.data;
     } catch (error) {
@@ -174,8 +148,6 @@ export const tourPackageService = {
       throw new Error('Error al actualizar paquete: ' + (error.response?.data?.message || error.message));
     }
   },
-  
-  // Subir media: este endpoint pertenece a media-packages
   uploadMedia: async (formData) => {
     try {
       const response = await axios.post(
@@ -193,8 +165,6 @@ export const tourPackageService = {
       throw new Error('Error al subir la imagen: ' + error.message);
     }
   },
-
-  // Asignar media existente a un paquete
   addMediaToPackage: async (packageId, mediaPackageId) => {
     try {
       const response = await axiosInstance.post(`/${packageId}/media/${mediaPackageId}`);
@@ -204,8 +174,6 @@ export const tourPackageService = {
       throw new Error('Error al añadir la imagen al paquete: ' + error.message);
     }
   },
-  
-  // Remover media de un paquete
   removeMediaFromPackage: async (packageId, mediaPackageId) => {
     try {
       await axiosInstance.delete(`/${packageId}/media/${mediaPackageId}`);
@@ -214,8 +182,6 @@ export const tourPackageService = {
       throw new Error('Error al eliminar la imagen del paquete: ' + error.message);
     }
   },
-
-  // Asignar media (similar a addMediaToPackage)
   assignMedia: async (packageId, mediaPackageId) => {
     try {
       console.log(`Asignando imagen ${mediaPackageId} al paquete ${packageId} en: ${TOUR_PACKAGES_BASE}/${packageId}/media/${mediaPackageId}`);
