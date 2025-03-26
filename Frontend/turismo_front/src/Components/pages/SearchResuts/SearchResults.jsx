@@ -27,7 +27,7 @@ const SearchResults = () => {
     const fetchTours = async () => {
       try {
         setLoading(true);
-        const url = new URL("http://localhost:8087/api/tourPackages/filtered");
+        const url = new URL("/api/tourPackages/filtered");
         url.searchParams.append("page", currentPage);
         url.searchParams.append("size", 12);
 
@@ -62,7 +62,7 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchAllTours = async () => {
       try {
-        const url = new URL("http://localhost:8087/api/tourPackages/paged");
+        const url = new URL("/api/tourPackages/paged");
         url.searchParams.append("page", 0);
         url.searchParams.append("size", 1000);
         url.searchParams.append("sort", "title,asc");
