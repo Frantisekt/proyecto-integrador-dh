@@ -93,7 +93,7 @@ export const tourPackageService = {
       throw new Error('Error al crear paquete: ' + error.message);
     }
   },
-  update: async (id, packageData) => {
+/*   update: async (id, packageData) => {
     try {
       const response = await axiosInstance.put(`/${id}`, packageData);
       return response.data;
@@ -101,7 +101,7 @@ export const tourPackageService = {
       console.error('Error al actualizar paquete:', error);
       throw error;
     }
-  },
+  }, */
   delete: async (id) => {
     try {
       const response = await axiosInstance.delete(`/${id}`);
