@@ -2,8 +2,8 @@ import axios from 'axios';
 
 // En producción, no queremos fallback; si la variable no está definida, lanzamos error.
 const envUrl = import.meta.env.VITE_API_URL;
-const API_BASE_URL =
-  envUrl
+const API_BASE_URL = 
+  envUrl 
     ? envUrl.startsWith('http')
       ? envUrl
       : `https://${envUrl}`
@@ -104,16 +104,7 @@ export const tourPackageService = {
   },
   delete: async (id) => {
     try {
-      const url = `${API_BASE_URL}/api/tourPackages/${id}`;
-      console.log('Delete URL:', url);
-      const response = await axios.delete(url, {
-        withCredentials: true,
-        timeout: 50000,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
+      const response = await axiosInstance.delete(`/${id}`);
       return response.data;
     } catch (error) {
       console.error('Error al eliminar paquete:', error);
@@ -138,17 +129,19 @@ export const tourPackageService = {
   },
   updatePackage: async (id, packageData) => {
     try {
-      // Forzamos la URL completa usando API_BASE_URL
-      const url = `${API_BASE_URL}/api/tourPackages/${id}`;
-      console.log('Update URL:', url);
-      const response = await axios.put(url, packageData, {
-        withCredentials: true,
-        timeout: 50000,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
+      const requestData = {
+        title: packageData.title,
+        description: packageData.description,
+        state: packageData.state,
+        start_date: packageData.start_date, 
+        end_date: packageData.end_date, 
+        price: packageData.price,
+        mediaPackageIds: packageData.mediaPackageIds || [],
+        featureIds: packageData.featureIds || []
+      };
+      console.log('Enviando actualización con:', requestData);
+      const response = await axiosInstance.put(`/${id}`, requestData);
+      console.log('Paquete actualizado con éxito:', response.data);
       return response.data;
     } catch (error) {
       console.error('Error al actualizar paquete:', error.response?.data || error.message);
