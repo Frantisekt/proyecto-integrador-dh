@@ -1,49 +1,98 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FaTrashAlt } from "react-icons/fa";
-import styles from "./Favorites.module.css";
+"use client"
+
+import { useState, useEffect } from "react"
+import { authService } from "../../services/authService"
+import { userService } from "../../services/userService"
+import { tourPackageService } from "../../services/tourPackageService"
+import TourCard from "../../TourCard/TourCard"
+import styles from "./Favorites.module.css"
 
 const Favorites = () => {
-  const [favorites, setFavorites] = useState([]);
+  const [favoritePackages, setFavoritePackages] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    // Obtener los favoritos almacenados en localStorage o desde una API
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(storedFavorites);
-  }, []);
+    const fetchFavorites = async () => {
+      try {
+        const user = authService.getCurrentUser()
+        if (!user) {
+          setError("Debes iniciar sesión para ver tus favoritos.")
+          setLoading(false)
+          return
+        }
 
-  const removeFromFavorites = (id) => {
-    const updatedFavorites = favorites.filter((item) => item.id !== id);
-    setFavorites(updatedFavorites);
-    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        const userData = await userService.getUserById(user.userId)
+        const favoriteIds = userData.favoritePackageIds || []
+
+        // Obtener detalles de los paquetes favoritos
+        const packagePromises = favoriteIds.map((id) => {
+          return tourPackageService.getPackageById(id)
+        })
+
+        // Filtrar paquetes nulos o indefinidos
+        const packages = (await Promise.all(packagePromises)).filter((pkg) => pkg && pkg.packageId)
+        setFavoritePackages(packages)
+      } catch (err) {
+        console.error("Error al cargar favoritos:", err)
+        setError("Error al cargar los favoritos")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchFavorites()
+  }, [])
+
+  const handleRemoveFavorite = (packageId) => {
+    setFavoritePackages((prevFavorites) => prevFavorites.filter(pkg => pkg.packageId !== packageId));
   };
+
+  if (loading)
+    return (
+      <div className={styles.favoritesContainer}>
+        <p>Cargando favoritos...</p>
+      </div>
+    )
+  if (error)
+    return (
+      <div className={styles.favoritesContainer}>
+        <p>{error}</p>
+      </div>
+    )
 
   return (
     <div className={styles.favoritesContainer}>
-      <h1>Mis Favoritos</h1>
-      {favorites.length === 0 ? (
-        <p>No tienes productos en favoritos.</p>
+      <h2>Mis Favoritos</h2>
+      {favoritePackages.length === 0 ? (
+        <p>No tienes paquetes en favoritos.</p>
       ) : (
-        <div className={styles.favoritesGrid}>
-          {favorites.map((product) => (
-            <div key={product.id} className={styles.favoriteCard}>
-              <img src={product.image} alt={product.name} className={styles.productImage} />
-              <div className={styles.productInfo}>
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <div className={styles.buttonsContainer}>
-                  <Link to={`/product/${product.id}`} className={styles.viewButton}>Ver Detalles</Link>
-                  <button onClick={() => removeFromFavorites(product.id)} className={styles.removeButton}>
-                    <FaTrashAlt />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+        <div className={styles.tourGrid}>
+          {favoritePackages.map((pkg) => {
+            // Asegurarse de que la URL de la imagen sea válida
+            const imageUrl =
+              pkg.mediaPackages && pkg.mediaPackages.length > 0 && pkg.mediaPackages[0].mediaUrl
+                ? pkg.mediaPackages[0].mediaUrl
+                : "https://via.placeholder.com/300x200?text=Imagen+no+disponible"
+
+            return (
+              <TourCard
+                key={pkg.packageId}
+                packageId={pkg.packageId}
+                title={pkg.title || "Sin título"}
+                description={pkg.description || "Sin descripción"}
+                imageUrl={imageUrl}
+                currency={`$${pkg.price || 0}`}
+                link={`/tour/${pkg.packageId}`}
+                initialIsFavorite={true}
+                onRemoveFavorite={handleRemoveFavorite} 
+              />
+            )
+          })}
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Favorites;
+export default Favorites

@@ -28,10 +28,71 @@ const Gallery = ({ images }) => {
         }
     };
 
+    const GalleryModal = () => (
+        <div className={styles.modal} onClick={() => setIsModalOpen(false)}>
+            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+                <img 
+                    src={flecha_atras} 
+                    alt="flecha" 
+                    className={styles.closeBtn} 
+                    onClick={() => setIsModalOpen(false)}
+                />
+                <div className={styles.modalGallery}>
+                    {images.map((img, index) => (
+                        <img 
+                            key={index} 
+                            src={img} 
+                            alt={`Gallery ${index + 1}`} 
+                            onClick={() => openSecondModal(index)}
+                        />
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+
+    const ImageViewerModal = () => (
+        <div className={styles.secondModal} onClick={() => setIsSecondModalOpen(false)}>
+            <div className={styles.secondModalContent} onClick={e => e.stopPropagation()}>
+                <img 
+                    src={flecha_atras} 
+                    alt="flecha" 
+                    className={styles.closeBtn} 
+                    onClick={() => setIsSecondModalOpen(false)}
+                />
+                <img 
+                    src={images[selectedImageIndex]} 
+                    alt="Selected" 
+                    className={styles.largeImage} 
+                />
+                <div className={styles.imageControls}>
+                    <button onClick={(e) => {
+                        e.stopPropagation();
+                        changeImage("prev");
+                    }}>
+                        <i className="bi bi-arrow-left-short"></i>
+                    </button>
+                    <button onClick={(e) => {
+                        e.stopPropagation();
+                        changeImage("next");
+                    }}>
+                        <i className="bi bi-arrow-right-short"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <div className={styles.galleryContainer}>
             {isMobile ? (
-                <ControlledCarousel images={images.map(src => ({ src }))} openModal={() => setIsModalOpen(true)} isModalOpen={isModalOpen} />
+                <div style={{ marginBottom: '30px' }}> 
+                    <ControlledCarousel 
+                        images={images.map(src => ({ src }))} 
+                        openModal={() => setIsModalOpen(true)} 
+                        isModalOpen={isModalOpen} 
+                    />
+                </div>
             ) : (
                 <div className={styles.gallery}>
                     <div className={styles.mainImage}>
@@ -39,7 +100,12 @@ const Gallery = ({ images }) => {
                     </div>
                     <div className={styles.sideImages}>
                         {images.slice(1, 5).map((img, index) => (
-                            <img key={index} src={img} alt={`Gallery ${index + 1}`} onClick={() => setIsModalOpen(true)} />
+                            <img 
+                                key={index} 
+                                src={img} 
+                                alt={`Gallery ${index + 1}`} 
+                                onClick={() => setIsModalOpen(true)} 
+                            />
                         ))}
                         <button className={styles.viewMoreBtn} onClick={() => setIsModalOpen(true)}>
                             Ver más fotos
@@ -48,33 +114,8 @@ const Gallery = ({ images }) => {
                 </div>
             )}
 
-            {/* Modal de imágenes */}
-            {isModalOpen && (
-                <div className={styles.modal}>
-                    <div className={styles.modalContent}>
-                        <img src={flecha_atras} alt="flecha" className={styles.closeBtn} onClick={() => setIsModalOpen(false)}/>
-                        <div className={styles.modalGallery}>
-                            {images.map((img, index) => (
-                                <img key={index} src={img} alt={`Modal ${index + 1}`} onClick={() => openSecondModal(index)} />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Segundo modal para ver la imagen en grande */}
-            {isSecondModalOpen && (
-                <div className={styles.secondModal}>
-                    <div className={styles.secondModalContent}>
-                        <img src={flecha_atras} alt="flecha" className={styles.closeBtn} onClick={() => setIsSecondModalOpen(false)}/>
-                        <img src={images[selectedImageIndex]} alt="Selected" className={styles.largeImage} />
-                        <div className={styles.imageControls}>
-                            <button onClick={() => changeImage("prev")}><i className="bi bi-arrow-left-short"></i></button>
-                            <button onClick={() => changeImage("next")}><i className="bi bi-arrow-right-short"></i></button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {isModalOpen && <GalleryModal />}
+            {isSecondModalOpen && <ImageViewerModal />}
         </div>
     );
 };

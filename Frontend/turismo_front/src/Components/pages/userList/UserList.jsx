@@ -131,9 +131,9 @@ const UserList = () => {
                                         <td>{user.email}</td>
                                         <td>{user.dni}</td>
                                         <td>
-                                            <span 
-                                                className="badge" 
-                                                style={{ 
+                                            <span
+                                                className="badge"
+                                                style={{
                                                     backgroundColor: getRoleBadgeColor(user.role),
                                                     color: "#fff",
                                                     padding: "8px 12px"
@@ -143,14 +143,14 @@ const UserList = () => {
                                             </span>
                                         </td>
                                         <td>
-                                            <button 
-                                                className="btn btn-primary btn-sm me-2" 
+                                            <button
+                                                className="btn btn-primary btn-sm me-2"
                                                 onClick={() => handleEditUser(user.userId)}
                                             >
                                                 <FaEdit /> Editar
                                             </button>
-                                            <button 
-                                                className="btn btn-danger btn-sm" 
+                                            <button
+                                                className="btn btn-danger btn-sm"
                                                 onClick={() => handleDeleteUser(user.userId)}
                                             >
                                                 <FaTrash /> Eliminar
@@ -162,6 +162,13 @@ const UserList = () => {
                         </table>
                     )}
                 </div>
+                <button
+                    type="button"
+                    onClick={() => navigate('/admin/users')}
+                    className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                >
+                    Regresar
+                </button>
             </div>
         </div>
     );

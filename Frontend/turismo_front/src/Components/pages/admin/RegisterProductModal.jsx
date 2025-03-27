@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { tourPackageService } from '../../../services/tourPackageService';
 import { mediaPackageService } from '../../../services/mediaPackageService';
+import { featureService } from '../../services/getAllFeatures';
+import { useEffect } from 'react';
 
 const RegisterProductModal = ({ onClose, onSave }) => {
     const [formData, setFormData] = useState({
@@ -11,10 +13,38 @@ const RegisterProductModal = ({ onClose, onSave }) => {
         state: true,
         price: '',
         start_date: '',
-        end_date: ''
+        end_date: '',
+        features: []
     });
     const [selectedFile, setSelectedFile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [features, setFeatures] = useState([]);
+
+    useEffect(() => {
+        const fetchFeatures = async () => {
+            try {
+                const response = await featureService.getAll();
+                setFeatures(response);
+            } catch (error) {
+                console.error('Error al cargar características:', error);
+            }
+        };
+        fetchFeatures();
+    }, []);
+
+    const handleFeatureChange = (featureId) => {
+        setFormData((prev) => {
+            const exists = prev.features.includes(featureId);
+            const updatedFeatures = exists
+                ? prev.features.filter((f) => f !== featureId) 
+                : [...prev.features, featureId]; 
+        
+            return { ...prev, features: updatedFeatures };
+        });
+    };
+    
+    
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,23 +63,30 @@ const RegisterProductModal = ({ onClose, onSave }) => {
         setLoading(true);
     
         try {
-            // Primero, crea el paquete
-            const packageResponse = await tourPackageService.create(formData);
+
+            const packageData = {
+                ...formData,
+                price: parseFloat(formData.price),
+                start_date: formData.start_date,
+                end_date: formData.end_date,
+                featureIds: formData.features, 
+                mediaPackageIds: [] 
+            };
+
+            const packageResponse = await tourPackageService.create(packageData);
             const packageId = packageResponse.packageId;
             console.log('Paquete creado con ID:', packageId);
             
-            // Luego, sube la imagen si hay una seleccionada
             if (selectedFile) {
                 const mediaResponse = await mediaPackageService.upload(
                     selectedFile,
-                    formData.title, // Usa el título del paquete como mediaTitle
-                    formData.description // Usa la descripción del paquete
+                    formData.title, 
+                    formData.description 
                 );
     
                 const mediaPackageId = mediaResponse.mediaPackageId;
                 console.log('Imagen subida con ID:', mediaPackageId);
     
-                // Asigna la imagen al paquete
                 await tourPackageService.assignMedia(packageId, mediaPackageId);
                 console.log(`Imagen ${mediaPackageId} asociada al paquete ${packageId}`);
             }
@@ -102,6 +139,27 @@ const RegisterProductModal = ({ onClose, onSave }) => {
                             <div className="mb-3">
                                 <label className="form-label text-dark">Fecha de Fin:</label>
                                 <input type="date" className="form-control" name="end_date" value={formData.end_date} onChange={handleChange} required disabled={loading} />
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label text-dark">Características:</label>
+                                <div style={{ maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
+                                    {features.map((feature) => (
+                                        <div key={feature.featureId} className="form-check">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                value={feature.featureId}
+                                                checked={formData.features.includes(feature.featureId)}
+                                                onChange={() => handleFeatureChange(feature.featureId)}
+                                                disabled={loading}
+                                            />
+                                            <label className="form-check-label text-dark">
+                                                {feature.displayName}
+                                            </label>
+                                        </div>
+                                    ))}
+
+                                </div>
                             </div>
                             <div className="mb-3">
                                 <label className="form-label text-dark">Subir Imagen:</label>

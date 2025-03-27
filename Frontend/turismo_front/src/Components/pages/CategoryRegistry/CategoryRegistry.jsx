@@ -9,6 +9,7 @@ import addCategory from "../../services/AddCategory";
 import getAllPackages from "../../services/getAllPackages";
 import { mediaCategoriesService } from '../../../services/mediaCategoriesService';
 import { categoryServices } from '../../../services/categoryServices';
+import { useNavigate } from "react-router-dom";
 
 const adminOptions = [
     {
@@ -24,6 +25,7 @@ const adminOptions = [
 ];
 
 const CategoryRegistry = () => {
+    const navigate = useNavigate(); 
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -103,7 +105,7 @@ const CategoryRegistry = () => {
             let categories = await getAllCategories()
             let category = categories.find(category => category.title == formattedData.title)
             let categoryId = category.categoryId
-            
+
             if (image) {
                 // 2. Subir la imagen
                 const mediaCategoriesResponse = await mediaCategoriesService.upload(image);
@@ -150,15 +152,15 @@ const CategoryRegistry = () => {
         if (!data.title.trim()) return "El título es obligatorio.";
         if (!data.description.trim()) return "La descripción es obligatoria.";
         if (!data.price || isNaN(data.price) || data.price <= 0) return "El precio debe ser un número positivo.";
-        if (data.discount && (isNaN(data.discount) || data.discount < 0 || data.discount > 100)) 
-          return "El descuento debe estar entre 0 y 100.";
+        if (data.discount && (isNaN(data.discount) || data.discount < 0 || data.discount > 100))
+            return "El descuento debe estar entre 0 y 100.";
         if (!data.currency) return "Debe seleccionar una moneda.";
-        if (!Array.isArray(data.tourPackageIds) || data.tourPackageIds.length === 0) 
-          return "Debe seleccionar al menos un paquete turístico.";
-        
+        if (!Array.isArray(data.tourPackageIds) || data.tourPackageIds.length === 0)
+            return "Debe seleccionar al menos un paquete turístico.";
+
         return null; // No hay errores
-      };
-      
+    };
+
 
     return (
         <div className={styles.adminContainer}>
@@ -227,7 +229,7 @@ const CategoryRegistry = () => {
                                             onChange={handlePackageSelection}
                                         />
                                         <label htmlFor={`package-${pkg.packageId}`} className={`form-check-label ${styles.blackText}`}>
-                                            {pkg.title} - {pkg.description}
+                                            {pkg.title}
                                         </label>
                                     </div>
                                 ))}
@@ -245,14 +247,29 @@ const CategoryRegistry = () => {
                         <div className="mb-3 text-start">
                             <label className={`form-label ${styles.label}`}> Subir imagen</label>
                             <input
+                                className="form-control"
                                 type="file"
                                 accept="image/*"
                                 onChange={(e) => setImage(e.target.files[0])}
                                 disabled={loading}
                             />
                         </div>
+                        <div className={styles.buttonContainer}>
+                            <button
+                                type="button"
+                                onClick={() => navigate('/admin/categories')}
+                                className={`${styles.btnRegresar} ${styles.btnSmall}`}
+                            >
+                                Regresar
+                            </button>
+                            <button
+                                type="submit"
+                                className={`${styles.btnPrimary} ${styles.btnSmall}`}
+                            >
+                                Registrar
+                            </button>
+                        </div>
 
-                        <button type="submit" className={`btn btn-primary ${styles.btnSmall}`}>Registrar Categoría</button>
                     </form>
                 </div>
             </div>
