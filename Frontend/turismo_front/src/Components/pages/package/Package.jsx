@@ -159,7 +159,15 @@ const Package = () => {
 
       {images.length > 0 && <Gallery images={images} className={styles.gallery} />}
 
-      <PackageDetails description={description} startDate={start_date} endDate={end_date} price={price} />
+      {travelPackage && (
+        <PackageDetails
+          id={travelPackage.packageId}
+          description={travelPackage.description}
+          startDate={travelPackage.start_date}
+          endDate={travelPackage.end_date}
+          price={travelPackage.price}
+        />
+      )}
 
       <div className={styles.featuresWrapper}>
         <PackageFeatures features={formattedFeatures} />

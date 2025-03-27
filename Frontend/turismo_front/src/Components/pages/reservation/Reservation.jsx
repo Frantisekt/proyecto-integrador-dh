@@ -1,18 +1,20 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom"
 import getTourPackage from "../../services/getOneTourPackage"
 import { favoriteService } from "../../services/favoriteService"
 import { authService } from "../../services/authService"
 import Swal from "sweetalert2"
 import styles from "./reservation.module.css"
 import flecha_atras from "../../../assets/flecha_atras.png"
-import ReservationDetails from "../../reservationDetails/ReservationDetails"
+import ReservationDetails from "../../reservationDetails/reservationDetails"
 import PackageFeatures from "../../packageFeatures/PackageFeatures"
+import { reservationService } from '../../services/reservationService'
 
 const Reservation = () => {
   const { id } = useParams()
+  const { state } = useLocation()
   const navigate = useNavigate()
   const [travelPackage, setTravelPackage] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -22,10 +24,21 @@ const Reservation = () => {
 
   useEffect(() => {
     const fetchPackage = async () => {
+      if (!id) {
+        setError("ID del paquete no encontrado")
+        return
+      }
+
       try {
         const data = await getTourPackage(id)
-        setTravelPackage(data)
+        console.log("Datos del paquete:", data) // Debug
+        if (data) {
+          setTravelPackage(data)
+        } else {
+          setError("No se encontró el paquete")
+        }
       } catch (err) {
+        console.error("Error fetching tour package:", err)
         setError("Error al cargar el paquete")
       } finally {
         setLoading(false)
@@ -55,6 +68,10 @@ const Reservation = () => {
   if (error) return <div className={styles.errorMessage}>{error}</div>
   if (!travelPackage) return <div className={styles.errorMessage}>No se encontró el paquete</div>
 
+  if (!state) {
+    return <div>Error: No se encontraron detalles de la reserva</div>
+  }
+
   const { title, start_date, end_date, price } = travelPackage
   
   return (
@@ -66,7 +83,13 @@ const Reservation = () => {
         <h3 className={styles.subtitle}>Confirma y paga</h3>
       </div>
 
-      <ReservationDetails title={title} startDate={start_date} endDate={end_date} price={price} />
+      <ReservationDetails
+        id={travelPackage.packageId}
+        title={travelPackage.title}
+        startDate={new Date(travelPackage.start_date)}
+        endDate={new Date(travelPackage.end_date)}
+        price={travelPackage.price}
+      />
     </div>
   )
 }
