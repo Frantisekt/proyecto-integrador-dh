@@ -149,6 +149,47 @@ const PriceFilter = () => {
                     ))}
                 </div>
             </div>
+
+            <div className={styles.packagesSection}>
+                {loading ? (
+                    <div className={styles.loading}>Cargando paquetes...</div>
+                ) : error ? (
+                    <div className={styles.error}>
+                        {error}
+                        <button 
+                            onClick={() => {
+                                setError(null);
+                                if (selectedRanges.length > 0) {
+                                    fetchPackages();
+                                }
+                            }}
+                            className={styles.retryButton}
+                        >
+                            Intentar de nuevo
+                        </button>
+                    </div>
+                ) : filteredPackages.length === 0 ? (
+                    <div className={styles.noResults}>
+                        {selectedRanges.length === 0 
+                            ? 'Selecciona un rango de precios para ver los paquetes'
+                            : 'No hay paquetes disponibles en este rango de precios'}
+                    </div>
+                ) : (
+                    <div className={styles.packagesGrid}>
+                        {filteredPackages.map(pkg => (
+                            <TourCard
+                                key={pkg.packageId}
+                                packageId={pkg.packageId}
+                                title={pkg.title}
+                                imageUrl={pkg.mediaPackages?.[0]?.mediaUrl || "https://via.placeholder.com/150"}
+                                description={pkg.description}
+                                price={pkg.price}
+                                link={`/tour/${pkg.packageId}`}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
