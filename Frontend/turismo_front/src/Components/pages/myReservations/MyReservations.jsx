@@ -60,89 +60,6 @@ const MyReservations = () => {
         }
     };
 
-    const handleEditGuests = async (reservation) => {
-        try {
-            const { value: formValues } = await Swal.fire({
-                title: 'Editar número de huéspedes',
-                html:
-                    `<div class="swal2-input-group">
-                        <label>Adultos:</label>
-                        <input id="adults" type="number" class="swal2-input" value="${reservation.numberOfAdults || 1}" min="1">
-                    </div>
-                    <div class="swal2-input-group">
-                        <label>Niños:</label>
-                        <input id="children" type="number" class="swal2-input" value="${reservation.numberOfChildren || 0}" min="0">
-                    </div>
-                    <div class="swal2-input-group">
-                        <label>Infantes:</label>
-                        <input id="infants" type="number" class="swal2-input" value="${reservation.numberOfInfants || 0}" min="0">
-                    </div>`,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'Actualizar',
-                cancelButtonText: 'Cancelar',
-                preConfirm: () => {
-                    const adults = parseInt(document.getElementById('adults').value);
-                    const children = parseInt(document.getElementById('children').value);
-                    const infants = parseInt(document.getElementById('infants').value);
-
-                    if (adults < 1) {
-                        Swal.showValidationMessage('Debe haber al menos 1 adulto');
-                        return false;
-                    }
-
-                    if (isNaN(adults) || isNaN(children) || isNaN(infants)) {
-                        Swal.showValidationMessage('Por favor, ingresa números válidos');
-                        return false;
-                    }
-
-                    return {
-                        adults,
-                        children,
-                        infants
-                    };
-                }
-            });
-
-            if (formValues) {
-                console.log('Valores del formulario:', formValues);
-                
-                const updatedReservation = {
-                    userId: reservation.userId,
-                    packageId: reservation.packageId,
-                    numberOfAdults: formValues.adults,
-                    numberOfChildren: formValues.children,
-                    numberOfInfants: formValues.infants,
-                    confirmationStatus: reservation.confirmationStatus || "PENDING"
-                };
-
-                console.log('Enviando actualización:', updatedReservation);
-
-                await reservationService.updateReservation(
-                    reservation.reservationId, 
-                    updatedReservation
-                );
-                
-                await fetchReservations(); // Recargar la lista
-                
-                Swal.fire({
-                    title: '¡Actualizado!',
-                    text: 'La reserva ha sido actualizada correctamente',
-                    icon: 'success',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            }
-        } catch (error) {
-            console.error('Error al actualizar la reserva:', error);
-            Swal.fire({
-                title: 'Error',
-                text: 'No se pudo actualizar la reserva. Por favor, intenta de nuevo.',
-                icon: 'error'
-            });
-        }
-    };
-
     const getStatusColor = (status) => {
         switch (status) {
             case 'PENDING': return styles.statusPending;
@@ -220,12 +137,6 @@ const MyReservations = () => {
                                 </td>
                                 <td className={styles.actions}>
                                     <button 
-                                        onClick={() => handleEditGuests(reservation)}
-                                        className={styles.editButton}
-                                    >
-                                        Editar
-                                    </button>
-                                    <button 
                                         onClick={() => handleCancelReservation(reservation.reservationId)}
                                         className={styles.cancelButton}
                                     >
@@ -241,4 +152,4 @@ const MyReservations = () => {
     );
 };
 
-export default MyReservations; 
+export default MyReservations;
