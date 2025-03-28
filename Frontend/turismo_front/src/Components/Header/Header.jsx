@@ -7,7 +7,7 @@ import styles from "./Header.module.css"
 import logo from "../../assets/Logo_Final.png"
 import { 
   FaBars, FaTimes, FaChevronDown, FaChevronUp, 
-  FaUser, FaCog, FaSignOutAlt, FaUserShield, FaHeart 
+  FaUser, FaCog, FaSignOutAlt, FaUserShield, FaHeart, FaSuitcase 
 } from "react-icons/fa"
 
 const Header = () => {
@@ -97,22 +97,18 @@ const Header = () => {
                   </Link>
                 ) : (
                   <>
-                    <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
-                      <FaUser className={styles.menuIcon} />
-                      <span>Mi Perfil</span>
-                    </Link>
 
-                   
                     <Link to="/favorites" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
                       <FaHeart className={styles.menuIcon} />
                       <span>Favoritos</span>
                     </Link>
+
+                    <Link to="/mis-reservaciones" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                      <FaSuitcase className={styles.menuIcon} />
+                      <span>Mis Reservas</span>
+                    </Link>
                   </>
                 )}
-                <Link to="/settings" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
-                  <FaCog className={styles.menuIcon} />
-                  <span>Configuración</span>
-                </Link>
                 <button className={styles.userMenuItem} onClick={handleLogout}>
                   <FaSignOutAlt className={styles.menuIcon} />
                   <span>Cerrar Sesión</span>
@@ -163,9 +159,12 @@ const Header = () => {
                   <Link to="/profile" onClick={() => setMenuOpen(false)}>
                     Mi Perfil
                   </Link>
-                  {/* ✅ Favoritos en menú móvil */}
                   <Link to="/favorites" onClick={() => setMenuOpen(false)}>
                     Favoritos
+                  </Link>
+                  <Link to="/reservations" onClick={() => setMenuOpen(false)}>
+                    <FaSuitcase className={styles.menuIcon} />
+                    Mis Reservas
                   </Link>
                 </>
               )}
