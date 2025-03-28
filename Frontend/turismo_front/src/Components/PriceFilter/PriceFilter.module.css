@@ -1,150 +1,214 @@
-.container {
-    padding: 20px;
-    max-width: 1200px;
+/* Renombrar container a priceFilterWrapper para evitar conflictos */
+.priceFilterWrapper {
+    padding: 0;
+    background-color: rgba(255, 241, 205, 0.3);
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    /* Asegurarse de que no haya margen vertical */
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  /* Mantener la línea de gradiente en la parte superior */
+  .priceFilterWrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, rgba(33, 158, 188, 1) 0%, rgba(226, 200, 102, 1) 100%);
+  }
+  
+  /* Contenedor interno para el contenido */
+  .contentWrapper {
+    max-width: 1400px;
     margin: 0 auto;
-}
-
-.filterSection {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 2rem;
+    /* Eliminar cualquier margen vertical */
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .filterSection {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
     margin-bottom: 30px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.filterHeader {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .filterHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
-    gap: 15px;
-}
-
-.filterTitle {
+    gap: 20px;
+  }
+  
+  .filterTitle {
     margin: 0;
-    color: #333;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.filterControls {
+    color: rgba(2, 48, 71, 0.9);
+    font-size: 2rem;
+    font-weight: 800;
+    position: relative;
+  }
+  
+  .filterTitle::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: rgba(226, 200, 102, 1);
+    margin-top: 10px;
+  }
+  
+  .filterControls {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     align-items: center;
-}
-
-.sortSelect {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  }
+  
+  .sortSelect {
+    padding: 12px 20px;
+    border: 2px solid #e5e5e5;
+    border-radius: 30px;
     background-color: white;
-    color: #333;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.sortSelect:hover {
-    border-color: #999;
-}
-
-.clearButton {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #002E47;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.clearButton:hover {
-    background-color: #095e8b;
-}
-
-.clearButton:disabled {
-    background-color: #e9ecef;
-    cursor: not-allowed;
-    color: #6c757d;
-}
-
-.rangeCheckboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.rangeLabel {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    background-color: white;
-    border: 2px solid #ddd;
-    border-radius: 20px;
+    color: rgba(2, 48, 71, 0.9);
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-}
-
-.rangeLabel:hover {
-    background-color: #f0f0f0;
-    transform: translateY(-1px);
-    border-color: #999;
-}
-
-.rangeLabel.selected {
-    background-color: #e3f2fd;
-    border-color: #2196f3;
-}
-
-.rangeCheckbox {
-    margin-right: 8px;
+  }
+  
+  .sortSelect:hover {
+    border-color: rgba(33, 158, 188, 1);
+  }
+  
+  .clearButton {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    background-color: rgba(2, 48, 71, 0.9);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-}
-
-.rangeLabelText {
-    font-size: 14px;
-    color: #555;
-    text-transform: uppercase;
-}
-
-.packageCount {
-    margin-left: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .clearButton:hover {
+    background-color: rgba(33, 158, 188, 1);
+    transform: translateY(-2px);
+  }
+  
+  .clearButton:disabled {
+    background-color: #e5e5e5;
+    cursor: not-allowed;
+    color: #999;
+    transform: none;
+  }
+  
+  .rangeCheckboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .rangeLabel {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: white;
+    border: 2px solid #e5e5e5;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .rangeLabel:hover {
+    background-color: rgba(255, 241, 205, 0.5);
+    transform: translateY(-2px);
+    border-color: rgba(226, 200, 102, 1);
+  }
+  
+  .rangeLabel.selected {
+    background-color: rgba(33, 158, 188, 0.1);
+    border-color: rgba(33, 158, 188, 1);
+  }
+  
+  .rangeCheckbox {
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: rgba(33, 158, 188, 1);
+    width: 18px;
+    height: 18px;
+  }
+  
+  .rangeLabelText {
+    font-size: 1rem;
+    color: rgba(2, 48, 71, 0.9);
+    font-weight: 500;
+  }
+  
+  .packageCount {
+    margin-left: 8px;
     color: rgba(33, 158, 188, 1);
-    font-size: 14px;
-}
-
-.packagesSection {
-    min-height: 200px;
-}
-
-.packagesGrid {
+    font-weight: 600;
+  }
+  
+  .packagesSection {
+    min-height: 300px;
+    /* Eliminar cualquier margen inferior */
+    margin-bottom: 0;
+  }
+  
+  .packagesGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px 0;
-}
-
-.loading {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 0;
+    /* Eliminar cualquier padding vertical */
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    font-size: 1.2rem;
+    color: rgba(2, 48, 71, 0.9);
+  }
+  
+  .loading::before {
+    content: "";
+    border: 4px solid rgba(255, 241, 205, 1);
+    border-top: 4px solid rgba(33, 158, 188, 1);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-right: 15px;
+  }
+  
+  .noResults {
     text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.noResults {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 24px;
-    font-weight: bold;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-}
-
-.error {
+    padding: 3rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin: 0 auto;
+    max-width: 600px;
+    color: rgba(2, 48, 71, 0.9);
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  
+  .error {
     text-align: center;
     padding: 2rem;
     color: #dc3545;
@@ -176,81 +240,114 @@
 .fadeOut {
     animation: fadeOut 0.3s ease-out;
     opacity: 0;
-}
-
-@keyframes fadeIn {
+  }
+  
+  @keyframes fadeIn {
     from {
-        opacity: 0;
-        transform: translateY(10px);
+      opacity: 0;
+      transform: translateY(15px);
     }
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
-
-@keyframes fadeOut {
+  }
+  
+  @keyframes fadeOut {
     from {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
     to {
-        opacity: 0;
-        transform: translateY(10px);
+      opacity: 0;
+      transform: translateY(15px);
     }
-}
-
-/* Estilos responsivos */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
     }
-
-    .filterSection {
-        padding: 15px;
+    100% {
+      transform: rotate(360deg);
     }
-
-    .filterHeader {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .filterControls {
-        width: 100%;
-        flex-direction: column;
-    }
-
-    .sortSelect, .clearButton {
-        width: 100%;
-    }
-
-    .rangeCheckboxes {
-        gap: 10px;
-    }
-
-    .rangeLabel {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
-
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 992px) {
     .packagesGrid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
+      grid-template-columns: repeat(2, 1fr);
     }
-
+  }
+  
+  @media (max-width: 768px) {
+    .priceFilterWrapper {
+      padding: 0;
+    }
+    
+    .contentWrapper {
+      padding: 1.5rem;
+    }
+  
+    .filterSection {
+      padding: 20px;
+    }
+  
+    .filterHeader {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .filterControls {
+      width: 100%;
+      flex-direction: column;
+    }
+  
+    .sortSelect,
+    .clearButton {
+      width: 100%;
+    }
+  
     .filterTitle {
-        font-size: 20px;
+      font-size: 1.8rem;
     }
-
+  }
+  
+  @media (max-width: 576px) {
+    .priceFilterWrapper {
+      padding: 0;
+    }
+    
+    .contentWrapper {
+      padding: 1rem;
+    }
+  
+    .filterSection {
+      padding: 15px;
+    }
+  
+    .rangeCheckboxes {
+      gap: 10px;
+    }
+  
+    .rangeLabel {
+      padding: 8px 15px;
+    }
+  
     .rangeLabelText {
-        font-size: 12px;
+      font-size: 0.9rem;
     }
-
+  
     .packageCount {
-        font-size: 12px;
+      font-size: 0.9rem;
     }
-
-    .loading, .noResults, .error {
-        font-size: 20px;
+  
+    .packagesGrid {
+      grid-template-columns: 1fr;
     }
-} 
+  
+    .filterTitle {
+      font-size: 1.5rem;
+    }
+  }
+  
