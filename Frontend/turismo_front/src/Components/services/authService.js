@@ -60,8 +60,7 @@ export const authService = {
     
     isAuthenticated: () => {
         const user = localStorage.getItem('user');
-        const token = localStorage.getItem('token');
-        return !!(user && token);
+        return !!user;
     },
 
     logout: () => {
@@ -71,13 +70,17 @@ export const authService = {
     },
 
     getCurrentUser: () => {
-        try {
-            const user = localStorage.getItem('user');
-            return user ? JSON.parse(user) : null;
-        } catch (error) {
-            console.error('Error al obtener usuario:', error);
-            return null;
+        const userStr = localStorage.getItem('user');
+        if (userStr) return JSON.parse(userStr);
+        return null;
+    },
+
+    getAuthHeader: () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.token) {
+            return { 'Authorization': `Bearer ${user.token}` };
         }
+        return {};
     },
 
     isAdminLoggedIn: () => {
