@@ -1,226 +1,156 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import axios from "axios"
-import TourCard from "../TourCard/TourCard"
-import styles from "./PriceFilter.module.css"
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import TourCard from '../TourCard/TourCard';
+import styles from './PriceFilter.module.css';
+import { authService } from '../services/authService';
 
 const SORT_OPTIONS = {
   PRICE_LOW: "price_asc",
   PRICE_HIGH: "price_desc",
   NAME_ASC: "name_asc",
   NAME_DESC: "name_desc",
-}
+};
 
 const PriceFilter = () => {
-  const [priceRanges, setPriceRanges] = useState([])
-  const [selectedRanges, setSelectedRanges] = useState(() => {
-    const saved = localStorage.getItem("selectedPriceRanges")
-    return saved ? JSON.parse(saved) : []
-  })
-  const [filteredPackages, setFilteredPackages] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [sortBy, setSortBy] = useState(() => {
-    return localStorage.getItem("packageSortPreference") || SORT_OPTIONS.PRICE_LOW
-  })
-  const [isAnimating, setIsAnimating] = useState(false)
+    const [priceRanges, setPriceRanges] = useState([]);
+    const [selectedRanges, setSelectedRanges] = useState([]);
+    const [filteredPackages, setFilteredPackages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [sortBy, setSortBy] = useState(SORT_OPTIONS.PRICE_LOW);
 
-  // Cargar los rangos de precios al montar el componente
-  useEffect(() => {
-    const fetchPriceRanges = async () => {
-      try {
-        const response = await axios.get("http://localhost:8087/api/price-ranges")
-        setPriceRanges(response.data)
-        setLoading(false)
-      } catch (err) {
-        setError("Error al cargar los rangos de precios")
-        console.error("Error:", err)
-        setLoading(false)
-      }
-    }
-    fetchPriceRanges()
-  }, [])
+    // Función para obtener los headers de autenticación
+    const getHeaders = () => {
+        const headers = {
+            'Content-Type': 'application/json',
+            ...authService.getAuthHeader()
+        };
+        return headers;
+    };
 
-  // Guardar preferencias en localStorage
-  useEffect(() => {
-    localStorage.setItem("selectedPriceRanges", JSON.stringify(selectedRanges))
-    localStorage.setItem("packageSortPreference", sortBy)
-  }, [selectedRanges, sortBy])
+    // Cargar los rangos de precios predefinidos
+    useEffect(() => {
+        const defaultRanges = [
+            { id: 1, minPrice: 0, maxPrice: 1000, label: 'Hasta $1,000' },
+            { id: 2, minPrice: 1001, maxPrice: 5000, label: '$1,001 - $5,000' },
+            { id: 3, minPrice: 5001, maxPrice: 10000, label: '$5,001 - $10,000' },
+            { id: 4, minPrice: 10001, maxPrice: Infinity, label: 'Más de $10,000' }
+        ];
+        setPriceRanges(defaultRanges);
+        setLoading(false);
+    }, []);
 
-  // Buscar paquetes cuando cambian los rangos seleccionados o el ordenamiento
-  useEffect(() => {
-    const fetchPackages = async () => {
-      if (selectedRanges.length === 0) {
-        setFilteredPackages([])
-        return
-      }
+    // Buscar paquetes cuando cambian los rangos seleccionados
+    useEffect(() => {
+        const fetchPackages = async () => {
+            if (selectedRanges.length === 0) {
+                setFilteredPackages([]);
+                return;
+            }
 
-      setLoading(true)
-      setIsAnimating(true)
-      try {
-        // Obtener todos los IDs de paquetes de los rangos seleccionados
-        const packageIds = selectedRanges.reduce((ids, range) => {
-          if (range.packageIds) {
-            return [...ids, ...range.packageIds]
-          }
-          return ids
-        }, [])
+            setLoading(true);
+            try {
+                // Encontrar el rango mínimo y máximo seleccionado
+                const minPrice = Math.min(...selectedRanges.map(range => range.minPrice));
+                const maxPrice = Math.max(...selectedRanges.map(range => range.maxPrice));
 
-        if (packageIds.length === 0) {
-          setFilteredPackages([])
-          setLoading(false)
-          setIsAnimating(false)
-          return
+                const response = await axios.post('http://localhost:8087/api/price-ranges/search', 
+                    {
+                        minPrice: minPrice,
+                        maxPrice: maxPrice === Infinity ? Number.MAX_SAFE_INTEGER : maxPrice,
+                        page: 0,
+                        size: 50
+                    },
+                    {
+                        headers: getHeaders()
+                    }
+                );
+
+                let packages = response.data;
+                packages = sortPackages(packages, sortBy);
+                
+                setFilteredPackages(packages);
+            } catch (err) {
+                console.error('Error al cargar los paquetes:', err);
+                setError('No se pudieron cargar los paquetes. Por favor, intenta de nuevo.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPackages();
+    }, [selectedRanges, sortBy]);
+
+    const sortPackages = (packages, sortOption) => {
+        if (!Array.isArray(packages)) {
+            console.warn('Los paquetes no son un array:', packages);
+            return [];
         }
 
-        // Encontrar el rango mínimo y máximo seleccionado
-        const minPrice = Math.min(...selectedRanges.map((range) => range.minPrice))
-        const maxPrice = Math.max(...selectedRanges.map((range) => range.maxPrice))
+        const sorted = [...packages];
+        switch (sortOption) {
+            case SORT_OPTIONS.PRICE_LOW:
+                return sorted.sort((a, b) => (a.price || 0) - (b.price || 0));
+            case SORT_OPTIONS.PRICE_HIGH:
+                return sorted.sort((a, b) => (b.price || 0) - (a.price || 0));
+            case SORT_OPTIONS.NAME_ASC:
+                return sorted.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+            case SORT_OPTIONS.NAME_DESC:
+                return sorted.sort((a, b) => (b.title || '').localeCompare(a.title || ''));
+            default:
+                return sorted;
+        }
+    };
 
-        const response = await axios.post("http://localhost:8087/api/price-ranges/search", {
-          minPrice,
-          maxPrice,
-        })
+    const handleRangeSelect = (range) => {
+        setSelectedRanges(prev => {
+            const isSelected = prev.some(r => r.id === range.id);
+            return isSelected 
+                ? prev.filter(r => r.id !== range.id)
+                : [...prev, range];
+        });
+    };
 
-        let packages = Array.isArray(response.data) ? response.data : []
-        packages = sortPackages(packages, sortBy)
+    return (
+        <div className={styles.container}>
+            <div className={styles.filterSection}>
+                <div className={styles.filterHeader}>
+                    <h3 className={styles.filterTitle}>Filtrar por precio</h3>
+                    <select 
+                        value={sortBy} 
+                        onChange={(e) => setSortBy(e.target.value)}
+                        className={styles.sortSelect}
+                    >
+                        <option value={SORT_OPTIONS.PRICE_LOW}>Precio: Menor a Mayor</option>
+                        <option value={SORT_OPTIONS.PRICE_HIGH}>Precio: Mayor a Menor</option>
+                        <option value={SORT_OPTIONS.NAME_ASC}>Nombre: A-Z</option>
+                        <option value={SORT_OPTIONS.NAME_DESC}>Nombre: Z-A</option>
+                    </select>
+                </div>
 
-        setFilteredPackages(packages)
-      } catch (err) {
-        setError("Error al cargar los paquetes")
-        console.error("Error:", err)
-      } finally {
-        setLoading(false)
-        setTimeout(() => setIsAnimating(false), 300)
-      }
-    }
-
-    fetchPackages()
-  }, [selectedRanges, sortBy])
-
-  const sortPackages = (packages, sortOption) => {
-    if (!Array.isArray(packages)) {
-      console.warn("packages no es un array:", packages)
-      return []
-    }
-
-    const sorted = [...packages]
-    switch (sortOption) {
-      case SORT_OPTIONS.PRICE_LOW:
-        return sorted.sort((a, b) => a.price - b.price)
-      case SORT_OPTIONS.PRICE_HIGH:
-        return sorted.sort((a, b) => b.price - a.price)
-      case SORT_OPTIONS.NAME_ASC:
-        return sorted.sort((a, b) => a.title.localeCompare(b.title))
-      case SORT_OPTIONS.NAME_DESC:
-        return sorted.sort((a, b) => b.title.localeCompare(a.title))
-      default:
-        return sorted
-    }
-  }
-
-  const handleRangeSelect = (range) => {
-    setSelectedRanges((prev) => {
-      const isSelected = prev.some((r) => r.id === range.id)
-      if (isSelected) {
-        return prev.filter((r) => r.id !== range.id)
-      } else {
-        return [...prev, range]
-      }
-    })
-  }
-
-  const handleClearFilters = () => {
-    setSelectedRanges([])
-    setSortBy(SORT_OPTIONS.PRICE_LOW)
-  }
-
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value)
-  }
-
-  if (error) {
-    return <div className={styles.error}>{error}</div>
-  }
-
-  return (
-    <div className={styles.container}>
-      <div className={styles.contentWrapper}>
-        <div className={styles.filterSection}>
-          <div className={styles.filterHeader}>
-            <h3 className={styles.filterTitle}>Filtrar por rango de precio</h3>
-            <div className={styles.filterControls}>
-              <select value={sortBy} onChange={handleSortChange} className={styles.sortSelect}>
-                <option value={SORT_OPTIONS.PRICE_LOW}>Precio: Menor a Mayor</option>
-                <option value={SORT_OPTIONS.PRICE_HIGH}>Precio: Mayor a Menor</option>
-                <option value={SORT_OPTIONS.NAME_ASC}>Nombre: A-Z</option>
-                <option value={SORT_OPTIONS.NAME_DESC}>Nombre: Z-A</option>
-              </select>
-              <button
-                onClick={handleClearFilters}
-                className={styles.clearButton}
-                disabled={selectedRanges.length === 0}
-              >
-                Limpiar filtros
-              </button>
+                <div className={styles.rangeCheckboxes}>
+                    {priceRanges.map(range => (
+                        <label 
+                            key={range.id} 
+                            className={`${styles.rangeLabel} ${
+                                selectedRanges.some(r => r.id === range.id) ? styles.selected : ''
+                            }`}
+                        >
+                            <input
+                                type="checkbox"
+                                checked={selectedRanges.some(r => r.id === range.id)}
+                                onChange={() => handleRangeSelect(range)}
+                                className={styles.rangeCheckbox}
+                            />
+                            <span className={styles.rangeLabelText}>
+                                {range.label}
+                            </span>
+                        </label>
+                    ))}
+                </div>
             </div>
-          </div>
-          <div className={styles.rangeCheckboxes}>
-            {priceRanges.map((range) => (
-              <label
-                key={range.id}
-                className={`${styles.rangeLabel} ${selectedRanges.some((r) => r.id === range.id) ? styles.selected : ""}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedRanges.some((r) => r.id === range.id)}
-                  onChange={() => handleRangeSelect(range)}
-                  className={styles.rangeCheckbox}
-                />
-                <span className={styles.rangeLabelText}>
-                  ${range.minPrice.toLocaleString()} - $
-                  {range.maxPrice === 1.7976931348623157e308 ? "∞" : range.maxPrice.toLocaleString()}
-                  <span className={styles.packageCount}>
-                    ({range.packageCount} {range.packageCount === 1 ? "paquete" : "paquetes"})
-                  </span>
-                </span>
-              </label>
-            ))}
-          </div>
         </div>
+    );
+};
 
-        <div className={styles.packagesSection}>
-          {loading ? (
-            <div className={styles.loading}>Cargando paquetes...</div>
-          ) : filteredPackages.length === 0 ? (
-            <div className={styles.noResults}>
-              {selectedRanges.length === 0
-                ? "Selecciona un rango de precios para ver los paquetes disponibles"
-                : "No se encontraron paquetes en los rangos seleccionados"}
-            </div>
-          ) : (
-            <div className={`${styles.packagesGrid} ${isAnimating ? styles.fadeOut : styles.fadeIn}`}>
-              {filteredPackages.map((pkg) => (
-                <TourCard
-                  key={pkg.packageId}
-                  packageId={pkg.packageId}
-                  title={pkg.title}
-                  imageUrl={pkg.mediaPackages?.[0]?.mediaUrl || "https://via.placeholder.com/150"}
-                  description={pkg.description}
-                  currency={`$${pkg.price.toLocaleString()}`}
-                  link={`/tour/${pkg.packageId}`}
-                  type={pkg.featured ? "featured" : "standard"}
-                  initialIsFavorite={pkg.isFavorite}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default PriceFilter
-
+export default PriceFilter;
