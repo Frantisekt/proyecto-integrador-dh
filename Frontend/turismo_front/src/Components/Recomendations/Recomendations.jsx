@@ -172,10 +172,10 @@ export function Recommendations() {
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <span className={styles.label}>RECOMMENDATIONS</span>
+          <span className={styles.label}></span>
           <h2 className={styles.title}>Recomendaciones</h2>
           <p className={styles.description}>
-            Explore our curated selection of the world's most sought-after travel spots in this diverse list of must-visit places.
+              Explora nuestra selección de los lugares de viaje más buscados en esta lista de lugares obligatorios para visitar.
           </p>
         </div>
 
