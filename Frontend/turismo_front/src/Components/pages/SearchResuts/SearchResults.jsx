@@ -27,7 +27,8 @@ const SearchResults = () => {
     const fetchTours = async () => {
       try {
         setLoading(true);
-        const url = new URL("http://localhost:8087/api/tourPackages/filtered");
+        const baseUrl = "https://pi-dh-infradeploy-backend-production.up.railway.app/";
+        const url = new URL("/api/tourPackages/filtered", baseUrl);
         url.searchParams.append("page", currentPage);
         url.searchParams.append("size", 12);
 
@@ -62,7 +63,8 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchAllTours = async () => {
       try {
-        const url = new URL("http://localhost:8087/api/tourPackages/paged");
+        const baseUrl = "https://pi-dh-infradeploy-backend-production.up.railway.app/";
+        const url = new URL("/api/tourPackages/paged", baseUrl);
         url.searchParams.append("page", 0);
         url.searchParams.append("size", 1000);
         url.searchParams.append("sort", "title,asc");

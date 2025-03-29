@@ -33,7 +33,7 @@ export const updateUser = async (userData) => {
         }
 
         // Log de la petición completa
-        console.log('Enviando petición PUT a:', `http://localhost:8087/api/v1/users/${userData.userId}`);
+        console.log('Enviando petición PUT a:', `/api/v1/users/${userData.userId}`);
         console.log('Headers:', {
             "Content-Type": "application/json",
             "Accept": "application/json",
@@ -41,7 +41,7 @@ export const updateUser = async (userData) => {
         });
         console.log('Body:', JSON.stringify(userRequestDTO, null, 2));
 
-        const response = await fetch(`http://localhost:8087/api/v1/users/${userData.userId}`, {
+        const response = await fetch(`/api/v1/users/${userData.userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

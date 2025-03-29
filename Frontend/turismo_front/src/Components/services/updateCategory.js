@@ -1,6 +1,6 @@
 const updateCategory = async (categoryId, categoryData) => {
     try {
-        const response = await fetch(`http://localhost:8087/api/categories/${categoryId}`, {
+        const response = await fetch(`/api/categories/${categoryId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
