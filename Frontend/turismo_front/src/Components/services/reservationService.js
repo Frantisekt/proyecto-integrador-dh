@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_URL = 'http://localhost:8087/api/reservations';
+const API_BASE_URL = '/api/reservations';
 
 export const reservationService = {
     createReservation: async (reservationData) => {
@@ -18,7 +18,7 @@ export const reservationService = {
 
             console.log('Datos formateados antes de enviar:', formattedData);
 
-            const response = await axios.post(API_URL, formattedData, {
+            const response = await axios.post(API_BASE_URL, formattedData, {
                 headers: {
                     ...headers,
                     'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export const reservationService = {
     getUserReservations: async (userId) => {
         try {
             const headers = authService.getAuthHeader();
-            const response = await axios.get(`${API_URL}/user/${userId}`, {
+            const response = await axios.get(`${API_BASE_URL}/user/${userId}`, {
                 headers: headers
             });
             return response.data;
@@ -62,7 +62,7 @@ export const reservationService = {
 
             console.log('Datos a enviar en updateReservation:', updateData);
 
-            const response = await axios.put(`${API_URL}/${id}`, updateData, {
+            const response = await axios.put(`${API_BASE_URL}/${id}`, updateData, {
                 headers: {
                     ...headers,
                     'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ export const reservationService = {
     deleteReservation: async (id) => {
         try {
             const headers = authService.getAuthHeader();
-            const response = await axios.delete(`${API_URL}/${id}`, {
+            const response = await axios.delete(`${API_BASE_URL}/${id}`, {
                 headers: headers
             });
             return response.data;
@@ -94,7 +94,7 @@ export const reservationService = {
     updateStatus: async (id, status) => {
         try {
             const headers = authService.getAuthHeader();
-            const response = await axios.put(`${API_URL}/${id}/status`, { status }, {
+            const response = await axios.put(`${API_BASE_URL}/${id}/status`, { status }, {
                 headers: {
                     ...headers,
                     'Content-Type': 'application/json'
