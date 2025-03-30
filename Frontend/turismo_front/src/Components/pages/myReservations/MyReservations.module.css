@@ -27,15 +27,27 @@
 
 .filters {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .filterSelect {
-    padding: 0.5rem;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: white;
+    min-width: 200px;
+    cursor: pointer;
+}
+
+.filterSelect:hover {
+    border-color: #0b2f53;
+}
+
+.filterSelect:focus {
+    outline: none;
+    border-color: #0b2f53;
+    box-shadow: 0 0 0 2px rgba(11, 47, 83, 0.1);
 }
 
 .tableContainer {
@@ -135,6 +147,55 @@
     color: #666;
 }
 
+.dateInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dateLabel {
+    font-weight: bold;
+    color: #0b2f53;
+    margin-right: 6px;
+}
+
+.dateValue {
+    color: #666;
+}
+
+.guestInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: #666;
+}
+
+/* Ajustes para la tabla */
+.reservationsTable th {
+    padding: 12px;
+    text-align: left;
+    background-color: #f8f9fa;
+    color: #0b2f53;
+}
+
+.reservationsTable td {
+    padding: 12px;
+    vertical-align: top;
+    border-bottom: 1px solid #eee;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dateInfo, .guestInfo {
+        font-size: 0.9rem;
+    }
+
+    .dateLabel {
+        display: block;
+        margin-bottom: 2px;
+    }
+}
+
 @media screen and (max-width: 1024px) {
     .container {
         padding: 1rem;
@@ -224,4 +285,14 @@
         font-size: 0.8rem;
         margin-top: 0.5rem;
     }
+}
+
+.noResults {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-top: 20px;
 }

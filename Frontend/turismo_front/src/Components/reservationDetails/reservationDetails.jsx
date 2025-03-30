@@ -129,22 +129,19 @@ const ReservationDetails = ({ id, title, startDate, endDate, price }) => {
         console.log('Datos de la reservación a enviar:', reservationData);
 
         const response = await reservationService.createReservation(reservationData);
-        console.log('Respuesta del servidor:', response);
         
-        if (response) {
-            Swal.fire({
-                title: '¡Éxito!',
-                text: 'Reservación creada correctamente',
-                icon: 'success',
-                confirmButtonText: 'Ver mis reservaciones'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    navigate('/mis-reservaciones');
-                }
-            });
-        }
+        Swal.fire({
+            title: '¡Reserva creada con éxito!',
+            text: 'Te hemos enviado un correo con los detalles de tu reserva',
+            icon: 'success',
+            confirmButtonText: 'Ver mis reservaciones'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate('/mis-reservaciones');
+            }
+        });
     } catch (error) {
-        console.error('Error detallado:', error.response?.data || error.message);
+        console.error('Error:', error);
         Swal.fire({
             title: 'Error',
             text: 'No se pudo crear la reservación. Por favor, intenta de nuevo.',

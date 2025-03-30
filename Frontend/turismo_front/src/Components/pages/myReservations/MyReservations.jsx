@@ -21,6 +21,15 @@ const MyReservations = () => {
         try {
             const userData = authService.getCurrentUser();
             const data = await reservationService.getUserReservations(userData.userId);
+            console.log('Datos completos de reservaciones:', data);
+            data.forEach(reservation => {
+                console.log('Fechas de la reservación:', {
+                    id: reservation.reservationId,
+                    startDate: reservation.startDate,
+                    endDate: reservation.endDate,
+                    title: reservation.packageTitle
+                });
+            });
             setReservations(data);
             calculateTotalSpent(data);
         } catch (error) {
@@ -70,6 +79,50 @@ const MyReservations = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        console.log('Intentando formatear fecha:', dateString);
+        if (!dateString) {
+            console.log('Fecha es null o undefined');
+            return 'Fecha no disponible';
+        }
+        try {
+            const date = new Date(dateString);
+            console.log('Fecha convertida:', date);
+            if (isNaN(date.getTime())) {
+                console.log('Fecha inválida después de conversión');
+                return 'Fecha no disponible';
+            }
+            return format(date, "d 'de' MMM, yyyy", {locale: es});
+        } catch (error) {
+            console.error('Error al formatear fecha:', error);
+            return 'Fecha no disponible';
+        }
+    };
+
+    const getFilteredAndSortedReservations = () => {
+        // Primero filtramos
+        let filtered = [...reservations];
+        if (filter !== 'all') {
+            filtered = filtered.filter(reservation => 
+                reservation.confirmationStatus.toLowerCase() === filter.toUpperCase()
+            );
+        }
+
+        // Luego ordenamos
+        return filtered.sort((a, b) => {
+            if (sortBy === 'date') {
+                // Ordenar por fecha de salida
+                const dateA = new Date(a.startDate);
+                const dateB = new Date(b.startDate);
+                return dateB - dateA; // Orden descendente (más reciente primero)
+            } else if (sortBy === 'price') {
+                // Ordenar por precio
+                return b.totalAmount - a.totalAmount; // Orden descendente (mayor precio primero)
+            }
+            return 0;
+        });
+    };
+
     if (loading) return <div className={styles.loading}>Cargando...</div>;
 
     return (
@@ -94,9 +147,10 @@ const MyReservations = () => {
                     className={styles.filterSelect}
                 >
                     <option value="all">Todas</option>
-                    <option value="pending">Pendientes</option>
-                    <option value="confirmed">Confirmadas</option>
-                    <option value="completed">Completadas</option>
+                    <option value="PENDING">Pendientes</option>
+                    <option value="CONFIRMED">Confirmadas</option>
+                    <option value="COMPLETED">Completadas</option>
+                    <option value="CANCELLED">Canceladas</option>
                 </select>
 
                 <select 
@@ -104,8 +158,8 @@ const MyReservations = () => {
                     onChange={(e) => setSortBy(e.target.value)}
                     className={styles.filterSelect}
                 >
-                    <option value="date">Ordenar por fecha</option>
-                    <option value="price">Ordenar por precio</option>
+                    <option value="date">Más recientes primero</option>
+                    <option value="price">Mayor precio primero</option>
                 </select>
             </div>
 
@@ -114,6 +168,7 @@ const MyReservations = () => {
                     <thead>
                         <tr>
                             <th>Paquete</th>
+                            <th>Fechas</th>
                             <th>Huéspedes</th>
                             <th>Total</th>
                             <th>Estado</th>
@@ -121,13 +176,31 @@ const MyReservations = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservations.map(reservation => (
+                        {getFilteredAndSortedReservations().map(reservation => (
                             <tr key={reservation.reservationId}>
                                 <td>{reservation.packageTitle}</td>
                                 <td>
-                                    {reservation.numberOfAdults} adultos, 
-                                    {reservation.numberOfChildren} niños, 
-                                    {reservation.numberOfInfants} infantes
+                                    <div className={styles.dateInfo}>
+                                        <div>
+                                            <span className={styles.dateLabel}>Salida:</span>
+                                            <span className={styles.dateValue}>
+                                                {formatDate(reservation.startDate)}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span className={styles.dateLabel}>Regreso:</span>
+                                            <span className={styles.dateValue}>
+                                                {formatDate(reservation.endDate)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className={styles.guestInfo}>
+                                        <div>{reservation.numberOfAdults} adultos</div>
+                                        <div>{reservation.numberOfChildren} niños</div>
+                                        <div>{reservation.numberOfInfants} infantes</div>
+                                    </div>
                                 </td>
                                 <td>${reservation.totalAmount}</td>
                                 <td>
@@ -147,6 +220,12 @@ const MyReservations = () => {
                         ))}
                     </tbody>
                 </table>
+                
+                {getFilteredAndSortedReservations().length === 0 && (
+                    <div className={styles.noResults}>
+                        No se encontraron reservaciones que coincidan con los filtros seleccionados
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -162,7 +162,7 @@ const Header = () => {
                   <Link to="/favorites" onClick={() => setMenuOpen(false)}>
                     Favoritos
                   </Link>
-                  <Link to="/reservations" onClick={() => setMenuOpen(false)}>
+                  <Link to="/mis-reservaciones" onClick={() => setMenuOpen(false)}>
                     <FaSuitcase className={styles.menuIcon} />
                     Mis Reservas
                   </Link>
