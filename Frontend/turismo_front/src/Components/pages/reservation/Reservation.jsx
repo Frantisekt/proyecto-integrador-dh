@@ -73,6 +73,11 @@ const Reservation = () => {
   }
 
   const { title, start_date, end_date, price } = travelPackage
+
+  const imageUrl =
+    travelPackage.mediaPackages && travelPackage.mediaPackages.length > 0 && travelPackage.mediaPackages[0].mediaUrl
+      ? travelPackage.mediaPackages[0].mediaUrl
+      : "https://via.placeholder.com/300x200?text=Imagen+no+disponible"
   
   return (
     <div className={styles.mainContainer}>
@@ -89,6 +94,7 @@ const Reservation = () => {
         startDate={new Date(travelPackage.start_date)}
         endDate={new Date(travelPackage.end_date)}
         price={travelPackage.price}
+        image={imageUrl}
       />
     </div>
   )

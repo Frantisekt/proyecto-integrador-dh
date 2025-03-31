@@ -104,10 +104,11 @@ const MyReservations = () => {
         let filtered = [...reservations];
         if (filter !== 'all') {
             filtered = filtered.filter(reservation => 
-                reservation.confirmationStatus.toLowerCase() === filter.toUpperCase()
+                reservation.confirmationStatus &&
+                reservation.confirmationStatus.toLowerCase() === filter.toLowerCase()
             );
         }
-
+    
         // Luego ordenamos
         return filtered.sort((a, b) => {
             if (sortBy === 'date') {
@@ -122,6 +123,7 @@ const MyReservations = () => {
             return 0;
         });
     };
+    
 
     if (loading) return <div className={styles.loading}>Cargando...</div>;
 
@@ -168,7 +170,6 @@ const MyReservations = () => {
                     <thead>
                         <tr>
                             <th>Paquete</th>
-                            <th>Fechas</th>
                             <th>Huéspedes</th>
                             <th>Total</th>
                             <th>Estado</th>
@@ -179,22 +180,6 @@ const MyReservations = () => {
                         {getFilteredAndSortedReservations().map(reservation => (
                             <tr key={reservation.reservationId}>
                                 <td>{reservation.packageTitle}</td>
-                                <td>
-                                    <div className={styles.dateInfo}>
-                                        <div>
-                                            <span className={styles.dateLabel}>Salida:</span>
-                                            <span className={styles.dateValue}>
-                                                {formatDate(reservation.startDate)}
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <span className={styles.dateLabel}>Regreso:</span>
-                                            <span className={styles.dateValue}>
-                                                {formatDate(reservation.endDate)}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </td>
                                 <td>
                                     <div className={styles.guestInfo}>
                                         <div>{reservation.numberOfAdults} adultos</div>

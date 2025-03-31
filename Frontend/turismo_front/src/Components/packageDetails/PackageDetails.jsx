@@ -56,7 +56,7 @@ const PackageDetails = ({ description, startDate, endDate, price, id }) => {
             <div className={styles.dateBox}>
               <div style={{ width: "100%" }}>
                 <label className={styles.dateLabel}>
-                  FECHA LLEGADA: <br />
+                  FECHA SALIDA: <br />
                 </label>
               </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
@@ -66,7 +66,7 @@ const PackageDetails = ({ description, startDate, endDate, price, id }) => {
             <div className={styles.dateBox}>
               <div style={{ width: "100%" }}>
                 <label className={styles.dateLabel}>
-                  FECHA SALIDA: <br />
+                  FECHA LLEGADA: <br />
                 </label>
               </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
