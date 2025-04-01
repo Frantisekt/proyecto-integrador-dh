@@ -156,9 +156,6 @@ const Header = () => {
                 </Link>
               ) : (
                 <>
-                  <Link to="/profile" onClick={() => setMenuOpen(false)}>
-                    Mi Perfil
-                  </Link>
                   <Link to="/favorites" onClick={() => setMenuOpen(false)}>
                     Favoritos
                   </Link>
@@ -168,9 +165,6 @@ const Header = () => {
                   </Link>
                 </>
               )}
-              <Link to="/settings" onClick={() => setMenuOpen(false)}>
-                Configuración
-              </Link>
               <button
                 className={styles.logoutButton}
                 onClick={() => {
