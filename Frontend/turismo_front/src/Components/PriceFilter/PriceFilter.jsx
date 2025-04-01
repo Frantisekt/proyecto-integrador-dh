@@ -68,7 +68,7 @@ const PriceFilter = () => {
 
                 let packages = response.data;
                 packages = sortPackages(packages, sortBy);
-                
+
                 setFilteredPackages(packages);
             } catch (err) {
                 console.error('Error al cargar los paquetes:', err);

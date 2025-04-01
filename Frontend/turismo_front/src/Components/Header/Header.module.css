@@ -26,7 +26,6 @@
   height: 130px;
 }
 
-
 .navContainer {
   display: flex;
   align-items: center;
@@ -72,12 +71,10 @@
   transform-origin: bottom left;
 }
 
-
 .authLinks {
   display: flex;
   gap: 20px;
 }
-
 
 .userSection {
   display: flex;
@@ -137,7 +134,6 @@
   border: 2px solid #8ecae6;
 }
 
-
 .userMenu {
   position: absolute;
   top: 70px;
@@ -177,13 +173,13 @@
   color: #8ecae6;
 }
 
-
 .mobileMenuIcon {
   display: none;
   font-size: 30px;
   color: #fff;
   cursor: pointer;
-  padding-right: 45px;
+  padding-right: 20px;
+  margin-left: auto;
 }
 
 .mobileMenu {
@@ -239,26 +235,30 @@
 }
 
 .logoutButton {
-  color: #fff1cd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 12px;
-  text-decoration: none;
+  width: 100%;
   font-size: 16px;
   font-weight: bold;
-  display: block;
+  color: #d9534f; 
   background: none;
   border: none;
-  text-align: left;
   cursor: pointer;
-  width: 100%;
-  border-radius: 4px;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
 .logoutButton:hover {
-  background-color: #034263;
-  color: #8ecae6;
+  background: rgba(217, 83, 79, 0.1); 
+  color: #c9302c;
 }
 
-/* Responsive styles */
+.logoutButton:active {
+  transform: scale(0.95); 
+}
+
+
 @media (max-width: 1024px) {
   .navContainer {
     padding-right: 20px;
@@ -277,10 +277,10 @@
 
   .mobileMenuIcon {
     display: block;
+    padding-right: 10px;
   }
 
   .mobileMenu {
     display: flex;
   }
 }
-
