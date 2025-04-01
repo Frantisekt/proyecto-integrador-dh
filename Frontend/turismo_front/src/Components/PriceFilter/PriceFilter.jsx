@@ -19,26 +19,11 @@ const PriceFilter = () => {
     const [error, setError] = useState(null);
     const [sortBy, setSortBy] = useState(SORT_OPTIONS.PRICE_LOW);
 
-
     // Función para obtener los headers de autenticación
     const getHeaders = () => {
         const headers = {
             'Content-Type': 'application/json',
             ...authService.getAuthHeader()
-
-    // Cargar los rangos de precios al montar el componente
-    useEffect(() => {
-        const fetchPriceRanges = async () => {
-            try {
-                const response = await axios.get('/api/price-ranges');
-                setPriceRanges(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError('Error al cargar los rangos de precios');
-                console.error('Error:', err);
-                setLoading(false);
-            }
-
         };
         return headers;
     };
@@ -69,7 +54,6 @@ const PriceFilter = () => {
                 const minPrice = Math.min(...selectedRanges.map(range => range.minPrice));
                 const maxPrice = Math.max(...selectedRanges.map(range => range.maxPrice));
 
-
                 const response = await axios.post('/api/price-ranges/search', 
                     {
                         minPrice: minPrice,
@@ -81,10 +65,10 @@ const PriceFilter = () => {
                         headers: getHeaders()
                     }
                 );
-           
+
                 let packages = response.data;
                 packages = sortPackages(packages, sortBy);
-                
+
                 setFilteredPackages(packages);
             } catch (err) {
                 console.error('Error al cargar los paquetes:', err);
