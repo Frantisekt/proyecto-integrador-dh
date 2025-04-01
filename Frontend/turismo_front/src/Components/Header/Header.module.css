@@ -234,6 +234,31 @@
   border: 2px solid #8ecae6;
 }
 
+.logoutButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  color: #d9534f; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.logoutButton:hover {
+  background: rgba(217, 83, 79, 0.1); 
+  color: #c9302c;
+}
+
+.logoutButton:active {
+  transform: scale(0.95); 
+}
+
+
 @media (max-width: 1024px) {
   .navContainer {
     padding-right: 20px;
