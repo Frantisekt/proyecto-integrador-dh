@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <div className={style.footerWrapper}>
       <div className={style.logo}>
-        <img src={logo} alt="Globe On Click" />
+        <img src={logo || "/placeholder.svg"} alt="Globe on Click" className={style.logo} />
       </div>
       <footer className={style.footer}>
         <p className={style.copyright}>Copyright © 2025 Globe On Click</p>

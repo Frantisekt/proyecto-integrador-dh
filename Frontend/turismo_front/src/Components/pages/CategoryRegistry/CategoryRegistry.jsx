@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import styles from "./CategoryRegistry.module.css";
 import { FaPlusCircle, FaList } from "react-icons/fa";
 import getAllCategories from "../../services/getAllCategories";
-import addCategory from "../../services/AddCategory";
+import addCategory from "../../services/addCategory";
 import getAllPackages from "../../services/getAllPackages";
 import { mediaCategoriesService } from '../../../services/mediaCategoriesService';
 import { categoryServices } from '../../../services/categoryServices';

@@ -1,6 +1,6 @@
 const deleteCategory = async (categoryId) => {
     try {
-        const response = await fetch(`http://localhost:8087/api/categories/${categoryId}`, {
+        const response = await fetch(`/api/categories/${categoryId}`, {
             method: "DELETE",
         });
 

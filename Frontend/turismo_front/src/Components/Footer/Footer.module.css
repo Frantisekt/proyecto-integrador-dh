@@ -10,8 +10,8 @@
   
 .logo {
     position: absolute;
-    top: -60px;
-    left: 20px;
+    top: -30px;
+    left: 0px;
     width: 120px;
     height: 120px;
     z-index: 10;
@@ -25,7 +25,7 @@
   
 .footer {
     background-color: #002E47;
-    padding: 20px;
+    padding: 40px;
     width: 100%;
     text-align: center;
     min-height: 80px;
@@ -55,7 +55,7 @@
     .logo {
         width: 100px;
         height: 100px;
-        top: -50px;
+        top: -25px;
     }
   
     .footer {

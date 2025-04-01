@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8087/api/tourPackages';
+const API_URL = '/api/tourPackages';
 
 const getTourPackage = async (packageId) => {
     try {

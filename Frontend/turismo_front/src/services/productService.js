@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { favoriteService } from './favoriteService';
 
-const API_URL = 'http://localhost:8087/api/tourPackages';
+const API_URL = '/api/tourPackages';
 
 const axiosInstance = axios.create({
     baseURL: API_URL,

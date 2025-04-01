@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8087/api/tourPackages/paged?page=0&size=50&sort=title,asc";
+const API_URL = "/api/tourPackages/paged?page=0&size=50&sort=title,asc";
 
 const getAllPackages = async () => {
     try {

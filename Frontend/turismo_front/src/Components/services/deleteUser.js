@@ -13,7 +13,7 @@ export const deleteUser = async (userId) => {
     }
 
     try {
-        const response = await fetch(`http://localhost:8087/api/v1/users/${userId}`, {
+        const response = await fetch(`/api/v1/users/${userId}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`,
