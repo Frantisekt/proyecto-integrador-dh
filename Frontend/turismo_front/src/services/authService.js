@@ -141,5 +141,10 @@ export const authService = {
             console.error('Error al obtener datos del admin:', error);
             return null;
         }
+    },
+
+    getCurrentUserId: () => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        return user ? user.userId : null;
     }
 }; 

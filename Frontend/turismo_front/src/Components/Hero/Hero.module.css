@@ -8,17 +8,15 @@
     flex-direction: column;
     justify-content: space-between;
     margin-top: 0px;
-    margin-top: 0px;
+    margin-bottom: 0px;
     padding: 0px;
-}
-
-
-
-.overlay {
+  }
+  
+  .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0);
 }
 
 .content {
@@ -29,141 +27,160 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.heroTextContainer {
+  }
+  
+  .heroTextContainer {
     width: 100%;
     display: flex;
     justify-content: flex-end;
     padding-right: 5%;
     padding-top: 40vh;
-}
-
-.heroText {
+  }
+  
+  .heroText {
     color: white;
-    
     font-size: 28px;
     font-weight: 400;
     max-width: 800px;
     text-align: right;
     line-height: 1.4;
-}
-
-.searchWrapper {
+  }
+  
+  .searchWrapper {
     width: 100%;
     margin-top: auto;
-}
-
-.searchContainer {
+  }
+  
+  .searchContainer {
     background-color: rgba(2, 48, 71, 0.6);
-    padding: 2.5rem 0;
+    padding: 2rem 0;
     width: 100%;
     border-radius: 15px 15px 0 0;
-}
-
-.searchInner {
+  }
+  
+  .searchInner {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
-}
-
-.searchTitle {
-    color: #FFF1CD;
-    font-size: 36px;
+  }
+  
+  .searchTitle {
+    color: #fff1cd;
+    font-size: 32px;
     font-weight: bold;
-    margin-bottom: 2rem;
-    
+    margin-bottom: 1.5rem;
     text-align: center;
-}
-
-.searchBar {
+  }
+  
+  .searchBar {
     display: grid;
-    grid-template-columns: repeat(3, minmax(200px, 1fr)) auto;
-    gap: 32px;
-    max-width: 1000px;
-    margin: 0 auto;
+    grid-template-columns: repeat(5, 1fr) auto;
+    gap: 12px;
+    max-width: 1200px;
+    margin: 0;
     align-items: end;
-}
-
-.inputGroup {
+    padding: 0
+  }
+  
+  .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-}
-
-.inputGroup label {
+    gap: 4px;
+  }
+  
+  .inputGroup label {
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 500;
-}
-
-.searchBar input {
-    padding: 12px 16px;
+  }
+  
+  .searchBar input {
+    padding: 8px 12px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 6px;
+    font-size: 14px;
     width: 100%;
     background: white;
-    height: 45px;
-}
-
-.searchBar input::placeholder {
+    height: 38px;
+  }
+  
+  .searchBar input::placeholder {
     color: #666;
-}
-
-.searchBar button {
-    background-color: #17B1BD;
+  }
+  
+  .searchBar button {
+    background-color: #17b1bd;
     color: white;
     border: none;
-    padding: 12px 40px;
+    padding: 8px 16px;
     cursor: pointer;
-    border-radius: 25px;
+    border-radius: 19px;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     transition: background-color 0.3s, transform 0.2s;
-    height: 45px;
+    height: 38px;
     margin-bottom: 0;
-    min-width: 150px;
-}
-
-.searchBar button:hover {
+    min-width: 100px;
+  }
+  
+  .searchBar button:hover {
     background-color: #149ca7;
     transform: translateY(-1px);
-}
-
-@media (max-width: 1200px) {
+  }
+  
+  @media (max-width: 1200px) {
     .searchBar {
-        gap: 20px;
-        padding: 0 1rem;
+      gap: 10px;
+      padding: 0 1rem;
     }
-}
-
-@media (max-width: 768px) {
-    .heroTextContainer {
-        padding-right: 1rem;
-        padding-left: 1rem;
-        padding-top: 10vh;
+  
+    .searchBar input {
+      font-size: 13px;
+      padding: 8px 10px;
     }
-
-    .heroText {
-        font-size: 24px;
-        text-align: center;
-    }
-
-    .searchBar {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-    
-    .searchTitle {
-        font-size: 28px;
-    }
-    
-    .searchContainer {
-        padding: 1.5rem 0;
-    }
-
+  
     .searchBar button {
-        width: 100%;
+      font-size: 13px;
+      min-width: 90px;
     }
-}
+  }
+  
+  @media (max-width: 992px) {
+    .searchBar {
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: 12px;
+      row-gap: 12px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .heroTextContainer {
+      padding-right: 1rem;
+      padding-left: 1rem;
+      padding-top: 10vh;
+    }
+  
+    .heroText {
+      font-size: 24px;
+      text-align: center;
+    }
+  
+    .searchBar {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  
+    .searchTitle {
+      font-size: 28px;
+    }
+  
+    .searchContainer {
+      padding: 1.5rem 0;
+    }
+  
+    .searchBar button {
+      width: 100%;
+    }
+  }
+  
+  

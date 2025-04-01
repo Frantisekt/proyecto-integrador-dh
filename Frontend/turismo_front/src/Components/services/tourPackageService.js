@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:8087/api/tourPackages/paged';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
-    timeout: 5000,
+    timeout: 50000,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -37,7 +37,7 @@ export const tourPackageService = {
             console.log(`Obteniendo paquetes: página=${page}, tamaño=${size}, orden=${sort}`);
             
             const response = await axiosInstance.get('', {
-                timeout: 20000, // Aumenta el tiempo de espera a 20 segundos
+                timeout: 500000, // Aumenta el tiempo de espera a 20 segundos
                 cancelToken: source.token,
                 params: { page, size, sort }
             });

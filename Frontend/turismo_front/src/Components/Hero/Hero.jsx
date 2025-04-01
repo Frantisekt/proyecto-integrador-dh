@@ -1,21 +1,39 @@
-// Hero.js
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./Hero.module.css";
+"use client"
+
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import styles from "./Hero.module.css"
 
 const Hero = () => {
-  const [destination, setDestination] = useState("");
-  const [travelers, setTravelers] = useState(1);
-  const [startDate, setStartDate] = useState("");
-  const navigate = useNavigate();
+  const [destination, setDestination] = useState("")
+  const [startDate, setStartDate] = useState("")
+  const [endDate, setEndDate] = useState("")
+  const [minPrice, setMinPrice] = useState("")
+  const [maxPrice, setMaxPrice] = useState("")
+  const navigate = useNavigate()
 
   const handleSearch = () => {
-    if (!startDate) {
-      alert("Por favor, selecciona una fecha de inicio.");
-      return;
+    if (!startDate && !endDate && !destination && !minPrice && !maxPrice) {
+      alert("Por favor, ingresa al menos un criterio de búsqueda.")
+      return
     }
-    navigate(`/search-results?destination=${destination}&travelers=${travelers}&startDate=${startDate}`);
-  };
+
+    const queryParams = new URLSearchParams()
+
+    if (destination) queryParams.append("destination", destination)
+    if (startDate) queryParams.append("startDate", formatDate(startDate))
+    if (endDate) queryParams.append("endDate", formatDate(endDate))
+    if (minPrice) queryParams.append("minPrice", minPrice)
+    if (maxPrice) queryParams.append("maxPrice", maxPrice)
+
+    navigate(`/search-results?${queryParams.toString()}`)
+  }
+
+  // Función para formatear la fecha en YYYY-MM-DD sin modificar la zona horaria
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toISOString().split("T")[0] // Extrae solo la parte de la fecha
+  }
 
   return (
     <section className={styles.hero}>
@@ -23,7 +41,8 @@ const Hero = () => {
       <div className={styles.content}>
         <div className={styles.heroTextContainer}>
           <h2 className={styles.heroText}>
-            Si estás en busca de aventuras emocionantes, experiencias inolvidables y lugares impresionantes para explorar, ¡has llegado al lugar indicado!
+            Si estás en busca de aventuras emocionantes, experiencias inolvidables y lugares impresionantes para
+            explorar, ¡has llegado al lugar indicado!
           </h2>
         </div>
         <div className={styles.searchWrapper}>
@@ -32,25 +51,53 @@ const Hero = () => {
               <h3 className={styles.searchTitle}>Planea tu viaje ahora</h3>
               <div className={styles.searchBar}>
                 <div className={styles.inputGroup}>
-                  <label>Buscar destino*</label>
-                  <input type="text" placeholder="Ingrese destino" value={destination} onChange={(e) => setDestination(e.target.value)} />
+                  <label>Buscar destino</label>
+                  <input
+                    type="text"
+                    placeholder="Ingrese destino"
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                  />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label>Nro. de viajeros*</label>
-                  <input type="number" placeholder="Nro. de viajeros" min="1" value={travelers} onChange={(e) => setTravelers(e.target.value)} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label>Fecha prevista*</label>
+                  <label>Fecha de inicio</label>
                   <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                 </div>
-                <button type="button" onClick={handleSearch}>BUSCAR</button>
+                <div className={styles.inputGroup}>
+                  <label>Fecha de fin</label>
+                  <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Precio mínimo</label>
+                  <input
+                    type="number"
+                    placeholder="Mínimo"
+                    min="0"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label>Precio máximo</label>
+                  <input
+                    type="number"
+                    placeholder="Máximo"
+                    min="0"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                  />
+                </div>
+                <button type="button" onClick={handleSearch}>
+                  BUSCAR
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero
+
