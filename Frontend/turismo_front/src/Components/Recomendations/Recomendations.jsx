@@ -128,79 +128,61 @@ const destinationsData = [
 ]
 
 export function Recommendations() {
-  const [destinations, setDestinations] = useState([])
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [cardsPerView, setCardsPerView] = useState(4)
+  const [destinations, setDestinations] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(window.innerWidth < 768 ? 1 : 4);
+
 
   const shuffleArray = (array) => {
-    return array.sort(() => Math.random() - 0.5)
-  }
+    return array.sort(() => Math.random() - 0.5);
+  };
 
   useEffect(() => {
-    const shuffledDestinations = shuffleArray([...destinationsData])
-    setDestinations(shuffledDestinations)
-  }, [])
+    const shuffledDestinations = shuffleArray([...destinationsData]);
+    setDestinations(shuffledDestinations);
+  }, []);
 
   useEffect(() => {
     const updateCardsPerView = () => {
-      if (window.innerWidth < 768) {
-        setCardsPerView(1)
-      } else if (window.innerWidth < 1024) {
-        setCardsPerView(2)
-      } else {
-        setCardsPerView(4)
-      }
-    }
+      setCardsPerView(window.innerWidth < 768 ? 1 : 4);
+    };
 
-    // Set initial value
-    updateCardsPerView()
-
-    window.addEventListener("resize", updateCardsPerView)
-    return () => window.removeEventListener("resize", updateCardsPerView)
-  }, [])
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
 
   const padDestinations = () => {
-    const remainder = destinations.length % cardsPerView
-    if (remainder === 0) return destinations
-    return [...destinations, ...Array(cardsPerView - remainder).fill(null)]
-  }
+    const remainder = destinations.length % cardsPerView;
+    if (remainder === 0) return destinations;
+    return [...destinations, ...Array(cardsPerView - remainder).fill(null)];
+  };
 
-  const paddedDestinations = padDestinations()
-  const viewCount = Math.ceil(paddedDestinations.length / cardsPerView)
+  const paddedDestinations = padDestinations();
+  const viewCount = Math.ceil(paddedDestinations.length / cardsPerView);
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev === viewCount - 1 ? 0 : prev + 1))
-  }
+    setCurrentIndex((prev) => (prev === viewCount - 1 ? 0 : prev + 1));
+  };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev === 0 ? viewCount - 1 : prev - 1))
-  }
+    setCurrentIndex((prev) => (prev === 0 ? viewCount - 1 : prev - 1));
+  };
 
   return (
     <section className={styles.section}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <span className={styles.label}></span>
+      
           <h2 className={styles.title}>Recomendaciones</h2>
-          <p className={styles.description}>
-            Explora nuestra selección de los lugares de viaje más buscados en esta lista de lugares obligatorios para
-            visitar.
-          </p>
+  
         </div>
 
         <div className={styles.carouselWrapper}>
           <div className={styles.carouselContainer}>
-            {viewCount > 1 && (
-              <button onClick={prevSlide} className={`${styles.navButton} ${styles.prevButton}`}>
-                ‹
-              </button>
-            )}
+            {viewCount > 1 && <button onClick={prevSlide} className={`${styles.navButton} ${styles.prevButton}`}>‹</button>}
 
             <div className={styles.carousel}>
-              <div
-                className={styles.carouselInner}
-                style={{ transform: `translateX(-${currentIndex * (100 / viewCount)}%)`, width: `${viewCount * 100}%` }}
-              >
+              <div className={styles.carouselInner} style={{ transform: `translateX(-${currentIndex * (100 / viewCount)}%)`, width: `${viewCount * 100}%` }}>
                 {paddedDestinations.map((destination, index) => (
                   <div key={index} className={styles.carouselItem} style={{ width: `${100 / cardsPerView}%` }}>
                     {destination ? <DestinationCard {...destination} /> : <div className={styles.emptyCard} />}
@@ -209,15 +191,12 @@ export function Recommendations() {
               </div>
             </div>
 
-            {viewCount > 1 && (
-              <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`}>
-                ›
-              </button>
-            )}
+            {viewCount > 1 && <button onClick={nextSlide} className={`${styles.navButton} ${styles.nextButton}`}>›</button>}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
+
 

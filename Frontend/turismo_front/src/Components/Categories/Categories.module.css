@@ -13,7 +13,7 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .titleLine {
@@ -109,6 +109,11 @@
   .titleContainer {
     justify-content: center;
   }
+
+  .container {
+    margin-top: 29rem; /* Agrega espacio arriba de la sección de categorías */
+    padding-top: 4rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -126,6 +131,8 @@
 
   .container {
     background-color: rgba(255, 255, 255, 1);
+    margin-top: 29rem; /* Agrega espacio arriba de la sección de categorías */
+    padding-top: 4rem;
   }
 
   .filterButton {

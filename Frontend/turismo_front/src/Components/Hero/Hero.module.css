@@ -1,7 +1,7 @@
 .hero {
     position: relative;
     width: 100%;
-    height: calc(100vh - 10px);
+    height: calc(70vh - 10px);
     background: url("../../assets/hero_image.png") no-repeat center center;
     background-size: cover;
     display: flex;
@@ -34,7 +34,7 @@
     display: flex;
     justify-content: flex-end;
     padding-right: 5%;
-    padding-top: 40vh;
+    padding-top: 25vh;
   }
   
   .heroText {
@@ -48,12 +48,12 @@
   
   .searchWrapper {
     width: 100%;
-    margin-top: auto;
+    margin-top: -2rem;
   }
   
   .searchContainer {
     background-color: rgba(2, 48, 71, 0.6);
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     width: 100%;
     border-radius: 15px 15px 0 0;
   }
@@ -159,7 +159,13 @@
       padding-left: 1rem;
       padding-top: 10vh;
     }
-  
+    .hero {
+      height: 45vh; /* Reduce aún más en móviles */
+  }
+    .searchWrapper {
+      margin-top: 25px; /* Evita que se solape */
+       margin-bottom: 1rem; 
+  }
     .heroText {
       font-size: 24px;
       text-align: center;
@@ -175,12 +181,24 @@
     }
   
     .searchContainer {
-      padding: 1.5rem 0;
-    }
+      padding: 1rem 0.5rem; /* Reduce el padding */
+  }
   
-    .searchBar button {
-      width: 100%;
-    }
+  .searchBar {
+    gap: 8px; /* Reduce el espacio entre los inputs */
+}
+
+.searchBar input,
+.searchBar select {
+    height: 32px; /* Reduce la altura de los inputs */
+    font-size: 13px;
+}
+.searchBar button {
+  height: 36px; /* Reduce el botón */
+  font-size: 13px;
+  min-width: 100%;
+}
+
   }
   
   
