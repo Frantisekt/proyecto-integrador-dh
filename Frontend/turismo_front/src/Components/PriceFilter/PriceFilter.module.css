@@ -30,6 +30,12 @@
     margin-top: 0;
     margin-bottom: 0;
   }
+
+  .container {
+    width: 73%;
+    margin: auto;
+    text-align: center;
+  }
   
   .filterSection {
     background-color: white;
