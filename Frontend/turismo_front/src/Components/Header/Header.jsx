@@ -66,11 +66,9 @@ const Header = () => {
         {!isLoggedIn && !isAdminLoggedIn ? (
           <div className={styles.authLinks}>
             <Link to="/auth" className={styles.authLink}>
-              Inicia Sesión
+              Inicia Sesión / Regístrate
             </Link>
-            <Link to="/auth" className={styles.authLink}>
-              Regístrate
-            </Link>
+
           </div>
         ) : (
           <div className={styles.userSection}>

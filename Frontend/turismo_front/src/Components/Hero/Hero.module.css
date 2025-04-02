@@ -2,15 +2,27 @@
     position: relative;
     width: 100%;
     height: calc(70vh - 10px);
-    background: url("../../assets/hero_image.png") no-repeat center center;
+    background: url("../../assets/hero.gif") no-repeat center center;
     background-size: cover;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-top: 0px;
-    margin-top: 0px;
+    margin-bottom: -30px;
     padding: 0px;
   }
+
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(1.5px); /* Aplica el blur */
+    background: rgba(0, 0, 0, 0.3); /* Opcional: oscurece un poco */
+    z-index: 1;
+}
   
   .overlay {
     position: absolute;
@@ -156,14 +168,15 @@
     .heroTextContainer {
       padding-right: 1rem;
       padding-left: 1rem;
-      padding-top: 10vh;
+      padding-top: 5rem;
+      margin-bottom: -1.3rem;
     }
     .hero {
-      height: 45vh; /* Reduce aún más en móviles */
+      height: 51.5vh;
   }
     .searchWrapper {
       margin-top: 25px; /* Evita que se solape */
-       margin-bottom: 1rem; 
+       margin-bottom: 2rem; 
   }
     .heroText {
       font-size: 24px;
@@ -180,7 +193,7 @@
     }
   
     .searchContainer {
-      padding: 1rem 0.5rem; /* Reduce el padding */
+      padding: -2rem 0.5rem; /* Reduce el padding */
   }
   
   .searchBar {
@@ -196,6 +209,7 @@
   height: 36px; /* Reduce el botón */
   font-size: 13px;
   min-width: 100%;
+  margin-bottom: -25px;
 }
 
   }
