@@ -1,7 +1,45 @@
 import styles from "./PackageDetails.module.css"
 import CalendarTooltip from "../calendarToolTip/CalendarToolTip"
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import Swal from 'sweetalert2';
+import { authService } from '../services/authService';
 
-const PackageDetails = ({ description, startDate, endDate, price }) => {
+const PackageDetails = ({ description, startDate, endDate, price, id }) => {
+  const navigate = useNavigate();
+  
+  console.log('PackageDetails props:', { id, description, startDate, endDate, price });
+
+  const handleReservation = () => {
+    // Verificar si el usuario está autenticado
+    if (!authService.isAuthenticated()) {
+      Swal.fire({
+        title: "Inicia sesión",
+        text: "Necesitas iniciar sesión para realizar una reserva",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonText: "Ir a iniciar sesión",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/auth");
+        }
+      });
+      return;
+    }
+
+    // Si está autenticado, proceder con la navegación a la reserva
+    navigate(`/reservation/${id}`, {
+      state: {
+        id: id,
+        title: description,
+        startDate: startDate,
+        endDate: endDate,
+        price: price
+      }
+    });
+  };
+
   return (
     <div className={styles.packageDetailsContainer}>
 
@@ -18,7 +56,7 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
             <div className={styles.dateBox}>
               <div style={{ width: "100%" }}>
                 <label className={styles.dateLabel}>
-                  FECHA LLEGADA: <br />
+                  FECHA SALIDA: <br />
                 </label>
               </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
@@ -28,7 +66,7 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
             <div className={styles.dateBox}>
               <div style={{ width: "100%" }}>
                 <label className={styles.dateLabel}>
-                  FECHA SALIDA: <br />
+                  FECHA LLEGADA: <br />
                 </label>
               </div>
               <CalendarTooltip startDate={startDate} endDate={endDate}>
@@ -40,11 +78,24 @@ const PackageDetails = ({ description, startDate, endDate, price }) => {
           <p className={styles.packagePrice}>
             <strong>Precio:</strong> ${price}
           </p>
-          <button className={styles.reserveButton}>Reservar</button>
+          <button 
+            className={styles.reserveButton} 
+            onClick={handleReservation}
+          >
+            Reservar
+          </button>
         </div>
       </div>
     </div>
   );
+};
+
+PackageDetails.propTypes = {
+  id: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired
 };
 
 export default PackageDetails;

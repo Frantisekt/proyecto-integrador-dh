@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: space-between;
     margin-top: 0px;
-    margin-top: 0px;
+    margin-bottom: 0px;
     padding: 0px;
   }
   
@@ -77,8 +77,9 @@
     grid-template-columns: repeat(5, 1fr) auto;
     gap: 12px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0;
     align-items: end;
+    padding: 0
   }
   
   .inputGroup {

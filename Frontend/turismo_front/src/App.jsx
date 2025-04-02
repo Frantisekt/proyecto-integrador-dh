@@ -21,6 +21,8 @@ import Products from "./Components/pages/Product/Product.jsx";
 import Favorites from "./Components/pages/Favorites/Favorites.jsx";
 import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import SearchResults from "./Components/pages/SearchResuts/SearchResults.jsx";
+import Reservation from "./Components/pages/reservation/Reservation.jsx";
+import MyReservations from "./Components/pages/myReservations/MyReservations";
 
 function App() {
   return (
@@ -66,6 +68,8 @@ function MainContent() {
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/reservation/:id" element={<Reservation />} />
+          <Route path="/mis-reservaciones" element={<MyReservations />} />
 
           {/* Rutas protegidas de administrador */}
           <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
