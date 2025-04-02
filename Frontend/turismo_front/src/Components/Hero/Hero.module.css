@@ -7,12 +7,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-<<<<<<< HEAD
-    margin-bottom: -30px;
-=======
     margin-top: 0px;
     margin-bottom: 0px;
->>>>>>> 48efe882864ff292b6e43c5a303176b42380424b
     padding: 0px;
   }
 
