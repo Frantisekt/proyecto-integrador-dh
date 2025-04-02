@@ -1,0 +1,141 @@
+/* Centrado y fondo */
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+/* Tarjeta principal */
+.tarjeta {
+  width: 450px;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  text-align: left; /* Alineación de texto a la izquierda */
+}
+
+/* Título */
+.titulo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+}
+
+/* Contenido del formulario */
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espacio entre los campos */
+  margin: 16px 0;
+}
+
+/* Información de usuario */
+.info {
+  display: flex;
+  justify-content: flex-start; /* Alineación a la izquierda */
+  align-items: center;
+  padding: 10px 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  color: #333; /* Color de texto visible */
+}
+
+.info span {
+  font-weight: bold;
+  color: #444;
+  width: 180px; /* Ancho fijo para las etiquetas (Nombre, Apellido, etc.) */
+  
+}
+
+.info .dato {
+  color: #333; /* Color de texto visible */
+  font-size: 1rem;
+  flex-grow: 1; /* El contenido ocupa el espacio restante */
+  text-align: left; /* Alineación de los datos */
+}
+
+/* Sección de contraseña */
+/* Sección de contraseña */
+.contrasena {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-top: 16px;
+  color: #333;
+  font-size: 1rem;
+  gap: 15px; /* Esto controlará el espacio entre "Contraseña" y el valor */
+}
+
+.contrasena span {
+  font-weight: bold;
+  color: #444; /* Color de la etiqueta "Contraseña" */
+  flex-shrink: 0; /* Evita que se encoja */
+}
+
+.contrasena .dato {
+  font-size: 1rem;
+  color: #333;
+  flex-grow: 1; /* Ocupa el espacio restante */
+  padding-right: 10px; /* Espacio entre la contraseña y el botón */
+}
+
+.contrasena button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background: #e5e7eb;
+  border: none;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.contrasena button:hover {
+  background-color: #d1d5db;
+}
+
+/* Botones */
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.botonPrimario {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botonPrimario:hover {
+  background-color: #2563eb;
+}
+
+.botonSecundario {
+  background-color: #e5e7eb;
+  color: #333;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botonSecundario:hover {
+  background-color: #d1d5db;
+}
