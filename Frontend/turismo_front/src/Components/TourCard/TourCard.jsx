@@ -94,7 +94,7 @@ const TourCard = ({
   }
 
   const handleShare = () => {
-    const productUrl = `http://localhost:5173/tour/${packageId}`
+    const productUrl = `https://pi-dh-infradeploytest-production.up.railway.app/tour/${packageId}`
     
     // Mensaje más personalizado
     const message = `${title}\n\n${description}\n\nPrecio: ${currency}\n\nMás información: ${productUrl}`;
