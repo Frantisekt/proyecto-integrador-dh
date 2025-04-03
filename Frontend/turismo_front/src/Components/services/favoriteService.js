@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authService } from './authService';
 
-const API_URL = 'http://localhost:8087/api/v1/favorites';
+const API_BASE_URL = '/api/v1/favorites';
 
 const getAuthHeaders = () => {
     const user = authService.getCurrentUser();
@@ -19,7 +19,7 @@ export const favoriteService = {
     // Añadir un paquete a favoritos
     addToFavorites: async (packageId) => {
         try {
-            const response = await axios.post(`${API_URL}/${packageId}`, {}, {
+            const response = await axios.post(`${API_BASE_URL}/${packageId}`, {}, {
                 headers: getAuthHeaders(),
                 withCredentials: true
             });
@@ -36,7 +36,7 @@ export const favoriteService = {
     // Eliminar un paquete de favoritos
     removeFromFavorites: async (packageId) => {
         try {
-            const response = await axios.delete(`${API_URL}/${packageId}`, {
+            const response = await axios.delete(`${API_BASE_URL}/${packageId}`, {
                 headers: getAuthHeaders(),
                 withCredentials: true
             });
@@ -53,7 +53,7 @@ export const favoriteService = {
     // Verificar si un paquete está en favoritos
     checkIsFavorite: async (packageId) => {
         try {
-            const response = await axios.get(`${API_URL}/check/${packageId}`, {
+            const response = await axios.get(`${API_BASE_URL}/check/${packageId}`, {
                 headers: getAuthHeaders(),
                 withCredentials: true
             });
@@ -67,7 +67,7 @@ export const favoriteService = {
     // Obtener todos los favoritos del usuario
     getUserFavorites: async () => {
         try {
-            const response = await axios.get(API_URL, {
+            const response = await axios.get(API_BASE_URL, {
                 headers: getAuthHeaders(),
                 withCredentials: true
             });
@@ -84,7 +84,7 @@ export const favoriteService = {
     // Obtener favoritos paginados
     getUserFavoritesPaginated: async (page = 0, size = 10) => {
         try {
-            const response = await axios.get(`${API_URL}/paged`, {
+            const response = await axios.get(`${API_BASE_URL}/paged`, {
                 params: { page, size },
                 headers: getAuthHeaders(),
                 withCredentials: true

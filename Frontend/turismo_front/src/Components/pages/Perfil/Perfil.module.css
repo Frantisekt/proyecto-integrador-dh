@@ -1,0 +1,168 @@
+/* Contenedor principal */
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px 0; /* Ajuste aquí */
+    margin-top: 100px; /* Agregado para separar del header */
+    min-height: calc(100vh - 140px); /* Ajuste para considerar header y footer */
+    background-color: #f5f5f5;
+  }
+  
+  
+  /* Tarjeta del perfil */
+  .tarjeta {
+    width: 100%;
+    max-width: 700px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    margin: 20px 0;
+  }
+  
+  /* Título */
+  .titulo {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 15px;
+  }
+  
+  .titulo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background-color: #daa520; /* Color dorado */
+  }
+  
+  /* Filas de información */
+  .fila {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 15px 0;
+    align-items: center;
+  }
+  
+  .fila:last-of-type {
+    border-bottom: none;
+    padding-bottom: 20px;
+  }
+  
+  /* Etiquetas */
+  .etiqueta {
+    width: 30%;
+    font-weight: 600;
+    color: #555;
+    padding-left: 10px;
+  }
+  
+  /* Valores */
+  .valor {
+    flex-grow: 1;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 10px 15px;
+    border-radius: 4px;
+  }
+  
+  /* Contenedor para valor y botón */
+  .valorConBoton {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .valorConBoton .valor {
+    flex-grow: 1;
+  }
+  
+  /* Botón mostrar */
+  .botonMostrar {
+    background-color: #e0e0e0;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    height: 40px;
+  }
+  
+  .botonMostrar:hover {
+    background-color: #d0d0d0;
+  }
+  
+  /* Contenedor del botón guardar */
+  .contenedorBoton {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  /* Botón guardar */
+  .botonGuardar {
+    background-color: #3b82f6; /* Azul */
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .botonGuardar:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Mensaje de carga */
+  .loading {
+    text-align: center;
+    margin-top: 100px;
+    font-size: 18px;
+    color: #3b82f6;
+  }
+  
+  /* Media queries para responsividad */
+  @media (max-width: 768px) {
+    .tarjeta {
+      max-width: 95%;
+      padding: 15px;
+      margin: 15px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .fila {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .etiqueta {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+    
+    .valor, .valorConBoton {
+      width: 100%;
+    }
+    
+    .valorConBoton {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .botonMostrar {
+      align-self: flex-end;
+      margin-top: -40px;  /* Esto posiciona el botón junto al valor */
+    }
+  }
