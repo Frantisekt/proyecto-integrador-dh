@@ -95,7 +95,10 @@ const Header = () => {
                   </Link>
                 ) : (
                   <>
-
+                    <Link to="/profile" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
+                      <FaUser className={styles.menuIcon} />
+                      <span>Mi Perfil</span>
+                    </Link>
                     <Link to="/favorites" className={styles.userMenuItem} onClick={() => setUserMenuOpen(false)}>
                       <FaHeart className={styles.menuIcon} />
                       <span>Favoritos</span>

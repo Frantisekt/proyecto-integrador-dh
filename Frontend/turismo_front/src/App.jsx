@@ -23,6 +23,8 @@ import PrivacyPolicy from "./Components/PrivacyPolicy/PrivacyPolicy.jsx";
 import SearchResults from "./Components/pages/SearchResuts/SearchResults.jsx";
 import Reservation from "./Components/pages/reservation/Reservation.jsx";
 import MyReservations from "./Components/pages/myReservations/MyReservations";
+import Perfil from "./Components/pages/Perfil/Perfil.jsx";
+
 
 function App() {
   return (
@@ -70,7 +72,7 @@ function MainContent() {
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/reservation/:id" element={<Reservation />} />
           <Route path="/mis-reservaciones" element={<MyReservations />} />
-
+          <Route path="/profile" element={<Perfil />} />
           {/* Rutas protegidas de administrador */}
           <Route path="admin" element={<ProtectedRoute><AdminPage /></ProtectedRoute>} />
           <Route path="admin/packages" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
