@@ -1,10 +1,101 @@
-.layout {
+.whatsappButton {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
+    cursor: pointer;
+    text-decoration: none;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.main {
-    flex: 1;
-    margin: 0; 
-    padding: 0;
+.whatsappButtonInner {
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.whatsappButtonInner img {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+    }
+}
+
+.tooltip {
+    visibility: hidden;
+    background-color: #023047;
+    color: #fff;
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 75px;
+    right: 0;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(10px);
+    max-width: 250px;
+    line-height: 1.4;
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 25px;
+    border-width: 8px;
+    border-style: solid;
+    border-color: #023047 transparent transparent transparent;
+}
+
+.whatsappButton:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.whatsappButton:hover .whatsappButtonInner {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.6);
+}
+
+@media (max-width: 768px) {
+    .whatsappButtonInner {
+        width: 55px;
+        height: 55px;
+    }
+
+    .tooltip {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+        bottom: 70px;
+        max-width: 200px;
+    }
 }
